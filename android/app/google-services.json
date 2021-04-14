@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "973204444190",
+    "project_id": "releaf-12cb2",
+    "storage_bucket": "releaf-12cb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973204444190:android:66560c28c8d0bc986eca0f",
+        "android_client_info": {
+          "package_name": "com.chads.releaf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973204444190-a2bem5pgfivj6j732vjm35soj9rid14c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chads.releaf",
+            "certificate_hash": "268efca1c27c8e1f1942c2574a4d82939a002561"
+          }
+        },
+        {
+          "client_id": "973204444190-jaiel8de3li05erq42989regs7oj5bdd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXFp9Wdudu4CeJaiYQ2qgRW66Ns2GJ2EU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973204444190-jaiel8de3li05erq42989regs7oj5bdd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "973204444190-d7duc583gai6g3ttdals1gbmkqcp9p4a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chads.releaf"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
