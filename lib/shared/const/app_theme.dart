@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+
+class ThemeBase {
+  Color? primary;
+  Color? secondary;
+  Color? accent;
+  TextStyle heading;
+  TextStyle body;
+
+  ThemeBase({
+    required this.primary,
+    required this.secondary,
+    required this.accent,
+    required this.heading,
+    required this.body,
+  });
+}
 
 class AppTheme with ChangeNotifier {
-  static Color primary = Colors.green;
-  static late Color secondary;
-  static late Color accent;
-  static late TextStyle heading;
-  static late TextStyle body;
+  late ThemeBase theme;
+  ThemeBase lightTheme;
+  ThemeBase darkTheme;
 
-  void toggleTheme() {
-    notifyListeners();
-  }
+  AppTheme({required this.lightTheme, required this.darkTheme});
 }
 
 class TestWidget extends StatelessWidget {
@@ -19,9 +32,13 @@ class TestWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Test Widget'),
-        backgroundColor: AppTheme.primary,
       ),
-      body: Center(),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('Change Primary Colour'),
+          onPressed: () {},
+        ),
+      ),
     );
   }
 }
