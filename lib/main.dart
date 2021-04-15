@@ -9,7 +9,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(
             create: (_) => AppTheme(
-              currentTheme: ThemeBase(
+              light: ThemeBase(
                 primary: Colors.green,
                 secondary: Colors.lightGreen[400],
                 accent: Colors.greenAccent,
@@ -17,15 +17,7 @@ void main() {
                 heading: TextStyle(),
                 body: TextStyle(),
               ),
-              lightTheme: ThemeBase(
-                primary: Colors.green,
-                secondary: Colors.lightGreen[400],
-                accent: Colors.greenAccent,
-                backgroundColor: Colors.white,
-                heading: TextStyle(),
-                body: TextStyle(),
-              ),
-              darkTheme: ThemeBase(
+              dark: ThemeBase(
                 primary: Colors.lightGreen[400],
                 secondary: Colors.green,
                 accent: Colors.greenAccent,
