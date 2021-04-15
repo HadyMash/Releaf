@@ -9,20 +9,31 @@ void main() {
         providers: [
           ChangeNotifierProvider(
             create: (_) => AppTheme(
-                lightTheme: ThemeBase(
-                  primary: Colors.green,
-                  secondary: Colors.lightGreen[400],
-                  accent: Colors.greenAccent,
-                  heading: TextStyle(),
-                  body: TextStyle(),
-                ),
-                darkTheme: ThemeBase(
-                  primary: Colors.green,
-                  secondary: Colors.lightGreen[400],
-                  accent: Colors.greenAccent,
-                  heading: TextStyle(),
-                  body: TextStyle(),
-                )),
+              currentTheme: ThemeBase(
+                primary: Colors.green,
+                secondary: Colors.lightGreen[400],
+                accent: Colors.greenAccent,
+                backgroundColor: Colors.white,
+                heading: TextStyle(),
+                body: TextStyle(),
+              ),
+              lightTheme: ThemeBase(
+                primary: Colors.green,
+                secondary: Colors.lightGreen[400],
+                accent: Colors.greenAccent,
+                backgroundColor: Colors.white,
+                heading: TextStyle(),
+                body: TextStyle(),
+              ),
+              darkTheme: ThemeBase(
+                primary: Colors.lightGreen[400],
+                secondary: Colors.green,
+                accent: Colors.greenAccent,
+                backgroundColor: Colors.grey[850],
+                heading: TextStyle(),
+                body: TextStyle(),
+              ),
+            ),
             lazy: false,
           ),
         ],
