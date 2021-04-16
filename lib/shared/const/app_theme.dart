@@ -54,7 +54,9 @@ class TestWidget extends StatelessWidget {
         title: Text('Test Widget'),
         centerTitle: true,
       ),
-      body: ThemedButton(),
+      body: Center(
+        child: ThemedButton(),
+      ),
     );
   }
 }
@@ -70,44 +72,35 @@ class ThemedButton extends StatefulWidget {
 class _ThemedButtonState extends State<ThemedButton> {
   @override
   Widget build(BuildContext context) {
-    /*
     return GestureDetector(
-      child: Container(
-        constraints: BoxConstraints(),
-        child: Text(
-          'Click Me!',
-          style: TextStyle(),
-        ),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 10.0,
-              spreadRadius: 0,
-              color: Colors.black.withAlpha(60),
-              offset: Offset(0, 0),
-            ),
-          ],
-        ),
-      ),
-      // * CONTAINER END
-      onTap: () {},
-    );*/
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 10.0,
-            spreadRadius: 0,
-            color: Colors.black.withAlpha(60),
-            offset: Offset(0, 0),
+      onTap: () => print('tapped'),
+      child: Semantics(
+        button: true,
+        // * Container
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 15,
           ),
-        ],
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 10.0,
+                spreadRadius: 0,
+                color: Colors.black.withAlpha(60),
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
+          // Text
+          // * Text
+          child: Text(
+            'Click Me!',
+            style: TextStyle(),
+          ),
+        ),
       ),
     );
   }
