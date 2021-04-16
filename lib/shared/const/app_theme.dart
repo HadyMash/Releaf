@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -54,16 +56,51 @@ class TestWidget extends StatelessWidget {
         title: Text('Test Widget'),
         centerTitle: true,
       ),
-      body: Center(
-        child: ThemedButton(),
-      ),
+      body: Center(),
     );
   }
 }
 
 // TODO Make custom button
 class ThemedButton extends StatefulWidget {
-  // Button
+  // * Variables
+  final VoidCallback? onPressed;
+  final Text text;
+  final EdgeInsets? padding;
+  final Color? color;
+  final bool filled;
+  final double? borderRadius;
+  final Color shadowColor;
+  final double? shadowBlurRadius;
+  final double? shadowSpreadRadius;
+  final Offset? shadowOffset;
+
+  // * Constructors
+  ThemedButton({
+    required this.onPressed,
+    required this.text,
+    this.color,
+    this.filled = false,
+    this.padding,
+    this.borderRadius,
+    required this.shadowColor,
+    this.shadowBlurRadius,
+    this.shadowSpreadRadius,
+    this.shadowOffset,
+  });
+
+  ThemedButton.filled({
+    this.onPressed,
+    required this.text,
+    required this.color,
+    this.filled = true,
+    this.padding,
+    this.borderRadius,
+    required this.shadowColor,
+    this.shadowBlurRadius,
+    this.shadowSpreadRadius,
+    this.shadowOffset,
+  });
 
   @override
   _ThemedButtonState createState() => _ThemedButtonState();
@@ -73,33 +110,36 @@ class _ThemedButtonState extends State<ThemedButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => print('tapped'),
+      onTap: () {
+        // TODO implement button animation
+        // ignore: unnecessary_statements
+        widget.onPressed;
+      },
       child: Semantics(
         button: true,
         // * Container
         child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 15,
-          ),
+          padding: widget.padding ??
+              EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 15,
+              ),
           decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(10),
+            color: widget.color ??
+                (widget.filled ? Theme.of(context).primaryColor : null),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
             boxShadow: [
               BoxShadow(
-                blurRadius: 10.0,
-                spreadRadius: 0,
-                color: Colors.black.withAlpha(60),
-                offset: Offset(0, 0),
+                blurRadius: widget.shadowBlurRadius ?? 10.0,
+                spreadRadius: widget.shadowSpreadRadius ?? 0,
+                color: widget.shadowColor,
+                offset: widget.shadowOffset ?? Offset(0, 0),
               ),
             ],
           ),
           // Text
           // * Text
-          child: Text(
-            'Click Me!',
-            style: TextStyle(),
-          ),
+          child: widget.text,
         ),
       ),
     );
