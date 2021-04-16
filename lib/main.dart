@@ -17,8 +17,8 @@ void main() {
               body: TextStyle(),
             ),
             dark: ThemeBase(
-              primary: Colors.lightGreen[400],
-              secondary: Colors.green,
+              primary: Colors.green,
+              secondary: Colors.lightGreen[400],
               accent: Colors.greenAccent,
               backgroundColor: Colors.grey[850],
               heading: TextStyle(),
@@ -38,9 +38,14 @@ class ThemedApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppTheme theme = Provider.of<AppTheme>(context);
 
+    final bool autoTheme = false;
+    final ThemeMode defaultTheme = ThemeMode.light;
+
     return MaterialApp(
       home: TestWidget(),
-      theme: theme.getThemeData(),
+      theme: theme.getLightTheme(),
+      darkTheme: theme.getDarkTheme(),
+      themeMode: autoTheme ? ThemeMode.system : null,
     );
   }
 }

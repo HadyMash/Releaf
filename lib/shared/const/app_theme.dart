@@ -12,6 +12,7 @@ class ThemeBase {
   Color? backgroundColor;
   TextStyle heading;
   TextStyle body;
+  // AppBarTheme appBarTheme; // TODO implement app bar theme
 
   ThemeBase({
     required this.primary,
@@ -34,11 +35,13 @@ class AppTheme with ChangeNotifier {
   }) {
     current = light;
     _light = ThemeData(
+      brightness: Brightness.light,
       primaryColor: light.primary,
       backgroundColor: light.backgroundColor,
       accentColor: light.accent,
     );
     _dark = ThemeData(
+      brightness: Brightness.dark,
       primaryColor: dark.primary,
       backgroundColor: Colors.grey[850],
       accentColor: dark.accent,
@@ -51,6 +54,8 @@ class AppTheme with ChangeNotifier {
   ThemeData _dark = ThemeData();
 
   getThemeData() => _currentThemeData;
+  getLightTheme() => _light;
+  getDarkTheme() => _dark;
   setThemeData(bool light) {
     _currentThemeData = light ? _light : _dark;
     notifyListeners();
@@ -82,7 +87,10 @@ class TestWidget extends StatelessWidget {
       ),
       body: Center(
         child: ThemedButton(
-          onPressed: () => theme.toggleTheme(),
+          onPressed: () {
+            theme.toggleTheme();
+            print(Theme.of(context).brightness);
+          },
           text: Text('Click Me!'),
           color: theme.current.primary,
           shadowColor: Colors.black.withOpacity(0.6),
