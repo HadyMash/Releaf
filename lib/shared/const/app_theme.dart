@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +26,7 @@ class AppTheme with ChangeNotifier {
   }
 }
 
-// * TEST WIDGET - TEMP
+// ! TEST WIDGET - TEMP
 class TestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -56,7 +53,7 @@ class TestWidget extends StatelessWidget {
   }
 }
 
-// TODO Make custom button
+// TODO animate button on tapdown and up
 class ThemedButton extends StatefulWidget {
   // * Variables
   final VoidCallback? onPressed;

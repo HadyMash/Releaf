@@ -10,6 +10,8 @@ void main() {
           create: (_) => AppTheme(
             // * Light Theme
             light: ThemeData(
+              inputDecorationTheme:
+                  InputDecorationTheme(), // TODO add input decoration
               brightness: Brightness.light,
               primaryColor: Colors.green,
               accentColor: Colors.greenAccent,
@@ -36,7 +38,8 @@ void main() {
                 bodyText1: TextStyle(),
                 bodyText2: TextStyle(),
                 button: TextStyle(
-                  fontFamily: 'Poppins',
+                  fontFamily:
+                      'Poppins', // TODO find font similar to Rift for buttons
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                   fontSize: 18,
@@ -58,9 +61,6 @@ class ThemedApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppTheme theme = Provider.of<AppTheme>(context);
-
-    final bool autoTheme = false;
-    final ThemeMode defaultTheme = ThemeMode.light;
 
     return MaterialApp(
       home: TestWidget(),
