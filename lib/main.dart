@@ -8,6 +8,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AppTheme(
+            // * Light Theme
             light: ThemeData(
               brightness: Brightness.light,
               primaryColor: Colors.green,
@@ -35,6 +36,7 @@ void main() {
                 button: TextStyle(),
               ),
             ),
+            // * Dark Theme
             dark: ThemeData(),
           ),
           lazy: false,
