@@ -8,22 +8,34 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AppTheme(
-            light: ThemeBase(
-              primary: Colors.green,
-              secondary: Colors.lightGreen[400],
-              accent: Colors.greenAccent,
+            light: ThemeData(
+              brightness: Brightness.light,
+              primaryColor: Colors.green,
+              accentColor: Colors.greenAccent,
               backgroundColor: Colors.white,
-              heading: TextStyle(),
-              body: TextStyle(),
+              appBarTheme: AppBarTheme(
+                brightness: Brightness.light,
+                backgroundColor: Colors.white.withAlpha(0),
+                elevation: 0,
+                centerTitle: false,
+                titleTextStyle: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              textTheme: TextTheme(
+                headline6: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+                subtitle1: TextStyle(),
+                subtitle2: TextStyle(),
+                bodyText1: TextStyle(),
+                bodyText2: TextStyle(),
+                button: TextStyle(),
+              ),
             ),
-            dark: ThemeBase(
-              primary: Colors.green,
-              secondary: Colors.lightGreen[400],
-              accent: Colors.greenAccent,
-              backgroundColor: Colors.grey[850],
-              heading: TextStyle(),
-              body: TextStyle(),
-            ),
+            dark: ThemeData(),
           ),
           lazy: false,
         ),
@@ -43,9 +55,10 @@ class ThemedApp extends StatelessWidget {
 
     return MaterialApp(
       home: TestWidget(),
-      theme: theme.getLightTheme(),
-      darkTheme: theme.getDarkTheme(),
-      themeMode: autoTheme ? ThemeMode.system : null,
+      theme: theme.light,
+      darkTheme: theme.dark,
+      themeMode: theme.themeMode,
+      // themeMode: autoTheme ? ThemeMode.system : null
     );
   }
 }
