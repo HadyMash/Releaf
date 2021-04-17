@@ -25,6 +25,7 @@ void main() {
               ),
               textTheme: TextTheme(
                 headline1: TextStyle(
+                  fontFamily: 'Poppins',
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 26,
@@ -37,7 +38,7 @@ void main() {
               ),
             ),
             // * Dark Theme
-            dark: ThemeData(),
+            dark: ThemeData.dark(),
           ),
           lazy: false,
         ),
