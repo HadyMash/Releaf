@@ -104,18 +104,6 @@ flutter:
         - asset: assets/fonts/Poppins-BlackItalic.ttf
           style: italic
           weight: 900
-    - family: Bebas Neue
-      fonts:
-          - asset: assets/fonts/BebasNeue-Thin.ttf
-            weight: 100
-          - asset: assets/fonts/BebasNeue-Light.ttf
-            weight: 200
-          - asset: assets/fonts/BebasNeue-Book.ttf
-            weight: 400
-          - asset: assets/fonts/BebasNeue-Regular.ttf
-            weight: 500
-          - asset: assets/fonts/BebasNeue-Bold.ttf
-            weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
