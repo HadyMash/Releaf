@@ -19,6 +19,7 @@ void main() {
                 backgroundColor: Colors.white.withAlpha(0),
                 elevation: 0,
                 centerTitle: false,
+                titleSpacing: 28,
                 titleTextStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -28,13 +29,18 @@ void main() {
                   fontFamily: 'Poppins',
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 26,
+                  fontSize: 36,
                 ),
                 subtitle1: TextStyle(),
                 subtitle2: TextStyle(),
                 bodyText1: TextStyle(),
                 bodyText2: TextStyle(),
-                button: TextStyle(),
+                button: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
               ),
             ),
             // * Dark Theme

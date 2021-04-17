@@ -44,10 +44,7 @@ class TestWidget extends StatelessWidget {
       ),
       body: Center(
         child: ThemedButton(
-          onPressed: () {
-            theme.toggleTheme();
-            print(Theme.of(context).brightness);
-          },
+          onPressed: () => theme.toggleTheme(),
           text: 'Click Me!',
           color: Theme.of(context).primaryColor,
           shadowColor: Colors.black.withOpacity(0.6),
@@ -64,6 +61,7 @@ class ThemedButton extends StatefulWidget {
   // * Variables
   final VoidCallback? onPressed;
   final String text;
+  final bool? notAllCaps;
   final TextStyle? style;
   final EdgeInsets? padding;
   final Color? color;
@@ -79,6 +77,7 @@ class ThemedButton extends StatefulWidget {
   ThemedButton({
     required this.onPressed,
     required this.text,
+    this.notAllCaps,
     this.style,
     this.color,
     this.padding,
@@ -129,7 +128,9 @@ class _ThemedButtonState extends State<ThemedButton> {
           // Text
           // * Text
           child: Text(
-            widget.text,
+            (widget.notAllCaps ?? false)
+                ? widget.text
+                : widget.text.toUpperCase(),
             style: widget.style ?? Theme.of(context).textTheme.button,
           ),
         ),
