@@ -23,10 +23,10 @@ void main() {
                 ),
               ),
               textTheme: TextTheme(
-                headline6: TextStyle(
+                headline1: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
+                  fontSize: 26,
                 ),
                 subtitle1: TextStyle(),
                 subtitle2: TextStyle(),

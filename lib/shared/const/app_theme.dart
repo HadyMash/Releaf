@@ -39,7 +39,7 @@ class TestWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Test Widget',
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headline1,
         ),
       ),
       body: Center(
@@ -48,7 +48,7 @@ class TestWidget extends StatelessWidget {
             theme.toggleTheme();
             print(Theme.of(context).brightness);
           },
-          text: Text('Click Me!'),
+          text: 'Click Me!',
           color: Theme.of(context).primaryColor,
           shadowColor: Colors.black.withOpacity(0.6),
           pressedShadowColor: Colors.greenAccent,
@@ -63,7 +63,8 @@ class TestWidget extends StatelessWidget {
 class ThemedButton extends StatefulWidget {
   // * Variables
   final VoidCallback? onPressed;
-  final Text text;
+  final String text;
+  final TextStyle? style;
   final EdgeInsets? padding;
   final Color? color;
   final Color? pressedColor;
@@ -78,6 +79,7 @@ class ThemedButton extends StatefulWidget {
   ThemedButton({
     required this.onPressed,
     required this.text,
+    this.style,
     this.color,
     this.padding,
     this.borderRadius,
@@ -126,7 +128,10 @@ class _ThemedButtonState extends State<ThemedButton> {
           ),
           // Text
           // * Text
-          child: widget.text,
+          child: Text(
+            widget.text,
+            style: widget.style ?? Theme.of(context).textTheme.button,
+          ),
         ),
       ),
     );
