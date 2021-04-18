@@ -11,7 +11,7 @@ class AppTheme with ChangeNotifier {
     required this.light,
     required this.dark,
   }) {
-    themeMode = ThemeMode.system;
+    themeMode = ThemeMode.system; // TODO Load from user preference
   }
 
   void toggleTheme() {
