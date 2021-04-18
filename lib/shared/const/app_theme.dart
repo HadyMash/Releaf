@@ -41,6 +41,7 @@ class ThemedButton extends StatefulWidget {
   final bool? notAllCaps;
   final TextStyle? style;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final Color? color;
   final Color? pressedColor;
   final double? borderRadius;
@@ -73,6 +74,7 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowBlurRadius,
     this.pressedShadowSpreadRadius,
     this.pressedShadowOffset,
+    this.margin,
   })  : icon = Container(height: 0, width: 0),
         iconButton = false,
         gap = 0.0;
@@ -96,6 +98,7 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowBlurRadius,
     this.pressedShadowSpreadRadius,
     this.pressedShadowOffset,
+    this.margin,
   }) : iconButton = true;
 
   @override
@@ -111,6 +114,7 @@ class _ThemedButtonState extends State<ThemedButton> {
         button: true,
         // * Container
         child: Container(
+          margin: widget.margin ?? EdgeInsets.all(0),
           padding: widget.padding ??
               EdgeInsets.symmetric(
                 vertical: 8.0,
