@@ -31,57 +31,6 @@ class AppTheme with ChangeNotifier {
   }
 }
 
-// ! TEST WIDGET - TEMP
-class TestWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final AppTheme theme = Provider.of<AppTheme>(context);
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Test Widget',
-          style: Theme.of(context).textTheme.headline1,
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ThemedButton(
-              onPressed: () => theme.setTheme(ThemeMode.system),
-              text: 'System Theme',
-              color: Theme.of(context).primaryColor,
-              shadowColor: Colors.black.withOpacity(0.6),
-              pressedShadowColor: Colors.greenAccent,
-              shadowBlurRadius: 15,
-            ),
-            SizedBox(height: 20),
-            ThemedButton(
-              onPressed: () => theme.setTheme(ThemeMode.light),
-              text: 'Light Theme',
-              color: Theme.of(context).primaryColor,
-              shadowColor: Colors.black.withOpacity(0.6),
-              pressedShadowColor: Colors.greenAccent,
-              shadowBlurRadius: 15,
-            ),
-            SizedBox(height: 20),
-            ThemedButton(
-              onPressed: () => theme.setTheme(ThemeMode.dark),
-              text: 'Dark Theme',
-              color: Theme.of(context).primaryColor,
-              shadowColor: Colors.black.withOpacity(0.6),
-              pressedShadowColor: Colors.greenAccent,
-              shadowBlurRadius: 15,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 // TODO animate button on tapdown and up
 class ThemedButton extends StatefulWidget {
   // * Variables

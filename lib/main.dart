@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:releaf/wrapper.dart';
 
 void main() {
   runApp(
@@ -61,11 +62,10 @@ class ThemedApp extends StatelessWidget {
     final AppTheme theme = Provider.of<AppTheme>(context);
 
     return MaterialApp(
-      home: TestWidget(),
+      home: Wrapper(),
       theme: theme.light,
       darkTheme: theme.dark,
       themeMode: theme.themeMode,
-      // themeMode: autoTheme ? ThemeMode.system : null
     );
   }
 }
