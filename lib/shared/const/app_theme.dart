@@ -47,8 +47,11 @@ class ThemedButton extends StatefulWidget {
   final Color? shadowColor;
   final Color? pressedShadowColor;
   final double? shadowBlurRadius;
+  final double? pressedShadowBlurRadius;
   final double? shadowSpreadRadius;
+  final double? pressedShadowSpreadRadius;
   final Offset? shadowOffset;
+  final Offset? pressedShadowOffset;
 
   // * Constructors
   final bool iconButton;
@@ -67,6 +70,9 @@ class ThemedButton extends StatefulWidget {
     this.shadowSpreadRadius,
     this.shadowOffset,
     this.pressedColor,
+    this.pressedShadowBlurRadius,
+    this.pressedShadowSpreadRadius,
+    this.pressedShadowOffset,
   })  : icon = Container(height: 0, width: 0),
         iconButton = false,
         gap = 0.0;
@@ -87,6 +93,9 @@ class ThemedButton extends StatefulWidget {
     this.shadowSpreadRadius,
     this.shadowOffset,
     this.pressedColor,
+    this.pressedShadowBlurRadius,
+    this.pressedShadowSpreadRadius,
+    this.pressedShadowOffset,
   }) : iconButton = true;
 
   @override
