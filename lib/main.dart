@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:releaf/screens/authentication/log_in.dart';
+import 'package:releaf/screens/authentication/register.dart';
+import 'package:releaf/screens/authentication/welcome.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/wrapper.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 void main() {
+  // timeDilation = 2.0;
   runApp(
     MultiProvider(
       providers: [
@@ -31,6 +36,12 @@ void main() {
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
+                ),
+                headline2: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 28,
                 ),
                 subtitle1: TextStyle(),
                 subtitle2: TextStyle(),

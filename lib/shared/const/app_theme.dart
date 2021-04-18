@@ -14,17 +14,6 @@ class AppTheme with ChangeNotifier {
     themeMode = ThemeMode.system; // TODO Load from user preference
   }
 
-  void toggleTheme() {
-    if (themeMode == ThemeMode.light) {
-      themeMode = ThemeMode.dark;
-    } else if (themeMode == ThemeMode.dark) {
-      themeMode = ThemeMode.light;
-    } else if (themeMode == ThemeMode.system) {
-      themeMode = ThemeMode.light;
-    }
-    notifyListeners();
-  }
-
   void setTheme(ThemeMode theme) {
     themeMode = theme;
     notifyListeners();
