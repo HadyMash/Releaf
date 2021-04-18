@@ -34,12 +34,12 @@ class AppTheme with ChangeNotifier {
 // TODO animate button on tapdown and up
 class ThemedButton extends StatefulWidget {
   // * Variables
-  final VoidCallback? onPressed;
-  final Widget icon;
-  final double? gap;
   final String label;
-  final bool? notAllCaps;
   final TextStyle? style;
+  final bool? notAllCaps;
+  final double? gap;
+  final Widget icon;
+  final VoidCallback? onPressed;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final Color? color;
@@ -58,36 +58,37 @@ class ThemedButton extends StatefulWidget {
   final bool iconButton;
   // TODO add ThemedButton.icon constructor and implement it.
   ThemedButton({
-    required this.onPressed,
     required this.label,
-    this.notAllCaps,
     this.style,
-    this.color,
+    this.notAllCaps,
+    required this.onPressed,
     this.padding,
+    this.margin,
+    this.color,
+    this.pressedColor,
     this.borderRadius,
     required this.shadowColor,
     required this.pressedShadowColor,
     this.shadowBlurRadius,
-    this.shadowSpreadRadius,
-    this.shadowOffset,
-    this.pressedColor,
     this.pressedShadowBlurRadius,
+    this.shadowSpreadRadius,
     this.pressedShadowSpreadRadius,
+    this.shadowOffset,
     this.pressedShadowOffset,
-    this.margin,
   })  : icon = Container(height: 0, width: 0),
         iconButton = false,
         gap = 0.0;
 
   ThemedButton.icon({
-    required this.onPressed,
-    required this.icon,
-    this.gap,
     required this.label,
-    this.notAllCaps,
     this.style,
-    this.color,
+    this.notAllCaps,
+    this.gap,
+    required this.icon,
+    required this.onPressed,
     this.padding,
+    this.margin,
+    this.color,
     this.borderRadius,
     required this.shadowColor,
     required this.pressedShadowColor,
@@ -98,7 +99,6 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowBlurRadius,
     this.pressedShadowSpreadRadius,
     this.pressedShadowOffset,
-    this.margin,
   }) : iconButton = true;
 
   @override
