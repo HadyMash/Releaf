@@ -35,6 +35,8 @@ class AppTheme with ChangeNotifier {
 class ThemedButton extends StatefulWidget {
   // * Variables
   final VoidCallback? onPressed;
+  final Widget icon;
+  final double? gap;
   final String text;
   final bool? notAllCaps;
   final TextStyle? style;
@@ -49,6 +51,8 @@ class ThemedButton extends StatefulWidget {
   final Offset? shadowOffset;
 
   // * Constructors
+  final bool iconButton;
+  // TODO add ThemedButton.icon constructor and implement it.
   ThemedButton({
     required this.onPressed,
     required this.text,
@@ -63,7 +67,27 @@ class ThemedButton extends StatefulWidget {
     this.shadowSpreadRadius,
     this.shadowOffset,
     this.pressedColor,
-  });
+  })  : icon = Container(height: 0, width: 0),
+        iconButton = false,
+        gap = 0.0;
+
+  ThemedButton.icon({
+    required this.onPressed,
+    required this.icon,
+    this.gap,
+    required this.text,
+    this.notAllCaps,
+    this.style,
+    this.color,
+    this.padding,
+    this.borderRadius,
+    required this.shadowColor,
+    required this.pressedShadowColor,
+    this.shadowBlurRadius,
+    this.shadowSpreadRadius,
+    this.shadowOffset,
+    this.pressedColor,
+  }) : iconButton = true;
 
   @override
   _ThemedButtonState createState() => _ThemedButtonState();
@@ -80,11 +104,11 @@ class _ThemedButtonState extends State<ThemedButton> {
         child: Container(
           padding: widget.padding ??
               EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 15,
+                vertical: 8.0,
+                horizontal: 13.0,
               ),
           decoration: BoxDecoration(
-            color: widget.color,
+            color: widget.color ?? Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
             boxShadow: [
               BoxShadow(
@@ -102,11 +126,20 @@ class _ThemedButtonState extends State<ThemedButton> {
           ),
           // Text
           // * Text
-          child: Text(
-            (widget.notAllCaps ?? false)
-                ? widget.text
-                : widget.text.toUpperCase(),
-            style: widget.style ?? Theme.of(context).textTheme.button,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              widget.icon,
+              SizedBox(width: (widget.iconButton) ? (widget.gap ?? 8.0) : 0.0),
+              Text(
+                (widget.notAllCaps ?? false)
+                    ? widget.text
+                    : widget.text.toUpperCase(),
+                style: widget.style ?? Theme.of(context).textTheme.button,
+              ),
+            ],
           ),
         ),
       ),
