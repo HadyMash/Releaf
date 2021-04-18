@@ -37,7 +37,7 @@ class ThemedButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget icon;
   final double? gap;
-  final String text;
+  final String label;
   final bool? notAllCaps;
   final TextStyle? style;
   final EdgeInsets? padding;
@@ -55,7 +55,7 @@ class ThemedButton extends StatefulWidget {
   // TODO add ThemedButton.icon constructor and implement it.
   ThemedButton({
     required this.onPressed,
-    required this.text,
+    required this.label,
     this.notAllCaps,
     this.style,
     this.color,
@@ -75,7 +75,7 @@ class ThemedButton extends StatefulWidget {
     required this.onPressed,
     required this.icon,
     this.gap,
-    required this.text,
+    required this.label,
     this.notAllCaps,
     this.style,
     this.color,
@@ -135,8 +135,8 @@ class _ThemedButtonState extends State<ThemedButton> {
               SizedBox(width: (widget.iconButton) ? (widget.gap ?? 8.0) : 0.0),
               Text(
                 (widget.notAllCaps ?? false)
-                    ? widget.text
-                    : widget.text.toUpperCase(),
+                    ? widget.label
+                    : widget.label.toUpperCase(),
                 style: widget.style ?? Theme.of(context).textTheme.button,
               ),
             ],
