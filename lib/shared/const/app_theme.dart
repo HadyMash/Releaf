@@ -24,6 +24,11 @@ class AppTheme with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void setTheme(ThemeMode theme) {
+    themeMode = theme;
+    notifyListeners();
+  }
 }
 
 // ! TEST WIDGET - TEMP
@@ -40,13 +45,37 @@ class TestWidget extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: ThemedButton(
-          onPressed: () => theme.toggleTheme(),
-          text: 'Click Me!',
-          color: Theme.of(context).primaryColor,
-          shadowColor: Colors.black.withOpacity(0.6),
-          pressedShadowColor: Colors.greenAccent,
-          shadowBlurRadius: 20,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ThemedButton(
+              onPressed: () => theme.setTheme(ThemeMode.system),
+              text: 'System Theme',
+              color: Theme.of(context).primaryColor,
+              shadowColor: Colors.black.withOpacity(0.6),
+              pressedShadowColor: Colors.greenAccent,
+              shadowBlurRadius: 15,
+            ),
+            SizedBox(height: 20),
+            ThemedButton(
+              onPressed: () => theme.setTheme(ThemeMode.light),
+              text: 'Light Theme',
+              color: Theme.of(context).primaryColor,
+              shadowColor: Colors.black.withOpacity(0.6),
+              pressedShadowColor: Colors.greenAccent,
+              shadowBlurRadius: 15,
+            ),
+            SizedBox(height: 20),
+            ThemedButton(
+              onPressed: () => theme.setTheme(ThemeMode.dark),
+              text: 'Dark Theme',
+              color: Theme.of(context).primaryColor,
+              shadowColor: Colors.black.withOpacity(0.6),
+              pressedShadowColor: Colors.greenAccent,
+              shadowBlurRadius: 15,
+            ),
+          ],
         ),
       ),
     );
@@ -110,7 +139,7 @@ class _ThemedButtonState extends State<ThemedButton> {
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
             boxShadow: [
               BoxShadow(
-                blurRadius: widget.shadowBlurRadius ?? 10.0,
+                blurRadius: widget.shadowBlurRadius ?? 15.0,
                 spreadRadius: widget.shadowSpreadRadius ?? 0,
                 color: Color.fromRGBO(
                   widget.shadowColor!.red,

@@ -10,8 +10,6 @@ void main() {
           create: (_) => AppTheme(
             // * Light Theme
             light: ThemeData(
-              inputDecorationTheme:
-                  InputDecorationTheme(), // TODO add input decoration
               brightness: Brightness.light,
               primaryColor: Colors.green,
               accentColor: Colors.greenAccent,
