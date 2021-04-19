@@ -21,6 +21,8 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   // final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  FocusNode emailFocusNode = new FocusNode();
+  FocusNode passwordFocusNode = new FocusNode();
 
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -32,6 +34,20 @@ class _LogInState extends State<LogIn> {
       return Colors.white.withOpacity(0.3);
     }
     return Colors.white.withOpacity(0.3);
+  }
+
+  ModalRoute? _mountRoute;
+
+  @override
+  void didChangeDependencies() {
+    _mountRoute ??= ModalRoute.of(context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,7 +101,6 @@ class _LogInState extends State<LogIn> {
                 () {}, // TODO remove focus from text field when it is clicked.
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-              /*
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -93,9 +108,9 @@ class _LogInState extends State<LogIn> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    /*
                     // * Email
                     TextFormField(
+                      // TODO make label change color on focus
                       initialValue: widget.email,
                       keyboardType: TextInputType.emailAddress,
                       validator: (val) =>
@@ -105,10 +120,21 @@ class _LogInState extends State<LogIn> {
                         setState(() => widget.email = val);
                       },
                       decoration: CustomInputDecoration(
-                          label: 'Email', hint: 'example@domain.com'),
+                        context,
+                        focusNode: emailFocusNode,
+                        label: 'Email',
+                        hint: 'example@domain.com',
+                        prefixIcon: Icon(Icons.email,
+                            color: Theme.of(context).primaryColor),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, color: Colors.black),
+                          onPressed: () {},
+                        ),
+                      ),
                     ),
                     SizedBox(height: 20),
                     TextFormField(
+                      // TODO make label change color on focus
                       initialValue: widget.password,
                       obscureText: true,
                       validator: (val) => val!.isEmpty
@@ -118,7 +144,23 @@ class _LogInState extends State<LogIn> {
                       onChanged: (val) {
                         setState(() => widget.password = val);
                       },
-                      decoration: CustomInputDecoration(label: 'Password'),
+                      decoration: CustomInputDecoration(
+                        context,
+                        focusNode: passwordFocusNode,
+                        label: 'Password',
+                        prefixIcon: Icon(Icons.lock,
+                            color: Theme.of(context).primaryColor),
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.clear, color: Colors.black),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     SizedBox(height: 35),
                     ThemedButton(
@@ -127,11 +169,9 @@ class _LogInState extends State<LogIn> {
                       shadowColor: Colors.black.withOpacity(0.6),
                       pressedShadowColor: Theme.of(context).accentColor,
                     ),
-                    */
                   ],
                 ),
               ),
-              */
             ),
           ),
         ),
