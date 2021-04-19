@@ -21,8 +21,13 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   // final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  FocusNode emailFocusNode = new FocusNode();
-  FocusNode passwordFocusNode = new FocusNode();
+  FocusNode _emailFocusNode = new FocusNode();
+  FocusNode _passwordFocusNode = new FocusNode();
+  void _requestFocus(FocusNode focusNode) {
+    setState(() {
+      FocusScope.of(context).requestFocus(focusNode);
+    });
+  }
 
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -45,8 +50,22 @@ class _LogInState extends State<LogIn> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _emailFocusNode.addListener(() {
+      setState(() {});
+    });
+    _passwordFocusNode.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
   void dispose() {
     _formKey.currentState?.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -111,6 +130,7 @@ class _LogInState extends State<LogIn> {
                     // * Email
                     TextFormField(
                       // TODO make label change color on focus
+                      onTap: () => _requestFocus(_emailFocusNode),
                       initialValue: widget.email,
                       keyboardType: TextInputType.emailAddress,
                       validator: (val) =>
@@ -121,7 +141,7 @@ class _LogInState extends State<LogIn> {
                       },
                       decoration: CustomInputDecoration(
                         context,
-                        focusNode: emailFocusNode,
+                        focusNode: _emailFocusNode,
                         label: 'Email',
                         hint: 'example@domain.com',
                         prefixIcon: Icon(Icons.email,
@@ -135,6 +155,7 @@ class _LogInState extends State<LogIn> {
                     SizedBox(height: 20),
                     TextFormField(
                       // TODO make label change color on focus
+                      onTap: () => _requestFocus(_passwordFocusNode),
                       initialValue: widget.password,
                       obscureText: true,
                       validator: (val) => val!.isEmpty
@@ -146,7 +167,7 @@ class _LogInState extends State<LogIn> {
                       },
                       decoration: CustomInputDecoration(
                         context,
-                        focusNode: passwordFocusNode,
+                        focusNode: _passwordFocusNode,
                         label: 'Password',
                         prefixIcon: Icon(Icons.lock,
                             color: Theme.of(context).primaryColor),
