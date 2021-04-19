@@ -73,7 +73,7 @@ class ThemedApp extends StatelessWidget {
     final AppTheme theme = Provider.of<AppTheme>(context);
 
     return MaterialApp(
-      home: Wrapper(),
+      home: Container(),
       theme: theme.light,
       darkTheme: theme.dark,
       themeMode: theme.themeMode,

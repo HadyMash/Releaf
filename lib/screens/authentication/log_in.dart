@@ -92,6 +92,7 @@ class _LogInState extends State<LogIn> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    /*
                     // * Email
                     TextFormField(
                       initialValue: widget.email,
@@ -125,6 +126,7 @@ class _LogInState extends State<LogIn> {
                       shadowColor: Colors.black.withOpacity(0.6),
                       pressedShadowColor: Theme.of(context).accentColor,
                     ),
+                    */
                   ],
                 ),
               ),
@@ -135,5 +137,3 @@ class _LogInState extends State<LogIn> {
     );
   }
 }
-
-class TextFOrmField {}
