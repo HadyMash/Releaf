@@ -85,6 +85,7 @@ class _LogInState extends State<LogIn> {
                 () {}, // TODO remove focus from text field when it is clicked.
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+              /*
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -92,6 +93,7 @@ class _LogInState extends State<LogIn> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    /*
                     // * Email
                     TextFormField(
                       initialValue: widget.email,
@@ -125,9 +127,11 @@ class _LogInState extends State<LogIn> {
                       shadowColor: Colors.black.withOpacity(0.6),
                       pressedShadowColor: Theme.of(context).accentColor,
                     ),
+                    */
                   ],
                 ),
               ),
+              */
             ),
           ),
         ),
@@ -135,5 +139,3 @@ class _LogInState extends State<LogIn> {
     );
   }
 }
-
-class TextFOrmField {}
