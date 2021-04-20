@@ -37,7 +37,7 @@ void main() async {
               textTheme: TextTheme(
                 headline1: TextStyle(
                   fontFamily: 'Poppins',
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
                 ),

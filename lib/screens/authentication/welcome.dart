@@ -67,7 +67,7 @@ class Welcome extends StatelessWidget {
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   transitionDuration:
-                                      Duration(milliseconds: 400),
+                                      Duration(milliseconds: 600),
                                   pageBuilder: (BuildContext context,
                                       Animation<double> animation,
                                       Animation<double> secondaryAnimation) {
