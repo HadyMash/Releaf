@@ -9,9 +9,7 @@ class Welcome extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            color: Colors.amber, // TODO add rive background
-          ),
+          Placeholder(), // TODO add rive background
           Center(
             child: Hero(
               tag: "Welcome Screen Center Box",
