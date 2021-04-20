@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/log_in.dart';
 import 'package:releaf/screens/authentication/register.dart';
@@ -7,8 +8,11 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/wrapper.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
-void main() {
-  // timeDilation = 2.0;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // timeDilation: 2.0;
   runApp(
     MultiProvider(
       providers: [

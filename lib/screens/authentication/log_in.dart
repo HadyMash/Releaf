@@ -20,7 +20,7 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   // final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
+  var _formKey = GlobalKey<FormState>();
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
   void _requestFocus(FocusNode focusNode) {
@@ -28,6 +28,14 @@ class _LogInState extends State<LogIn> {
       FocusScope.of(context).requestFocus(focusNode);
     });
   }
+
+  final inputDecoration = InputDecoration(
+    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
+    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+    enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+    errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
+    focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
+  );
 
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -129,33 +137,44 @@ class _LogInState extends State<LogIn> {
                   children: <Widget>[
                     // * Email
                     TextFormField(
-                      // TODO make label change color on focus
-                      onTap: () => _requestFocus(_emailFocusNode),
-                      initialValue: widget.email,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (val) =>
-                          val!.isEmpty ? 'Pleas enter an email' : null,
-                      autocorrect: false,
-                      onChanged: (val) {
-                        setState(() => widget.email = val);
-                      },
-                      decoration: CustomInputDecoration(
-                        context,
+                        // TODO make label change color on focus
+                        // onTap: () => _requestFocus(_emailFocusNode),
                         focusNode: _emailFocusNode,
-                        label: 'Email',
-                        hint: 'example@domain.com',
-                        prefixIcon: Icon(Icons.email,
-                            color: Theme.of(context).primaryColor),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, color: Colors.black),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
+                        onTap: () => setState(() {}),
+                        initialValue: widget.email,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (val) =>
+                            val!.isEmpty ? 'Pleas enter an email' : null,
+                        autocorrect: false,
+                        onChanged: (val) {
+                          setState(() => widget.email = val);
+                        },
+                        decoration: inputDecoration.copyWith(
+                          labelText: 'Email',
+                          hintText: 'example@domain.com',
+                          focusedBorder: CustomWidgetBorder(
+                              color: Theme.of(context).primaryColor,
+                              width: 2.2),
+                          prefixIcon: Icon(
+                            Icons.mail,
+                            color: _emailFocusNode.hasFocus
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.clear,
+                              color: _emailFocusNode.hasFocus
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey,
+                            ),
+                            onPressed: () {},
+                          ),
+                        )),
                     SizedBox(height: 20),
                     TextFormField(
                       // TODO make label change color on focus
-                      onTap: () => _requestFocus(_passwordFocusNode),
+                      // onTap: () => _requestFocus(_passwordFocusNode),
                       initialValue: widget.password,
                       obscureText: true,
                       validator: (val) => val!.isEmpty
@@ -165,28 +184,27 @@ class _LogInState extends State<LogIn> {
                       onChanged: (val) {
                         setState(() => widget.password = val);
                       },
-                      decoration: CustomInputDecoration(
-                        context,
-                        focusNode: _passwordFocusNode,
-                        label: 'Password',
-                        prefixIcon: Icon(Icons.lock,
-                            color: Theme.of(context).primaryColor),
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.clear, color: Colors.black),
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
+                        labelText: 'Form Field',
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: Icon(Icons.clear),
+                        border:
+                            CustomWidgetBorder(color: Colors.grey, width: 1.2),
+                        enabledBorder:
+                            CustomWidgetBorder(color: Colors.grey, width: 1.2),
+                        focusedBorder: CustomWidgetBorder(
+                            color: Theme.of(context).primaryColor, width: 2.2),
+                        errorBorder: CustomWidgetBorder(
+                            color: Colors.red[300], width: 1.5),
+                        focusedErrorBorder: CustomWidgetBorder(
+                            color: Colors.red[300], width: 2.4),
                       ),
                     ),
                     SizedBox(height: 35),
                     ThemedButton(
                       label: 'Log In',
-                      onPressed: () {},
+                      onPressed: () => print('log in'),
                       shadowColor: Colors.black.withOpacity(0.6),
                       pressedShadowColor: Theme.of(context).accentColor,
                     ),

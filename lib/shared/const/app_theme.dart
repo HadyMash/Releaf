@@ -118,12 +118,7 @@ class _ThemedButtonState extends State<ThemedButton> {
               BoxShadow(
                 blurRadius: widget.shadowBlurRadius ?? 15.0,
                 spreadRadius: widget.shadowSpreadRadius ?? 0,
-                color: Color.fromRGBO(
-                  widget.shadowColor!.red,
-                  widget.shadowColor!.green,
-                  widget.shadowColor!.blue,
-                  widget.shadowColor!.opacity,
-                ),
+                color: widget.shadowColor!,
                 offset: widget.shadowOffset ?? Offset(0, 0),
               ),
             ],
