@@ -23,11 +23,6 @@ class _LogInState extends State<LogIn> {
   var _formKey = GlobalKey<FormState>();
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
-  void _requestFocus(FocusNode focusNode) {
-    setState(() {
-      FocusScope.of(context).requestFocus(focusNode);
-    });
-  }
 
   final inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -249,8 +244,7 @@ class LogInNew extends StatefulWidget {
 
 class _LogInNewState extends State<LogInNew> {
   // final AuthService _auth = AuthService();
-  var _materialKey = GlobalKey(debugLabel: 'material key');
-  var _formKey = GlobalKey<FormState>(debugLabel: 'form key');
+  final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
   FocusNode _confirmPasswordFocusNode = new FocusNode();
@@ -306,7 +300,6 @@ class _LogInNewState extends State<LogInNew> {
   @override
   void dispose() {
     _formKey.currentState?.dispose();
-    _materialKey.currentState?.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
@@ -342,171 +335,174 @@ class _LogInNewState extends State<LogInNew> {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      color: Theme.of(context).primaryColor,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.arrow_back_ios_rounded,
-                                    color: Colors.white,
-                                    size: 28.0,
+                    Material(
+                      child: Container(
+                        color: Theme.of(context).primaryColor, // ! Container I am looking for
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios_rounded,
+                                      color: Colors.white,
+                                      size: 28.0,
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    splashColor: Colors.white,
                                   ),
-                                  onPressed: () => Navigator.pop(context),
-                                  splashColor: Colors.white,
-                                ),
-                                Text(
-                                  'Log In',
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                              child: TextButton.icon(
-                                icon: Icon(Icons.person, color: Colors.white),
-                                label: Text(
-                                  'Register',
-                                  style: Theme.of(context).textTheme.button,
-                                ),
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                  overlayColor:
-                                      MaterialStateProperty.resolveWith(
-                                          _getColor),
+                                  Text(
+                                    'Log In',
+                                    style:
+                                        Theme.of(context).textTheme.headline1,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: TextButton.icon(
+                                  icon: Icon(Icons.person, color: Colors.white),
+                                  label: Text(
+                                    'Register',
+                                    style: Theme.of(context).textTheme.button,
+                                  ),
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateProperty.resolveWith(
+                                            _getColor),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(height: 40),
-                    Container(
-                      color: Colors.lightGreen,
-                      child: Text(
-                        '[Releaf Logo]',
-                        style: TextStyle(fontSize: 40),
+                    Material(
+                      child: Container(
+                        color: Colors.lightGreen,
+                        child: Text(
+                          '[Releaf Logo]',
+                          style: TextStyle(fontSize: 40),
+                        ),
                       ),
                     ),
                     // SizedBox(height: 50),
                     Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  // * Email
-                                  TextFormField(
-                                    // TODO make label change color on focus
-                                    // onTap: () => _requestFocus(_emailFocusNode),
-                                    focusNode: _emailFocusNode,
-                                    onTap: () => setState(() {}),
-                                    initialValue: widget.email,
-                                    keyboardType: TextInputType.emailAddress,
-                                    validator: (val) => val!.isEmpty
-                                        ? 'Pleas enter an email'
-                                        : null,
-                                    autocorrect: false,
-                                    onChanged: (val) {
-                                      setState(() => widget.email = val);
-                                    },
-                                    decoration: inputDecoration.copyWith(
-                                      labelText: 'Email',
-                                      labelStyle: TextStyle(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: Form(
+                          // key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              // * Email
+                              Material(
+                                child: TextFormField(
+                                  // TODO make label change color on focus
+                                  // onTap: () => _requestFocus(_emailFocusNode),
+                                  focusNode: _emailFocusNode,
+                                  onTap: () => setState(() {}),
+                                  initialValue: widget.email,
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (val) => val!.isEmpty
+                                      ? 'Pleas enter an email'
+                                      : null,
+                                  autocorrect: false,
+                                  onChanged: (val) {
+                                    setState(() => widget.email = val);
+                                  },
+                                  decoration: inputDecoration.copyWith(
+                                    labelText: 'Email',
+                                    labelStyle: TextStyle(
+                                      color: _emailFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    hintText: 'example@domain.com',
+                                    focusedBorder: CustomWidgetBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2.2),
+                                    prefixIcon: Icon(
+                                      Icons.mail,
+                                      color: _emailFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        Icons.clear,
                                         color: _emailFocusNode.hasFocus
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      hintText: 'example@domain.com',
-                                      focusedBorder: CustomWidgetBorder(
-                                          color: Theme.of(context).primaryColor,
-                                          width: 2.2),
-                                      prefixIcon: Icon(
-                                        Icons.mail,
-                                        color: _emailFocusNode.hasFocus
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          Icons.clear,
-                                          color: _emailFocusNode.hasFocus
-                                              ? Theme.of(context).primaryColor
-                                              : Colors.grey,
-                                        ),
-                                        onPressed: () {},
-                                      ),
+                                      onPressed: () {},
                                     ),
                                   ),
-                                  SizedBox(height: 20),
-                                  TextFormField(
-                                    // TODO make label change color on focus
-                                    // onTap: () => _requestFocus(_passwordFocusNode),
-                                    focusNode: _passwordFocusNode,
-                                    initialValue: widget.password,
-                                    obscureText: true,
-                                    validator: (val) => val!.isEmpty
-                                        ? 'Password needs to be at least 8 characters'
-                                        : null,
-                                    autocorrect: false,
-                                    onChanged: (val) {
-                                      setState(() => widget.password = val);
-                                    },
-                                    decoration: inputDecoration.copyWith(
-                                      labelText: 'Password',
-                                      labelStyle: TextStyle(
-                                        color: _passwordFocusNode.hasFocus
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey,
-                                      ),
-                                      focusedBorder: CustomWidgetBorder(
-                                          color: Theme.of(context).primaryColor,
-                                          width: 2.2),
-                                      prefixIcon: Icon(
-                                        Icons.lock,
-                                        color: _passwordFocusNode.hasFocus
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          Icons.clear,
-                                          color: _passwordFocusNode.hasFocus
-                                              ? Theme.of(context).primaryColor
-                                              : Colors.grey,
-                                        ),
-                                        onPressed: () => print('clear'),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 35),
-                                  ThemedButton(
-                                    label: 'Log In',
-                                    onPressed: () => print('log in'),
-                                    shadowColor: Colors.black.withOpacity(0.6),
-                                    pressedShadowColor:
-                                        Theme.of(context).accentColor,
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                              SizedBox(height: 20),
+                              Material(
+                                child: TextFormField(
+                                  // TODO make label change color on focus
+                                  // onTap: () => _requestFocus(_passwordFocusNode),
+                                  focusNode: _passwordFocusNode,
+                                  initialValue: widget.password,
+                                  obscureText: true,
+                                  validator: (val) => val!.isEmpty
+                                      ? 'Password needs to be at least 8 characters'
+                                      : null,
+                                  autocorrect: false,
+                                  onChanged: (val) {
+                                    setState(() => widget.password = val);
+                                  },
+                                  decoration: inputDecoration.copyWith(
+                                    labelText: 'Password',
+                                    labelStyle: TextStyle(
+                                      color: _passwordFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    focusedBorder: CustomWidgetBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2.2),
+                                    prefixIcon: Icon(
+                                      Icons.lock,
+                                      color: _passwordFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        Icons.clear,
+                                        color: _passwordFocusNode.hasFocus
+                                            ? Theme.of(context).primaryColor
+                                            : Colors.grey,
+                                      ),
+                                      onPressed: () => print('clear'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 35),
+                              ThemedButton(
+                                label: 'Log In',
+                                onPressed: () => print('log in'),
+                                shadowColor: Colors.black.withOpacity(0.6),
+                                pressedShadowColor:
+                                    Theme.of(context).accentColor,
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
