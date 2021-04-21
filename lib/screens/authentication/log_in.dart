@@ -64,7 +64,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
 
     if (widget.animate == true) {
       _topBarAnimController.forward();
-    } else if (widget.animate == false) {
+    } else if (widget.animate == false || widget.animate == null) {
       _topBarAnim =
           Tween<double>(begin: 0, end: 0).animate(_topBarAnimController);
     }
@@ -222,7 +222,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Form(
-                          key: _formKey,
+                          // key: _formKey,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,

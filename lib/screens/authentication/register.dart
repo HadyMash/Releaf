@@ -65,7 +65,7 @@ class _RegisterState extends State<Register>
 
     if (widget.animate == true) {
       _topBarAnimController.forward();
-    } else if (widget.animate == false) {
+    } else if (widget.animate == false || widget.animate == null) {
       _topBarAnim =
           Tween<double>(begin: 0, end: 0).animate(_topBarAnimController);
     }
