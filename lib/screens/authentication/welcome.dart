@@ -72,7 +72,7 @@ class Welcome extends StatelessWidget {
                                     pageBuilder: (BuildContext context,
                                         Animation<double> animation,
                                         Animation<double> secondaryAnimation) {
-                                      return LogInNew();
+                                      return LogIn();
                                     },
                                     transitionsBuilder: (BuildContext context,
                                         Animation<double> animation,
