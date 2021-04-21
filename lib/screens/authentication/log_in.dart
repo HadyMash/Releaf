@@ -124,62 +124,58 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                       builder: (context, child) {
                         return Transform.translate(
                           offset: Offset(0, _topBarAnim.value),
-                          child: Material(
-                            child: Container(
-                              color: Theme.of(context).primaryColor,
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                          child: child,
+                        );
+                      },
+                      child: Material(
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.arrow_back_ios_rounded,
-                                            color: Colors.white,
-                                            size: 28.0,
-                                          ),
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          splashColor: Colors.white,
-                                        ),
-                                        Text(
-                                          'Log In',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1,
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                      child: TextButton.icon(
-                                        icon: Icon(Icons.person,
-                                            color: Colors.white),
-                                        label: Text(
-                                          'Register',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .button,
-                                        ),
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          overlayColor:
-                                              MaterialStateProperty.resolveWith(
-                                                  _getColor),
-                                        ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.arrow_back_ios_rounded,
+                                        color: Colors.white,
+                                        size: 28.0,
                                       ),
+                                      onPressed: () => Navigator.pop(context),
+                                      splashColor: Colors.white,
+                                    ),
+                                    Text(
+                                      'Log In',
+                                      style:
+                                          Theme.of(context).textTheme.headline1,
                                     ),
                                   ],
                                 ),
-                              ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                  child: TextButton.icon(
+                                    icon:
+                                        Icon(Icons.person, color: Colors.white),
+                                    label: Text(
+                                      'Register',
+                                      style: Theme.of(context).textTheme.button,
+                                    ),
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                      overlayColor:
+                                          MaterialStateProperty.resolveWith(
+                                              _getColor),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                     SizedBox(height: 40),
                     Material(
