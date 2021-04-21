@@ -22,7 +22,7 @@ void main() async {
             light: ThemeData(
               brightness: Brightness.light,
               primaryColor: Colors.green,
-              accentColor: Colors.greenAccent,
+              accentColor: Colors.greenAccent[400],
               backgroundColor: Colors.white,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,

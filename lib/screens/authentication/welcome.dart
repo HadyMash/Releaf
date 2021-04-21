@@ -62,37 +62,30 @@ class Welcome extends StatelessWidget {
                                 color: Colors.white,
                                 size: 28,
                               ),
-                              onPressed: () {
-                                print('Email & Password');
-                                // Navigator.pushNamed(context, '/pageTwo');
-                                Navigator.of(context).push(
-                                  PageRouteBuilder(
-                                    transitionDuration:
-                                        Duration(milliseconds: 600),
-                                    pageBuilder: (BuildContext context,
-                                        Animation<double> animation,
-                                        Animation<double> secondaryAnimation) {
-                                      return LogIn();
-                                    },
-                                    transitionsBuilder: (BuildContext context,
-                                        Animation<double> animation,
-                                        Animation<double> secondaryAnimation,
-                                        Widget child) {
-                                      return Align(
-                                        child: FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              shadowColor: Colors.black.withOpacity(0.6),
-                              pressedShadowColor: Theme.of(context).accentColor,
-                              shadowBlurRadius: 10,
-                              pressedShadowBlurRadius: 20,
-                              pressedShadowSpreadRadius: 5.0,
+                              onPressed: () =>
+                                  // Navigator.pushNamed(context, '/pageTwo');
+                                  Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  transitionDuration:
+                                      Duration(milliseconds: 600),
+                                  pageBuilder: (BuildContext context,
+                                      Animation<double> animation,
+                                      Animation<double> secondaryAnimation) {
+                                    return LogIn();
+                                  },
+                                  transitionsBuilder: (BuildContext context,
+                                      Animation<double> animation,
+                                      Animation<double> secondaryAnimation,
+                                      Widget child) {
+                                    return Align(
+                                      child: FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                             SizedBox(height: 30),
                             ThemedButton.icon(
@@ -110,12 +103,7 @@ class Welcome extends StatelessWidget {
                                 color: Colors.white,
                                 size: 28,
                               ),
-                              onPressed: () => print('Log in with Google'),
-                              shadowColor: Colors.black.withOpacity(0.6),
-                              pressedShadowColor: Theme.of(context).accentColor,
-                              shadowBlurRadius: 10,
-                              pressedShadowBlurRadius: 20,
-                              pressedShadowSpreadRadius: 5.0,
+                              onPressed: () {},
                             ),
                             SizedBox(height: 20),
                           ],

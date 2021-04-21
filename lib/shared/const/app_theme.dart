@@ -57,8 +57,8 @@ class ThemedButton extends StatefulWidget {
     this.color,
     this.pressedColor,
     this.borderRadius,
-    required this.shadowColor,
-    required this.pressedShadowColor,
+    this.shadowColor,
+    this.pressedShadowColor,
     this.shadowBlurRadius,
     this.pressedShadowBlurRadius,
     this.shadowSpreadRadius,
@@ -80,8 +80,8 @@ class ThemedButton extends StatefulWidget {
     this.margin,
     this.color,
     this.borderRadius,
-    required this.shadowColor,
-    required this.pressedShadowColor,
+    this.shadowColor,
+    this.pressedShadowColor,
     this.shadowBlurRadius,
     this.shadowSpreadRadius,
     this.shadowOffset,
@@ -95,51 +95,87 @@ class ThemedButton extends StatefulWidget {
   _ThemedButtonState createState() => _ThemedButtonState();
 }
 
-class _ThemedButtonState extends State<ThemedButton> {
+class _ThemedButtonState extends State<ThemedButton>
+    with SingleTickerProviderStateMixin {
+  // Variables
+  bool _initialised = false;
+  late Color _color;
+  late Color _shadowColor;
+  late double _shadowBlurRadius;
+  late double _shadowSpreadRadius;
+  late Offset _shadowOffset;
+
+  // Animate When tapped down
+  void _animateDown() {
+    _color = widget.pressedColor ?? Theme.of(context).accentColor;
+    _shadowColor = widget.pressedShadowColor ??
+        Theme.of(context).accentColor.withOpacity(0.6);
+    _shadowBlurRadius = widget.pressedShadowBlurRadius ?? 16.0;
+    _shadowSpreadRadius = widget.pressedShadowSpreadRadius ?? 5.0;
+    _shadowOffset = widget.pressedShadowOffset ?? Offset(0, 0);
+  }
+
+  // Animate When Tapped up
+  void _animateUp() {
+    _color = widget.color ?? Theme.of(context).primaryColor;
+    _shadowColor = widget.shadowColor ?? Colors.black.withOpacity(0.6);
+    _shadowBlurRadius = widget.shadowBlurRadius ?? 16.0;
+    _shadowSpreadRadius = widget.shadowSpreadRadius ?? 0;
+    _shadowOffset = widget.shadowOffset ?? Offset(0, 0);
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_initialised) {
+      _animateUp();
+      _initialised = true;
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onPressed,
-      onTapDown: (TapDownDetails) {},
-      child: Semantics(
-        button: true,
-        // * Container
-        child: Container(
-          margin: widget.margin ?? EdgeInsets.all(0),
-          padding: widget.padding ??
-              EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 13.0,
-              ),
-          decoration: BoxDecoration(
-            color: widget.color ?? Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: widget.shadowBlurRadius ?? 15.0,
-                spreadRadius: widget.shadowSpreadRadius ?? 0,
-                color: widget.shadowColor!,
-                offset: widget.shadowOffset ?? Offset(0, 0),
-              ),
-            ],
-          ),
-          // Text
-          // * Text
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              widget.icon,
-              SizedBox(width: (widget.iconButton) ? (widget.gap ?? 8.0) : 0.0),
-              Text(
-                (widget.notAllCaps ?? false)
-                    ? widget.label
-                    : widget.label.toUpperCase(),
-                style: widget.style ?? Theme.of(context).textTheme.button,
-              ),
-            ],
-          ),
+      onTapDown: (TapDownDetails) => setState(() => _animateDown()),
+      onTapUp: (TapUpDetails) => setState(() => _animateUp()),
+      onTapCancel: () => setState(() => _animateUp()),
+      // * AnimatedContainer
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        margin: widget.margin ?? EdgeInsets.all(0),
+        padding: widget.padding ??
+            EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 13.0,
+            ),
+        decoration: BoxDecoration(
+          color: _color,
+          borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: _shadowBlurRadius,
+                spreadRadius: _shadowSpreadRadius,
+                color: _shadowColor,
+                offset: _shadowOffset),
+          ],
+        ),
+        // Text
+        // * Text
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            widget.icon,
+            SizedBox(width: (widget.iconButton) ? (widget.gap ?? 8.0) : 0.0),
+            Text(
+              (widget.notAllCaps ?? false)
+                  ? widget.label
+                  : widget.label.toUpperCase(),
+              style: widget.style ?? Theme.of(context).textTheme.button,
+            ),
+          ],
         ),
       ),
     );

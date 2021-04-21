@@ -26,11 +26,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
   FocusNode _confirmPasswordFocusNode = new FocusNode();
-  void _requestFocus(FocusNode focusNode) {
-    setState(() {
-      FocusScope.of(context).requestFocus(focusNode);
-    });
-  }
 
   final inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -290,10 +285,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                               SizedBox(height: 35),
                               ThemedButton(
                                 label: 'Log In',
-                                onPressed: () => print('log in'),
-                                shadowColor: Colors.black.withOpacity(0.6),
-                                pressedShadowColor:
-                                    Theme.of(context).accentColor,
+                                onPressed: () {},
                               ),
                             ],
                           ),
