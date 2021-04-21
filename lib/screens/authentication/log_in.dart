@@ -249,7 +249,8 @@ class LogInNew extends StatefulWidget {
 
 class _LogInNewState extends State<LogInNew> {
   // final AuthService _auth = AuthService();
-  var _formKey = GlobalKey<FormState>();
+  var _materialKey = GlobalKey(debugLabel: 'material key');
+  var _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
   FocusNode _confirmPasswordFocusNode = new FocusNode();
@@ -305,6 +306,7 @@ class _LogInNewState extends State<LogInNew> {
   @override
   void dispose() {
     _formKey.currentState?.dispose();
+    _materialKey.currentState?.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
@@ -511,7 +513,7 @@ class _LogInNewState extends State<LogInNew> {
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
