@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:releaf/services/auth.dart';
@@ -242,7 +244,8 @@ class LogInNew extends StatefulWidget {
   _LogInNewState createState() => _LogInNewState();
 }
 
-class _LogInNewState extends State<LogInNew> {
+class _LogInNewState extends State<LogInNew>
+    with SingleTickerProviderStateMixin {
   // final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
@@ -274,17 +277,22 @@ class _LogInNewState extends State<LogInNew> {
     return Colors.white.withOpacity(0.3);
   }
 
-  ModalRoute? _mountRoute;
-
-  @override
-  void didChangeDependencies() {
-    _mountRoute ??= ModalRoute.of(context);
-    super.didChangeDependencies();
-  }
+  late AnimationController _topBarAnimController;
+  late Animation<double> _topBarAnim;
 
   @override
   void initState() {
     super.initState();
+
+    _topBarAnimController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600),
+    );
+
+    _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
+        parent: _topBarAnimController, curve: Curves.easeOutCubic));
+
+    _topBarAnimController.forward();
 
     _emailFocusNode.addListener(() {
       setState(() {});
@@ -299,6 +307,7 @@ class _LogInNewState extends State<LogInNew> {
 
   @override
   void dispose() {
+    _topBarAnimController.dispose();
     _formKey.currentState?.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
@@ -335,52 +344,67 @@ class _LogInNewState extends State<LogInNew> {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Material(
-                      child: Container(
-                        color: Theme.of(context).primaryColor, // ! Container I am looking for
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.arrow_back_ios_rounded,
-                                      color: Colors.white,
-                                      size: 28.0,
+                    AnimatedBuilder(
+                      animation: _topBarAnim,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, _topBarAnim.value),
+                          child: Material(
+                            child: Container(
+                              color: Theme.of(context).primaryColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.arrow_back_ios_rounded,
+                                            color: Colors.white,
+                                            size: 28.0,
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          splashColor: Colors.white,
+                                        ),
+                                        Text(
+                                          'Log In',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline1,
+                                        ),
+                                      ],
                                     ),
-                                    onPressed: () => Navigator.pop(context),
-                                    splashColor: Colors.white,
-                                  ),
-                                  Text(
-                                    'Log In',
-                                    style:
-                                        Theme.of(context).textTheme.headline1,
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                child: TextButton.icon(
-                                  icon: Icon(Icons.person, color: Colors.white),
-                                  label: Text(
-                                    'Register',
-                                    style: Theme.of(context).textTheme.button,
-                                  ),
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    overlayColor:
-                                        MaterialStateProperty.resolveWith(
-                                            _getColor),
-                                  ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      child: TextButton.icon(
+                                        icon: Icon(Icons.person,
+                                            color: Colors.white),
+                                        label: Text(
+                                          'Register',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button,
+                                        ),
+                                        onPressed: () {},
+                                        style: ButtonStyle(
+                                          overlayColor:
+                                              MaterialStateProperty.resolveWith(
+                                                  _getColor),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                     SizedBox(height: 40),
                     Material(
