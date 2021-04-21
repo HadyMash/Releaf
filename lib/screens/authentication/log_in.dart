@@ -61,7 +61,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
 
     _topBarAnimController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 600),
+      duration: Duration(milliseconds: 800),
     );
 
     _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
