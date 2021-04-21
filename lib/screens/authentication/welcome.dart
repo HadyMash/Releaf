@@ -62,16 +62,14 @@ class Welcome extends StatelessWidget {
                                 color: Colors.white,
                                 size: 28,
                               ),
-                              onPressed: () =>
-                                  // Navigator.pushNamed(context, '/pageTwo');
-                                  Navigator.of(context).push(
+                              onPressed: () => Navigator.of(context).push(
                                 PageRouteBuilder(
                                   transitionDuration:
                                       Duration(milliseconds: 600),
                                   pageBuilder: (BuildContext context,
                                       Animation<double> animation,
                                       Animation<double> secondaryAnimation) {
-                                    return LogIn();
+                                    return LogIn(animate: true);
                                   },
                                   transitionsBuilder: (BuildContext context,
                                       Animation<double> animation,

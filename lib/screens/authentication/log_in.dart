@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:releaf/services/auth.dart';
@@ -10,10 +8,12 @@ import 'package:releaf/shared/const/app_theme.dart';
 class LogIn extends StatefulWidget {
   String? email;
   String? password;
+  bool? animate;
 
-  LogIn({this.email, this.password}) {
+  LogIn({this.email, this.password, this.animate}) {
     email ?? '';
     password ?? '';
+    animate ?? true;
   }
 
   @override
@@ -62,7 +62,12 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
     _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
         parent: _topBarAnimController, curve: Curves.easeOutCubic));
 
-    _topBarAnimController.forward();
+    if (widget.animate == true) {
+      _topBarAnimController.forward();
+    } else if (widget.animate == false) {
+      _topBarAnim =
+          Tween<double>(begin: 0, end: 0).animate(_topBarAnimController);
+    }
 
     _emailFocusNode.addListener(() {
       setState(() {});
@@ -158,7 +163,36 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       'Register',
                                       style: Theme.of(context).textTheme.button,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        Navigator.of(context).pushReplacement(
+                                      PageRouteBuilder(
+                                        transitionDuration:
+                                            Duration(milliseconds: 1),
+                                        pageBuilder: (BuildContext context,
+                                            Animation<double> animation,
+                                            Animation<double>
+                                                secondaryAnimation) {
+                                          return Register(
+                                            email: widget.email,
+                                            password: widget.password,
+                                            animate: false,
+                                          );
+                                        },
+                                        transitionsBuilder:
+                                            (BuildContext context,
+                                                Animation<double> animation,
+                                                Animation<double>
+                                                    secondaryAnimation,
+                                                Widget child) {
+                                          return Align(
+                                            child: FadeTransition(
+                                              opacity: animation,
+                                              child: child,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                     style: ButtonStyle(
                                       overlayColor:
                                           MaterialStateProperty.resolveWith(
@@ -188,7 +222,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         child: Form(
-                          // key: _formKey,
+                          key: _formKey,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -246,7 +280,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   // onTap: () => _requestFocus(_passwordFocusNode),
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
-                                  obscureText: true,
+                                  obscureText: false,
                                   validator: (val) => val!.isEmpty
                                       ? 'Password needs to be at least 8 characters'
                                       : null,
