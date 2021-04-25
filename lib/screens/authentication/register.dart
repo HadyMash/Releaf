@@ -406,17 +406,14 @@ class _RegisterState extends State<Register>
                                       }
                                       _error = null;
                                       setState(() => _showingErrors = true);
-                                      if (_auth.getUser()!.emailVerified) {
-                                        print('navigate to home');
-                                      } else {
-                                        _auth.sendVerificationEmail();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Verify(),
-                                          ),
-                                        );
-                                      }
+                                      if (!_auth.getUser()!.emailVerified) {}
+                                      _auth.sendVerificationEmail();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Verify(),
+                                        ),
+                                      );
                                     } else {
                                       setState(() =>
                                           _error = _auth.getError(result));

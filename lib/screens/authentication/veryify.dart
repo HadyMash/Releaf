@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -19,7 +18,6 @@ class _VerifyState extends State<Verify> {
   Future checkVerified() async {
     await _auth.reloadUser();
     if (_auth.getUser()!.emailVerified) {
-      print('verified');
       timer.cancel();
       // TODO add rive page transition.
       Navigator.popUntil(context, (route) => route.isFirst);
@@ -72,14 +70,32 @@ class _VerifyState extends State<Verify> {
                   flex: 4,
                   child: Column(
                     children: [
-                      Text(
-                        'Verify',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black87,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            splashRadius: 28,
+                            iconSize: 28,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 35),
+                            child: Text(
+                              'Verify',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 36,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Text('Please verify your email address.',
                           style: Theme.of(context).textTheme.caption),
@@ -92,24 +108,13 @@ class _VerifyState extends State<Verify> {
                         ),
                       ),
                       SizedBox(height: 25),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ThemedButton.icon(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(Icons.arrow_back_ios_new_rounded),
-                            label: 'Go Back',
-                          ),
-                          SizedBox(width: 20),
-                          ThemedButton.icon(
-                            onPressed: () => _auth.getUser()!.emailVerified
-                                ? print('route to home')
-                                : _auth.sendVerificationEmail(),
-                            icon: Icon(Icons.email),
-                            label: 'Resend Email',
-                          ),
-                        ],
+                      SizedBox(width: 20),
+                      ThemedButton.icon(
+                        onPressed: () => _auth.getUser()!.emailVerified
+                            ? print('route to home')
+                            : _auth.sendVerificationEmail(),
+                        icon: Icon(Icons.email),
+                        label: 'Resend Email',
                       ),
                     ],
                   ),
