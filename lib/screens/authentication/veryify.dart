@@ -148,7 +148,6 @@ class _VerifyNoBackState extends State<VerifyNoBack> {
   Future checkVerified() async {
     await _auth.reloadUser();
     if (_auth.getUser()!.emailVerified) {
-      print('verified');
       timer.cancel();
       // TODO add rive page transition.
       Navigator.popUntil(context, (route) => route.isFirst);
