@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:releaf/shared/assets/custom_form_field.dart';
 
 class AppTheme with ChangeNotifier {
   ThemeData light;
   ThemeData dark;
   late ThemeMode themeMode;
+
+  var inputDecoration = InputDecoration(
+    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
+    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+    enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+    errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
+    focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
+    errorStyle: TextStyle(fontSize: 14),
+  );
 
   AppTheme({
     required this.light,
@@ -21,7 +31,6 @@ class AppTheme with ChangeNotifier {
   }
 }
 
-// TODO animate button on tapdown and up
 class ThemedButton extends StatefulWidget {
   // * Variables
   final String label;
@@ -46,7 +55,6 @@ class ThemedButton extends StatefulWidget {
 
   // * Constructors
   final bool iconButton;
-  // TODO add ThemedButton.icon constructor and implement it.
   ThemedButton({
     required this.label,
     this.style,
@@ -109,9 +117,9 @@ class _ThemedButtonState extends State<ThemedButton>
   void _animateDown() {
     _color = widget.pressedColor ?? Theme.of(context).accentColor;
     _shadowColor = widget.pressedShadowColor ??
-        Theme.of(context).accentColor.withOpacity(0.6);
-    _shadowBlurRadius = widget.pressedShadowBlurRadius ?? 16.0;
-    _shadowSpreadRadius = widget.pressedShadowSpreadRadius ?? 5.0;
+        Theme.of(context).accentColor.withOpacity(0.7);
+    _shadowBlurRadius = widget.pressedShadowBlurRadius ?? 17.0;
+    _shadowSpreadRadius = widget.pressedShadowSpreadRadius ?? 1.7;
     _shadowOffset = widget.pressedShadowOffset ?? Offset(0, 0);
   }
 
@@ -142,7 +150,7 @@ class _ThemedButtonState extends State<ThemedButton>
       onTapCancel: () => setState(() => _animateUp()),
       // * AnimatedContainer
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 133),
         margin: widget.margin ?? EdgeInsets.all(0),
         padding: widget.padding ??
             EdgeInsets.symmetric(
