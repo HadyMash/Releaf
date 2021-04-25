@@ -58,7 +58,8 @@ class AuthService {
   final Map _authErrors = {
     '[firebase_auth/invalid-email] The email address is badly formatted.':
         'Invalid Email',
-    '': '',
+    '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.':
+        'Incorrect Email or Password',
     'Password should be at least 6 characters':
         'Password should be at least 6 characters',
     '[firebase_auth/email-already-in-use] The email address is already in use by another account.':
