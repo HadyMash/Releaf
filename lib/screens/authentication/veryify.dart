@@ -16,7 +16,7 @@ class _VerifyState extends State<Verify> {
   bool checkingVerification = false;
   int timerCountdown = 5;
 
-  // TODO Show dashboard when it is updated
+  // TODO Update wrapper.dart when it is verified.
   Future checkVerified() async {
     var user = _auth.getUser();
     await user!.reload();
@@ -140,6 +140,7 @@ class _VerifyNoBackState extends State<VerifyNoBack> {
   bool checkingVerification = false;
   int timerCountdown = 5;
 
+  // TODO Update wrapper.dart when the email is verified.
   Future checkVerified() async {
     var user = _auth.getUser();
     await user!.reload();
