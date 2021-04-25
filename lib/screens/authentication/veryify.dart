@@ -101,7 +101,7 @@ class _VerifyState extends State<Verify> {
                           style: Theme.of(context).textTheme.caption),
                       SizedBox(height: 20),
                       Text(
-                        'Checking in $timerCountdown...', // TODO make the number change as it counts down.
+                        'Checking in $timerCountdown...',
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 16,
@@ -213,7 +213,7 @@ class _VerifyNoBackState extends State<VerifyNoBack> {
                           style: Theme.of(context).textTheme.caption),
                       SizedBox(height: 20),
                       Text(
-                        'Checking in $timerCountdown...', // TODO make the number change as it counts down.
+                        'Checking in $timerCountdown...',
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 16,

@@ -96,7 +96,7 @@ class Welcome extends StatelessWidget {
                               ),
                               notAllCaps: true,
                               icon: Icon(
-                                Icons.email /* TODO Make Icon */,
+                                Icons.email, // TODO Make Icon
                                 size: 28,
                               ),
                               onPressed: () {},

@@ -352,7 +352,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       }
                                       _error = null;
                                       if (_auth.getUser()!.emailVerified) {
-                                        print('navigate to home');
+                                        // TODO make rive page transition.
+                                        Navigator.popUntil(
+                                            context, (route) => route.isFirst);
                                       } else {
                                         _auth.sendVerificationEmail();
                                         Navigator.push(
