@@ -21,6 +21,7 @@ class _VerifyState extends State<Verify> {
     if (_auth.getUser()!.emailVerified) {
       print('verified');
       timer.cancel();
+      // TODO add rive page transition.
       Navigator.popUntil(context, (route) => route.isFirst);
     } else {
       timerCountdown = 11;
@@ -144,6 +145,7 @@ class _VerifyNoBackState extends State<VerifyNoBack> {
     if (_auth.getUser()!.emailVerified) {
       print('verified');
       timer.cancel();
+      // TODO add rive page transition.
       Navigator.popUntil(context, (route) => route.isFirst);
     } else {
       timerCountdown = 11;
