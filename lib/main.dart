@@ -76,6 +76,7 @@ void main() async {
                   fontSize: 18,
                 ),
               ),
+              iconTheme: IconThemeData(color: Colors.white),
             ),
             // * Dark Theme
             dark: ThemeData.dark(),
