@@ -69,6 +69,8 @@ class AuthService {
         'Password should be at least 6 characters',
     '[firebase_auth/email-already-in-use] The email address is already in use by another account.':
         'Email address is already in use',
+    '[firebase_auth/user-disabled] The user account has been disabled by an administrator.':
+        'Account disabled, please contact us for help.',
     '': 'Unkown Error',
     null: 'Unkown Error',
   };
