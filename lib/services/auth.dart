@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? getUser() => _auth.currentUser;
+  Future reloadUser() => _auth.currentUser!.reload();
 
   // auth change user stream
   Stream<User?> get user {
@@ -58,7 +59,11 @@ class AuthService {
   final Map _authErrors = {
     '[firebase_auth/invalid-email] The email address is badly formatted.':
         'Invalid Email',
+    '[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.':
+        'Account temporarily disabled. Reset your passowrd or try again later.',
     '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.':
+        'Incorrect Email or Password',
+    '[firebase_auth/wrong-password] The password is invalid or the user does not have a password.':
         'Incorrect Email or Password',
     'Password should be at least 6 characters':
         'Password should be at least 6 characters',
