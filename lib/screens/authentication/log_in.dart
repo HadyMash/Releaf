@@ -4,6 +4,7 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/screens/authentication/register.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LogIn extends StatefulWidget {
   String? email;
@@ -24,8 +25,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   // final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
+  late TextEditingController _emailController;
   FocusNode _passwordFocusNode = new FocusNode();
-  FocusNode _confirmPasswordFocusNode = new FocusNode();
+  late TextEditingController _passwordController;
 
   final inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -33,6 +35,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
     enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
     errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
     focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
+    errorStyle: TextStyle(fontSize: 14),
   );
 
   Color _getColor(Set<MaterialState> states) {
@@ -62,9 +65,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
     _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
         parent: _topBarAnimController, curve: Curves.easeOutCubic));
 
-    if (widget.animate == true) {
+    if (widget.animate == true || widget.animate == null) {
       _topBarAnimController.forward();
-    } else if (widget.animate == false || widget.animate == null) {
+    } else if (widget.animate == false) {
       _topBarAnim =
           Tween<double>(begin: 0, end: 0).animate(_topBarAnimController);
     }
@@ -75,18 +78,16 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
     _passwordFocusNode.addListener(() {
       setState(() {});
     });
-    _confirmPasswordFocusNode.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
   void dispose() {
     _topBarAnimController.dispose();
     _formKey.currentState?.dispose();
+    _emailController.dispose();
     _emailFocusNode.dispose();
+    _passwordController.dispose();
     _passwordFocusNode.dispose();
-    _confirmPasswordFocusNode.dispose();
     super.dispose();
   }
 
@@ -231,19 +232,20 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                               // * Email
                               Material(
                                 child: TextFormField(
-                                  // TODO make label change color on focus
-                                  // onTap: () => _requestFocus(_emailFocusNode),
                                   focusNode: _emailFocusNode,
                                   onTap: () => setState(() {}),
                                   initialValue: widget.email,
                                   keyboardType: TextInputType.emailAddress,
-                                  validator: (val) => val!.isEmpty
-                                      ? 'Pleas enter an email'
-                                      : null,
-                                  autocorrect: false,
-                                  onChanged: (val) {
-                                    setState(() => widget.email = val);
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please enter an email';
+                                    } else if (EmailValidator.validate(val) ==
+                                        false) {
+                                      return 'Please enter a valid email address.';
+                                    }
                                   },
+                                  autocorrect: false,
+                                  onChanged: (val) => setState(() {}),
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
@@ -276,18 +278,18 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                               SizedBox(height: 20),
                               Material(
                                 child: TextFormField(
-                                  // TODO make label change color on focus
-                                  // onTap: () => _requestFocus(_passwordFocusNode),
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
                                   obscureText: false,
-                                  validator: (val) => val!.isEmpty
-                                      ? 'Password needs to be at least 8 characters'
-                                      : null,
-                                  autocorrect: false,
-                                  onChanged: (val) {
-                                    setState(() => widget.password = val);
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please enter a password';
+                                    } else if (val.length < 8) {
+                                      return 'Password needs to be at least 8 characters';
+                                    }
                                   },
+                                  autocorrect: false,
+                                  onChanged: (val) => setState(() {}),
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
@@ -311,7 +313,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      onPressed: () => print('clear'),
+                                      onPressed: () {},
                                     ),
                                   ),
                                 ),
@@ -319,7 +321,11 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                               SizedBox(height: 35),
                               ThemedButton(
                                 label: 'Log In',
-                                onPressed: () {},
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    print('validated');
+                                  }
+                                },
                               ),
                             ],
                           ),

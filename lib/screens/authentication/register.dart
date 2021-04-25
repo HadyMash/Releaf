@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/screens/authentication/log_in.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:email_validator/email_validator.dart';
 
 class Register extends StatefulWidget {
   String? email;
@@ -22,19 +25,14 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register>
     with SingleTickerProviderStateMixin {
-  // final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
+  dynamic _error;
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
   FocusNode _confirmPasswordFocusNode = new FocusNode();
 
-  final inputDecoration = InputDecoration(
-    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
-    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
-    enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
-    errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
-    focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
-  );
+  bool _showingErrors = false;
 
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -63,9 +61,9 @@ class _RegisterState extends State<Register>
     _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
         parent: _topBarAnimController, curve: Curves.easeOutCubic));
 
-    if (widget.animate == true) {
+    if (widget.animate == true || widget.animate == null) {
       _topBarAnimController.forward();
-    } else if (widget.animate == false || widget.animate == null) {
+    } else if (widget.animate == false) {
       _topBarAnim =
           Tween<double>(begin: 0, end: 0).animate(_topBarAnimController);
     }
@@ -93,6 +91,7 @@ class _RegisterState extends State<Register>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<AppTheme>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -207,7 +206,7 @@ class _RegisterState extends State<Register>
                         ),
                       ),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: _showingErrors ? 13 : 30),
                     Material(
                       child: Container(
                         color: Colors.lightGreen,
@@ -217,13 +216,12 @@ class _RegisterState extends State<Register>
                         ),
                       ),
                     ),
-                    // SizedBox(height: 50),
                     Expanded(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                         child: Form(
-                          // key: _formKey,
+                          key: _formKey,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -232,20 +230,23 @@ class _RegisterState extends State<Register>
                               // * Email
                               Material(
                                 child: TextFormField(
-                                  // TODO make label change color on focus
-                                  // onTap: () => _requestFocus(_emailFocusNode),
                                   focusNode: _emailFocusNode,
                                   onTap: () => setState(() {}),
                                   initialValue: widget.email,
                                   keyboardType: TextInputType.emailAddress,
-                                  validator: (val) => val!.isEmpty
-                                      ? 'Pleas enter an email'
-                                      : null,
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please enter an email';
+                                    } else if (EmailValidator.validate(val) ==
+                                        false) {
+                                      return 'Please enter a valid email address.';
+                                    }
+                                  },
                                   autocorrect: false,
                                   onChanged: (val) {
                                     setState(() => widget.email = val);
                                   },
-                                  decoration: inputDecoration.copyWith(
+                                  decoration: theme.inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
                                       color: _emailFocusNode.hasFocus
@@ -274,22 +275,24 @@ class _RegisterState extends State<Register>
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: _showingErrors ? 10 : 20),
                               Material(
                                 child: TextFormField(
-                                  // TODO make label change color on focus
-                                  // onTap: () => _requestFocus(_passwordFocusNode),
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
                                   obscureText: false,
-                                  validator: (val) => val!.isEmpty
-                                      ? 'Password needs to be at least 8 characters'
-                                      : null,
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please enter a password';
+                                    } else if (val.length < 8) {
+                                      return 'Password needs to be at least 8 characters';
+                                    }
+                                  },
                                   autocorrect: false,
                                   onChanged: (val) {
                                     setState(() => widget.password = val);
                                   },
-                                  decoration: inputDecoration.copyWith(
+                                  decoration: theme.inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
                                       color: _passwordFocusNode.hasFocus
@@ -317,10 +320,110 @@ class _RegisterState extends State<Register>
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 35),
+                              SizedBox(height: _showingErrors ? 10 : 20),
+                              Material(
+                                child: TextFormField(
+                                  focusNode: _confirmPasswordFocusNode,
+                                  obscureText: false,
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please enter a password';
+                                    } else if (val.length < 8) {
+                                      return 'Password needs to be at least 8 characters';
+                                    } else if (val != widget.password) {
+                                      return 'Passwords do not match';
+                                    }
+                                  },
+                                  autocorrect: false,
+                                  onChanged: (val) {
+                                    setState(() {});
+                                  },
+                                  decoration: theme.inputDecoration.copyWith(
+                                    labelText: 'Confirm Password',
+                                    labelStyle: TextStyle(
+                                      color: _confirmPasswordFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    focusedBorder: CustomWidgetBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2.2),
+                                    prefixIcon: Icon(
+                                      Icons.lock,
+                                      color: _confirmPasswordFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        Icons.clear,
+                                        color:
+                                            _confirmPasswordFocusNode.hasFocus
+                                                ? Theme.of(context).primaryColor
+                                                : Colors.grey,
+                                      ),
+                                      onPressed: () => print('clear'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                  height: _showingErrors
+                                      ? 10
+                                      : (_error == null || _error == ''
+                                          ? 30
+                                          : 0)),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      (_error == null || _error == '') ? 0 : 13,
+                                ),
+                                child: Text('$_error',
+                                    style: TextStyle(
+                                      fontSize: (_error == null || _error == '')
+                                          ? 0
+                                          : 14,
+                                      color: Colors.red[800],
+                                    ),
+                                    textAlign: TextAlign.center),
+                              ),
                               ThemedButton(
                                 label: 'Register',
-                                onPressed: () {},
+                                onPressed: () async {
+                                  // TODO fix broken fields after pressing register.
+                                  print(widget.email);
+                                  print(widget.password);
+                                  if (_formKey.currentState!.validate()) {
+                                    setState(() => _showingErrors = false);
+
+                                    dynamic result = await _auth.register(
+                                      email: widget.email.toString(),
+                                      password: widget.password.toString(),
+                                    );
+
+                                    if (result is User) {
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      if (!currentFocus.hasPrimaryFocus) {
+                                        currentFocus.unfocus();
+                                      }
+                                      _error = null;
+                                      setState(() => _showingErrors = true);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Verify(),
+                                        ),
+                                      );
+                                    } else {
+                                      setState(() =>
+                                          _error = _auth.getError(result));
+                                      print(_error);
+                                    }
+                                  } else {
+                                    setState(() => _showingErrors = true);
+                                  }
+                                },
                               ),
                             ],
                           ),
