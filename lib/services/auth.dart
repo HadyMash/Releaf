@@ -9,7 +9,7 @@ class AuthService {
 
   // auth change user stream
   Stream<User?> get user {
-    return _auth.authStateChanges();
+    return _auth.userChanges();
   }
 
   // Send verification email

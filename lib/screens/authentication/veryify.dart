@@ -14,17 +14,16 @@ class _VerifyState extends State<Verify> {
   late Timer timer;
   late Timer countdownUpdate;
   bool checkingVerification = false;
-  int timerCountdown = 5;
+  int timerCountdown = 10;
 
-  // TODO Update wrapper.dart when it is verified.
   Future checkVerified() async {
-    var user = _auth.getUser();
-    await user!.reload();
-    if (user.emailVerified) {
+    await _auth.reloadUser();
+    if (_auth.getUser()!.emailVerified) {
       print('verified');
       timer.cancel();
+      Navigator.popUntil(context, (route) => route.isFirst);
     } else {
-      timerCountdown = 6;
+      timerCountdown = 11;
       countdownUpdate = Timer.periodic(Duration(seconds: 1), (timer) {
         if (timerCountdown > 0) {
           setState(() => timerCountdown--);
@@ -35,7 +34,7 @@ class _VerifyState extends State<Verify> {
 
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 6), (timer) {
+    timer = Timer.periodic(Duration(seconds: 11), (timer) {
       countdownUpdate.cancel();
       checkVerified();
     });
@@ -138,17 +137,16 @@ class _VerifyNoBackState extends State<VerifyNoBack> {
   late Timer timer;
   late Timer countdownUpdate;
   bool checkingVerification = false;
-  int timerCountdown = 5;
+  int timerCountdown = 10;
 
-  // TODO Update wrapper.dart when the email is verified.
   Future checkVerified() async {
-    var user = _auth.getUser();
-    await user!.reload();
-    if (user.emailVerified) {
+    await _auth.reloadUser();
+    if (_auth.getUser()!.emailVerified) {
       print('verified');
       timer.cancel();
+      Navigator.popUntil(context, (route) => route.isFirst);
     } else {
-      timerCountdown = 6;
+      timerCountdown = 11;
       countdownUpdate = Timer.periodic(Duration(seconds: 1), (timer) {
         if (timerCountdown > 0) {
           setState(() => timerCountdown--);
@@ -159,7 +157,7 @@ class _VerifyNoBackState extends State<VerifyNoBack> {
 
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 6), (timer) {
+    timer = Timer.periodic(Duration(seconds: 11), (timer) {
       countdownUpdate.cancel();
       checkVerified();
     });

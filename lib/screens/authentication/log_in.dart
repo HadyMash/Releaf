@@ -368,6 +368,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       print(_error);
                                     }
                                   }
+                                  setState(() {});
                                 },
                               ),
                             ],
