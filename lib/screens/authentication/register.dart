@@ -390,9 +390,6 @@ class _RegisterState extends State<Register>
                               ThemedButton(
                                 label: 'Register',
                                 onPressed: () async {
-                                  // TODO fix broken fields after pressing register.
-                                  print(widget.email);
-                                  print(widget.password);
                                   if (_formKey.currentState!.validate()) {
                                     setState(() => _showingErrors = false);
 
@@ -409,12 +406,17 @@ class _RegisterState extends State<Register>
                                       }
                                       _error = null;
                                       setState(() => _showingErrors = true);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Verify(),
-                                        ),
-                                      );
+                                      if (_auth.getUser()!.emailVerified) {
+                                        print('navigate to home');
+                                      } else {
+                                        _auth.sendVerificationEmail();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Verify(),
+                                          ),
+                                        );
+                                      }
                                     } else {
                                       setState(() =>
                                           _error = _auth.getError(result));

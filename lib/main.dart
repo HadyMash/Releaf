@@ -55,6 +55,12 @@ void main() async {
                   fontWeight: FontWeight.w600,
                   fontSize: 28,
                 ),
+                headline3: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 36,
+                ),
                 subtitle1: TextStyle(
                   // TextFields
                   fontFamily: 'Poppins',

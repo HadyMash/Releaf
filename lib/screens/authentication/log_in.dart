@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/screens/authentication/register.dart';
@@ -22,12 +23,11 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
-  // final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
+  dynamic _error;
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
-  late TextEditingController _emailController;
   FocusNode _passwordFocusNode = new FocusNode();
-  late TextEditingController _passwordController;
 
   final inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -84,9 +84,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   void dispose() {
     _topBarAnimController.dispose();
     _formKey.currentState?.dispose();
-    _emailController.dispose();
     _emailFocusNode.dispose();
-    _passwordController.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
   }
@@ -245,7 +243,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                     }
                                   },
                                   autocorrect: false,
-                                  onChanged: (val) => setState(() {}),
+                                  onChanged: (val) =>
+                                      setState(() => widget.email = val),
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
@@ -289,7 +288,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                     }
                                   },
                                   autocorrect: false,
-                                  onChanged: (val) => setState(() {}),
+                                  onChanged: (val) =>
+                                      setState(() => widget.password = val),
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
@@ -318,12 +318,55 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 35),
+                              SizedBox(
+                                  height:
+                                      _error == null || _error == '' ? 30 : 0),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      (_error == null || _error == '') ? 0 : 13,
+                                ),
+                                child: Text('$_error',
+                                    style: TextStyle(
+                                      fontSize: (_error == null || _error == '')
+                                          ? 0
+                                          : 14,
+                                      color: Colors.red[800],
+                                    ),
+                                    textAlign: TextAlign.center),
+                              ),
                               ThemedButton(
                                 label: 'Log In',
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    print('validated');
+                                    dynamic result = await _auth.logIn(
+                                      email: widget.email.toString(),
+                                      password: widget.password.toString(),
+                                    );
+
+                                    if (result is User) {
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      if (!currentFocus.hasPrimaryFocus) {
+                                        currentFocus.unfocus();
+                                      }
+                                      _error = null;
+                                      if (_auth.getUser()!.emailVerified) {
+                                        print('navigate to home');
+                                      } else {
+                                        _auth.sendVerificationEmail();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Verify(),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      setState(() =>
+                                          _error = _auth.getError(result));
+                                      print(_error);
+                                    }
                                   }
                                 },
                               ),
@@ -344,16 +387,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
 }
 
 class LogInMock extends StatefulWidget {
-  String? email;
-  String? password;
-  bool? animate;
-
-  LogInMock({this.email, this.password, this.animate}) {
-    email ?? '';
-    password ?? '';
-    animate ?? true;
-  }
-
   @override
   _LogInMockState createState() => _LogInMockState();
 }
@@ -361,12 +394,6 @@ class LogInMock extends StatefulWidget {
 class _LogInMockState extends State<LogInMock>
     with SingleTickerProviderStateMixin {
   // TODO Simplify Login mock code because it won't be used.
-  // final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
-  FocusNode _emailFocusNode = new FocusNode();
-  late TextEditingController _emailController;
-  FocusNode _passwordFocusNode = new FocusNode();
-  late TextEditingController _passwordController;
 
   final inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -403,20 +430,7 @@ class _LogInMockState extends State<LogInMock>
 
     _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
         parent: _topBarAnimController, curve: Curves.easeOutCubic));
-
-    if (widget.animate == true || widget.animate == null) {
-      _topBarAnimController.forward();
-    } else if (widget.animate == false) {
-      _topBarAnim =
-          Tween<double>(begin: 0, end: 0).animate(_topBarAnimController);
-    }
-
-    _emailFocusNode.addListener(() {
-      setState(() {});
-    });
-    _passwordFocusNode.addListener(() {
-      setState(() {});
-    });
+    _topBarAnimController.forward();
   }
 
   @override
@@ -437,11 +451,6 @@ class _LogInMockState extends State<LogInMock>
   @override
   void dispose() {
     _topBarAnimController.dispose();
-    _formKey.currentState?.dispose();
-    _emailController.dispose();
-    _emailFocusNode.dispose();
-    _passwordController.dispose();
-    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -518,36 +527,7 @@ class _LogInMockState extends State<LogInMock>
                                       'Register',
                                       style: Theme.of(context).textTheme.button,
                                     ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pushReplacement(
-                                      PageRouteBuilder(
-                                        transitionDuration:
-                                            Duration(milliseconds: 1),
-                                        pageBuilder: (BuildContext context,
-                                            Animation<double> animation,
-                                            Animation<double>
-                                                secondaryAnimation) {
-                                          return Register(
-                                            email: widget.email,
-                                            password: widget.password,
-                                            animate: false,
-                                          );
-                                        },
-                                        transitionsBuilder:
-                                            (BuildContext context,
-                                                Animation<double> animation,
-                                                Animation<double>
-                                                    secondaryAnimation,
-                                                Widget child) {
-                                          return Align(
-                                            child: FadeTransition(
-                                              opacity: animation,
-                                              child: child,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                    onPressed: () {},
                                     style: ButtonStyle(
                                       overlayColor:
                                           MaterialStateProperty.resolveWith(
@@ -586,9 +566,7 @@ class _LogInMockState extends State<LogInMock>
                               // * Email
                               Material(
                                 child: TextFormField(
-                                  focusNode: _emailFocusNode,
                                   onTap: () => setState(() {}),
-                                  initialValue: widget.email,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -603,9 +581,7 @@ class _LogInMockState extends State<LogInMock>
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
-                                      color: _emailFocusNode.hasFocus
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey,
+                                      color: Colors.grey,
                                     ),
                                     hintText: 'example@domain.com',
                                     focusedBorder: CustomWidgetBorder(
@@ -613,16 +589,12 @@ class _LogInMockState extends State<LogInMock>
                                         width: 2.2),
                                     prefixIcon: Icon(
                                       Icons.mail,
-                                      color: _emailFocusNode.hasFocus
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey,
+                                      color: Colors.grey,
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         Icons.clear,
-                                        color: _emailFocusNode.hasFocus
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey,
+                                        color: Colors.grey,
                                       ),
                                       onPressed: () {},
                                     ),
@@ -632,8 +604,6 @@ class _LogInMockState extends State<LogInMock>
                               SizedBox(height: 20),
                               Material(
                                 child: TextFormField(
-                                  focusNode: _passwordFocusNode,
-                                  initialValue: widget.password,
                                   obscureText: false,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -647,25 +617,19 @@ class _LogInMockState extends State<LogInMock>
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
-                                      color: _passwordFocusNode.hasFocus
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey,
+                                      color: Colors.grey,
                                     ),
                                     focusedBorder: CustomWidgetBorder(
                                         color: Theme.of(context).primaryColor,
                                         width: 2.2),
                                     prefixIcon: Icon(
                                       Icons.lock,
-                                      color: _passwordFocusNode.hasFocus
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey,
+                                      color: Colors.grey,
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         Icons.clear,
-                                        color: _passwordFocusNode.hasFocus
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey,
+                                        color: Colors.grey,
                                       ),
                                       onPressed: () {},
                                     ),
