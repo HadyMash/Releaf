@@ -59,7 +59,6 @@ class Welcome extends StatelessWidget {
                               notAllCaps: true,
                               icon: Icon(
                                 Icons.email /* TODO Make Icon */,
-                                color: Colors.white,
                                 size: 28,
                               ),
                               onPressed: () => Navigator.of(context).push(
@@ -69,7 +68,7 @@ class Welcome extends StatelessWidget {
                                   pageBuilder: (BuildContext context,
                                       Animation<double> animation,
                                       Animation<double> secondaryAnimation) {
-                                    return LogIn();
+                                    return LogInMock();
                                   },
                                   transitionsBuilder: (BuildContext context,
                                       Animation<double> animation,
@@ -98,7 +97,6 @@ class Welcome extends StatelessWidget {
                               notAllCaps: true,
                               icon: Icon(
                                 Icons.email /* TODO Make Icon */,
-                                color: Colors.white,
                                 size: 28,
                               ),
                               onPressed: () {},
