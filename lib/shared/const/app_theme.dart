@@ -32,6 +32,7 @@ class AppTheme with ChangeNotifier {
   }
 }
 
+// TODO Make option for enableFeedback (vibrations)
 class ThemedButton extends StatefulWidget {
   // * Variables
   final String label;

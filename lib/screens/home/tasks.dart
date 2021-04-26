@@ -5,13 +5,14 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 
-class Settings extends StatelessWidget {
+class Tasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ThemedButton(
-        label: 'Press me',
-        onPressed: () {},
+      child: Container(
+        child: Material(
+          child: Text('Tasks'),
+        ),
       ),
     );
   }
