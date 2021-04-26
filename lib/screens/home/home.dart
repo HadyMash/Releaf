@@ -18,9 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   double _borderRadius = 25;
 
-  late PageController _pageController;
   int _currentIndex = 2;
-
   final List<Widget> _pages = <Widget>[
     Meditation(),
     Tasks(),
@@ -29,16 +27,10 @@ class _HomeState extends State<Home> {
     Settings(),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
+  void _changePage(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -101,11 +93,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-  }
-
-  void _changePage(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 }
