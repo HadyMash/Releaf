@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:releaf/services/database.dart';
-import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final googleSignIn = GoogleSignIn();
   User? getUser() => _auth.currentUser;
   Future reloadUser() => _auth.currentUser!.reload();
 
@@ -46,10 +47,33 @@ class AuthService {
   }
 
   // log in with Google
+  Future logInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth!.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential result =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      return result.user;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   // log out
   Future logOut() async {
     try {
+      await googleSignIn.signOut();
       return await _auth.signOut();
     } catch (e) {
       return e.toString();

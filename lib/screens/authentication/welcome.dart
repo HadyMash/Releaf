@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/log_in.dart';
+import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class Welcome extends StatelessWidget {
+  final _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +102,10 @@ class Welcome extends StatelessWidget {
                                 Icons.email, // TODO Make Icon
                                 size: 28,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                print('sign in with google');
+                                _auth.logInWithGoogle();
+                              },
                             ),
                             SizedBox(height: 20),
                           ],
