@@ -405,15 +405,12 @@ class _RegisterState extends State<Register>
                                         currentFocus.unfocus();
                                       }
                                       _error = null;
-                                      setState(() => _showingErrors = true);
-                                      if (!_auth.getUser()!.emailVerified) {}
-                                      _auth.sendVerificationEmail();
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Verify(),
-                                        ),
-                                      );
+                                      setState(() => _showingErrors = false);
+                                      if (!_auth.getUser()!.emailVerified) {
+                                        _auth.sendVerificationEmail();
+                                        Navigator.popUntil(
+                                            context, (route) => route.isFirst);
+                                      }
                                     } else {
                                       setState(() =>
                                           _error = _auth.getError(result));

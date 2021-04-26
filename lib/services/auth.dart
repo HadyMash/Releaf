@@ -70,6 +70,9 @@ class AuthService {
     }
   }
 
+  // Forgot password
+  Future resetPassword() async {}
+
   // log out
   Future logOut() async {
     try {

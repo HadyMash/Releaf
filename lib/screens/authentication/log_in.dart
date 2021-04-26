@@ -6,6 +6,7 @@ import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/screens/authentication/register.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/gestures.dart';
 
 class LogIn extends StatefulWidget {
   String? email;
@@ -373,6 +374,20 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   setState(() {});
                                 },
                               ),
+                              SizedBox(height: 20),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  text: 'Forgot Password',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // Reset Password
+                                    },
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -439,7 +454,7 @@ class _LogInMockState extends State<LogInMock>
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    Future.delayed(Duration(milliseconds: 600), () {
+    Future.delayed(Duration(milliseconds: 640), () {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
@@ -643,6 +658,20 @@ class _LogInMockState extends State<LogInMock>
                               ThemedButton(
                                 label: 'Log In',
                                 onPressed: () {},
+                              ),
+                              SizedBox(height: 20),
+                              RichText(
+                                text: new TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  text: 'Forgot Password',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // Reset Password
+                                    },
+                                ),
                               ),
                             ],
                           ),

@@ -14,6 +14,6 @@ class Wrapper extends StatelessWidget {
 
     return user == null
         ? Welcome()
-        : (_auth.getUser()!.emailVerified ? Dashboard() : VerifyNoBack());
+        : (_auth.getUser()!.emailVerified ? Dashboard() : Verify());
   }
 }
