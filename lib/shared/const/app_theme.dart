@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
@@ -145,7 +146,10 @@ class _ThemedButtonState extends State<ThemedButton>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onPressed,
-      onTapDown: (TapDownDetails) => setState(() => _animateDown()),
+      onTapDown: (TapDownDetails) => setState(() {
+        _animateDown();
+        SystemSound.play(SystemSoundType.click);
+      }),
       onTapUp: (TapUpDetails) => setState(() => _animateUp()),
       onTapCancel: () => setState(() => _animateUp()),
       // * AnimatedContainer
