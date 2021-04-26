@@ -5,13 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/wrapper.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // timeDilation: 2.0;
   runApp(
     MultiProvider(
       providers: [

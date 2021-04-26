@@ -102,10 +102,7 @@ class Welcome extends StatelessWidget {
                                 Icons.email, // TODO Make Icon
                                 size: 28,
                               ),
-                              onPressed: () {
-                                print('sign in with google');
-                                _auth.logInWithGoogle();
-                              },
+                              onPressed: () => _auth.logInWithGoogle(),
                             ),
                             SizedBox(height: 20),
                           ],
