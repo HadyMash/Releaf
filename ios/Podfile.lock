@@ -1,4 +1,9 @@
 PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - cloud_firestore (1.0.6):
     - Firebase/Firestore (= 7.3.0)
     - firebase_core
@@ -44,10 +49,17 @@ PODS:
     - FirebaseCore (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
   - Flutter (1.0.0)
+  - google_sign_in (0.0.1):
+    - Flutter
+    - GoogleSignIn (~> 5.0)
   - GoogleDataTransport (8.4.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleUtilities/AppDelegateSwizzler (7.3.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -63,6 +75,9 @@ PODS:
   - "GoogleUtilities/NSData+zlib (7.3.1)"
   - GoogleUtilities/Reachability (7.3.1):
     - GoogleUtilities/Logger
+  - GTMAppAuth (1.2.1):
+    - AppAuth/Core (~> 1.4)
+    - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.5.0)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
@@ -78,16 +93,20 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `7.3.0`)
   - Flutter (from `Flutter`)
+  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - Firebase
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseStorage
     - GoogleDataTransport
+    - GoogleSignIn
     - GoogleUtilities
+    - GTMAppAuth
     - GTMSessionFetcher
     - nanopb
     - PromisesObjC
@@ -106,6 +125,8 @@ EXTERNAL SOURCES:
     :tag: 7.3.0
   Flutter:
     :path: Flutter
+  google_sign_in:
+    :path: ".symlinks/plugins/google_sign_in/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
@@ -113,6 +134,7 @@ CHECKOUT OPTIONS:
     :tag: 7.3.0
 
 SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   cloud_firestore: 665ab6793317728a5e5b0a1d82225aa2043cc6a1
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
   firebase_auth: 5e386e357e92c9a90a9762b154d45d2f8c26591e
@@ -124,8 +146,11 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 46e32f479aac127e742b1cf873930f7bb43e7b45
   FirebaseStorage: 5002b1895bfe74a5ce92ad54f966e6162d0da2e5
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
+  GTMAppAuth: 5b53231ef6920f149ab84b2969cb0ab572da3077
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
