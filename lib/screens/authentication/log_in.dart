@@ -528,9 +528,11 @@ class _ResetPasswordState extends State<ResetPassword>
                                 onPressed: () => Navigator.pop(context),
                                 splashColor: Colors.white,
                               ),
-                              Text(
-                                'Reset Password',
-                                style: Theme.of(context).textTheme.headline1,
+                              Expanded(
+                                child: Text(
+                                  'Reset Password',
+                                  style: Theme.of(context).textTheme.headline1,
+                                ),
                               ),
                             ],
                           ),
@@ -627,7 +629,14 @@ class _ResetPasswordState extends State<ResetPassword>
                               ThemedButton(
                                 label: 'Reset Password',
                                 onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {}
+                                  if (_formKey.currentState!.validate()) {
+                                    FocusScopeNode currentFocus =
+                                        FocusScope.of(context);
+                                    if (!currentFocus.hasPrimaryFocus) {
+                                      currentFocus.unfocus();
+                                    }
+                                    _auth.resetPassword(widget.email!, context);
+                                  }
                                   setState(() {});
                                 },
                               ),

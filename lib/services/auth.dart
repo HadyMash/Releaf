@@ -74,24 +74,23 @@ class AuthService {
   // Forgot password // TODO make reset password field
   Future resetPassword(String email, context) async {
     try {
-      if (_auth.currentUser != null) {
-        await _auth.sendPasswordResetEmail(email: email);
+      await _auth.sendPasswordResetEmail(email: email);
 
-        final snackBar = SnackBar(
-          content: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Icon(Icons.check_circle_rounded, color: Colors.green),
-              ),
-              Text('Success, an email has been sent to your email address.',
-                  softWrap: true),
-            ],
-          ),
-        );
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.check_circle_rounded, color: Colors.green),
+            ),
+            Expanded(
+                child: Text(
+                    'Success, an email has been sent to your email address.')),
+          ],
+        ),
+      );
 
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } catch (e) {
       final snackBar = SnackBar(
         content: Row(
