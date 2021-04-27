@@ -92,6 +92,58 @@ class AuthService {
     }
   }
 
+  // Transfer Account to a new email
+  Future updateEmail({required String newEmail, required context}) async {
+    try {
+      if (_auth.currentUser != null) {
+        await _auth.currentUser!.updateEmail(newEmail);
+
+        final snackBar = SnackBar(
+          content: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Icon(Icons.check_circle_rounded, color: Colors.green),
+              ),
+              Text(
+                  'Success, an email has been sent to the original email to undo this action.'),
+            ],
+          ),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        final snackBar = SnackBar(
+          content: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Icon(Icons.warning_rounded, color: Colors.amber),
+              ),
+              Text('Unkown Error'),
+            ],
+          ),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.error_rounded, color: Colors.red[700]),
+            ),
+            Text(getError(e.toString())),
+          ],
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   // Change Username
   Future changeUsername({required String newName, required context}) async {
     try {
@@ -119,7 +171,7 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Text(e.toString()),
+            Text(getError(e.toString())),
           ],
         ),
       );
