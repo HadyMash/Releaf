@@ -93,7 +93,7 @@ class _VerifyState extends State<Verify> {
                       SizedBox(width: 20),
                       ThemedButton.icon(
                         onPressed: () => _auth.getUser()!.emailVerified
-                            ? print('route to home')
+                            ? {}
                             : _auth.sendVerificationEmail(),
                         icon: Icon(
                           Icons.email,
