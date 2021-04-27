@@ -22,9 +22,10 @@ void main() async {
             // * Light Theme
             light: ThemeData(
               brightness: Brightness.light,
+              scaffoldBackgroundColor: Colors.grey[200],
+              backgroundColor: Colors.white,
               primaryColor: Colors.green,
               accentColor: Colors.greenAccent[400],
-              backgroundColor: Colors.white,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
                 backgroundColor: Colors.white.withAlpha(0),
@@ -52,13 +53,24 @@ void main() async {
                   fontFamily: 'Poppins',
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 36,
+                  fontSize: 40,
+                ),
+                headline4: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 30,
+                  color: Colors.grey[800],
+                  fontWeight: FontWeight.w700,
                 ),
                 subtitle1: TextStyle(
                   // TextFields
                   fontFamily: 'Poppins',
                 ),
-                subtitle2: TextStyle(),
+                subtitle2: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
                 bodyText1: TextStyle(),
                 bodyText2: TextStyle(),
                 caption: TextStyle(
@@ -75,7 +87,8 @@ void main() async {
                   fontSize: 18,
                 ),
               ),
-              iconTheme: IconThemeData(color: Colors.white),
+              iconTheme: IconThemeData(color: Colors.black),
+              accentIconTheme: IconThemeData(color: Colors.white),
             ),
             // * Dark Theme
             dark: ThemeData.dark(),

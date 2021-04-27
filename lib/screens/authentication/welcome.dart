@@ -63,6 +63,7 @@ class Welcome extends StatelessWidget {
                               icon: Icon(
                                 Icons.email /* TODO Make Icon */,
                                 size: 28,
+                                color: Theme.of(context).accentIconTheme.color,
                               ),
                               onPressed: () => Navigator.of(context).push(
                                 PageRouteBuilder(
@@ -101,6 +102,7 @@ class Welcome extends StatelessWidget {
                               icon: Icon(
                                 Icons.email, // TODO Make Icon
                                 size: 28,
+                                color: Theme.of(context).accentIconTheme.color,
                               ),
                               onPressed: () => _auth.logInWithGoogle(),
                             ),

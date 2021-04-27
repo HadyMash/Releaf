@@ -95,13 +95,17 @@ class _VerifyState extends State<Verify> {
                         onPressed: () => _auth.getUser()!.emailVerified
                             ? print('route to home')
                             : _auth.sendVerificationEmail(),
-                        icon: Icon(Icons.email),
+                        icon: Icon(
+                          Icons.email,
+                          color: Theme.of(context).accentIconTheme.color,
+                        ),
                         label: 'Resend Email',
                       ),
                       SizedBox(height: 20),
                       ThemedButton.icon(
                         label: 'Log out',
-                        icon: Icon(Icons.logout_rounded),
+                        icon: Icon(Icons.logout_rounded,
+                            color: Theme.of(context).accentIconTheme.color),
                         onPressed: () => _auth.logOut(),
                       ),
                     ],
