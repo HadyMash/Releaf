@@ -92,6 +92,19 @@ class AuthService {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.error_rounded, color: Colors.red[700]),
+            ),
+            Text(getError(e.toString())),
+          ],
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       print(e);
       return null;
     }
