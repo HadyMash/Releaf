@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:releaf/services/database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -70,8 +71,16 @@ class AuthService {
     }
   }
 
-  // Forgot password
-  Future resetPassword() async {}
+  // Forgot password // TODO make reset password field
+  Future resetPassword(
+      {required String oldPassword, required String newPassword}) async {
+    try {
+      if (_auth.currentUser != null) {}
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   // log out
   Future logOut() async {
@@ -80,6 +89,42 @@ class AuthService {
       return await _auth.signOut();
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  // Change Username
+  Future changeUsername({required String newName, required context}) async {
+    try {
+      if (_auth.currentUser != null) {
+        await _auth.currentUser!.updateProfile(displayName: newName);
+        final snackBar = SnackBar(
+          content: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Icon(Icons.check_circle_rounded, color: Colors.green),
+              ),
+              Text('Success'),
+            ],
+          ),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.error_rounded, color: Colors.red[700]),
+            ),
+            Text(e.toString()),
+          ],
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
