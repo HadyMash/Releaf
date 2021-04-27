@@ -9,7 +9,7 @@ class Verify extends StatefulWidget {
 }
 
 class _VerifyState extends State<Verify> {
-  final _auth = AuthService();
+  late final _auth;
   late Timer timer;
   late Timer countdownUpdate;
   bool checkingVerification = false;
@@ -33,6 +33,7 @@ class _VerifyState extends State<Verify> {
 
   @override
   void initState() {
+    _auth = new AuthService();
     timer = Timer.periodic(Duration(seconds: 11), (timer) {
       countdownUpdate.cancel();
       checkVerified();

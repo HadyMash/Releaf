@@ -358,12 +358,14 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                             context, (route) => route.isFirst);
                                       } else {
                                         _auth.sendVerificationEmail();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Verify(),
-                                          ),
-                                        );
+                                        if (_auth.getUser() != null) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Verify(),
+                                            ),
+                                          );
+                                        }
                                       }
                                     } else {
                                       setState(() =>
