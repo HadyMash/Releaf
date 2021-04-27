@@ -41,7 +41,7 @@ void main() async {
                   fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 36,
+                  fontSize: 32,
                 ),
                 headline2: TextStyle(
                   fontFamily: 'Poppins',

@@ -386,7 +386,32 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   text: 'Forgot Password',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      // Reset Password
+                                      Navigator.of(context).pushReplacement(
+                                        PageRouteBuilder(
+                                          transitionDuration:
+                                              Duration(milliseconds: 1),
+                                          pageBuilder: (BuildContext context,
+                                              Animation<double> animation,
+                                              Animation<double>
+                                                  secondaryAnimation) {
+                                            return ResetPassword(
+                                                email: widget.email);
+                                          },
+                                          transitionsBuilder:
+                                              (BuildContext context,
+                                                  Animation<double> animation,
+                                                  Animation<double>
+                                                      secondaryAnimation,
+                                                  Widget child) {
+                                            return Align(
+                                              child: FadeTransition(
+                                                opacity: animation,
+                                                child: child,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
                                     },
                                 ),
                               ),
@@ -405,6 +430,226 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
     );
   }
 }
+
+class ResetPassword extends StatefulWidget {
+  String? email;
+
+  ResetPassword({this.email});
+
+  @override
+  _ResetPasswordState createState() => _ResetPasswordState();
+}
+
+class _ResetPasswordState extends State<ResetPassword>
+    with SingleTickerProviderStateMixin {
+  final AuthService _auth = AuthService();
+  dynamic _error;
+  final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
+  FocusNode _emailFocusNode = new FocusNode();
+
+  final inputDecoration = InputDecoration(
+    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
+    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+    enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+    errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
+    focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
+    errorStyle: TextStyle(fontSize: 14),
+  );
+
+  Color _getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.white.withOpacity(0.3);
+    }
+    return Colors.white.withOpacity(0.3);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _emailFocusNode.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    _emailFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Placeholder(), // TODO add rive background
+          Center(
+            child: Hero(
+              tag: "Welcome Screen Center Box",
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                height: 490,
+                width: 380,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.8),
+                      blurRadius: 30.0,
+                      spreadRadius: 1.0,
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Material(
+                      child: Container(
+                        color: Theme.of(context).primaryColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back_ios_rounded,
+                                  color: Colors.white,
+                                  size: 28.0,
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                                splashColor: Colors.white,
+                              ),
+                              Text(
+                                'Reset Password',
+                                style: Theme.of(context).textTheme.headline1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Material(
+                      child: Container(
+                        color: Colors.lightGreen,
+                        child: Text(
+                          '[Releaf Logo]',
+                          style: TextStyle(fontSize: 40),
+                        ),
+                      ),
+                    ),
+                    // SizedBox(height: 50),
+                    Expanded(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              // * Email
+                              Material(
+                                child: TextFormField(
+                                  focusNode: _emailFocusNode,
+                                  onTap: () => setState(() {}),
+                                  initialValue: widget.email,
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Please enter an email';
+                                    } else if (EmailValidator.validate(val) ==
+                                        false) {
+                                      return 'Please enter a valid email address.';
+                                    }
+                                  },
+                                  autocorrect: false,
+                                  onChanged: (val) =>
+                                      setState(() => widget.email = val),
+                                  decoration: inputDecoration.copyWith(
+                                    labelText: 'Email',
+                                    labelStyle: TextStyle(
+                                      color: _emailFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    hintText: 'example@domain.com',
+                                    focusedBorder: CustomWidgetBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2.2),
+                                    prefixIcon: Icon(
+                                      Icons.mail,
+                                      color: _emailFocusNode.hasFocus
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        Icons.clear,
+                                        color: _emailFocusNode.hasFocus
+                                            ? Theme.of(context).primaryColor
+                                            : Colors.grey,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(
+                                  height:
+                                      _error == null || _error == '' ? 30 : 0),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      (_error == null || _error == '') ? 0 : 13,
+                                ),
+                                child: Text('$_error',
+                                    style: TextStyle(
+                                      fontSize: (_error == null || _error == '')
+                                          ? 0
+                                          : 14,
+                                      color: Colors.red[800],
+                                    ),
+                                    textAlign: TextAlign.center),
+                              ),
+                              ThemedButton(
+                                label: 'Reset Password',
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {}
+                                  setState(() {});
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+// ! PLEASE IGNORE
+// ! PLEASE IGNORE
+// ! PLEASE IGNORE
 
 class LogInMock extends StatefulWidget {
   @override
@@ -690,3 +935,7 @@ class _LogInMockState extends State<LogInMock>
     );
   }
 }
+
+// ! PLEASE IGNORE
+// ! PLEASE IGNORE
+// ! PLEASE IGNORE
