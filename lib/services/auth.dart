@@ -84,7 +84,8 @@ class AuthService {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Icon(Icons.check_circle_rounded, color: Colors.green),
               ),
-              Text('Success, an email has been sent to your email address'),
+              Text('Success, an email has been sent to your email address.',
+                  softWrap: true),
             ],
           ),
         );
@@ -99,7 +100,7 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Text(getError(e.toString())),
+            Expanded(child: Text(getError(e.toString()))),
           ],
         ),
       );
@@ -141,8 +142,10 @@ class AuthService {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Icon(Icons.check_circle_rounded, color: Colors.green),
               ),
-              Text(
-                  'Success, an email has been sent to the original email to undo this action.'),
+              Expanded(
+                child: Text(
+                    'Success, an email has been sent to the original email to undo this action.'),
+              ),
             ],
           ),
         );
@@ -156,7 +159,7 @@ class AuthService {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Icon(Icons.warning_rounded, color: Colors.amber),
               ),
-              Text('Unkown Error'),
+              Expanded(child: Text('Unkown Error')),
             ],
           ),
         );
@@ -171,7 +174,7 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Text(getError(e.toString())),
+            Expanded(child: Text(getError(e.toString()))),
           ],
         ),
       );
@@ -192,7 +195,7 @@ class AuthService {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Icon(Icons.check_circle_rounded, color: Colors.green),
               ),
-              Text('Success'),
+              Expanded(child: Text('Success')),
             ],
           ),
         );
@@ -207,7 +210,7 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Text(getError(e.toString())),
+            Expanded(child: Text(getError(e.toString()))),
           ],
         ),
       );
