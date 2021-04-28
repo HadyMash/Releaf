@@ -78,6 +78,7 @@ class Settings extends StatelessWidget {
                   preference: SizedBox(
                     width: 150,
                     child: TextField(
+                      autocorrect: false,
                       controller: _nameController,
                       onSubmitted: (val) {
                         if (val != _auth.getUser()!.displayName) {
@@ -181,12 +182,25 @@ class Settings extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(top: 20, right: 30, left: 30),
-                    child: Text('Legal',
+                    child: Text('Extra',
                         style: Theme.of(context).textTheme.headline4),
                   ),
                 ),
                 Setting.clickable(
                   label: 'About',
+                  preference: Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                    size: 40,
+                  ),
+                  onPressed: () => showAboutDialog(
+                    context: context,
+                    applicationName: 'Releaf',
+                    applicationVersion: '0.1 Alpha',
+                  ),
+                ),
+                Setting.clickable(
+                  label: 'Contact Us',
                   preference: Icon(
                     Icons.keyboard_arrow_right_rounded,
                     color: Theme.of(context).iconTheme.color,
