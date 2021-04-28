@@ -407,7 +407,8 @@ class _RegisterState extends State<Register>
                                       _error = null;
                                       setState(() => _showingErrors = false);
                                       if (!_auth.getUser()!.emailVerified) {
-                                        _auth.sendVerificationEmail();
+                                        await _auth
+                                            .sendVerificationEmail(context);
                                         Navigator.popUntil(
                                             context, (route) => route.isFirst);
                                       }

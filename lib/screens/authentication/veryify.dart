@@ -9,7 +9,7 @@ class Verify extends StatefulWidget {
 }
 
 class _VerifyState extends State<Verify> {
-  late final _auth;
+  final _auth = new AuthService();
   late Timer timer;
   late Timer countdownUpdate;
   bool checkingVerification = false;
@@ -33,7 +33,6 @@ class _VerifyState extends State<Verify> {
 
   @override
   void initState() {
-    _auth = new AuthService();
     timer = Timer.periodic(Duration(seconds: 11), (timer) {
       countdownUpdate.cancel();
       checkVerified();
@@ -95,7 +94,7 @@ class _VerifyState extends State<Verify> {
                       ThemedButton.icon(
                         onPressed: () => _auth.getUser()!.emailVerified
                             ? {}
-                            : _auth.sendVerificationEmail(),
+                            : _auth.sendVerificationEmail(context),
                         icon: Icon(
                           Icons.email,
                           color: Theme.of(context).accentIconTheme.color,

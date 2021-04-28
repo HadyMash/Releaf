@@ -357,7 +357,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                         Navigator.popUntil(
                                             context, (route) => route.isFirst);
                                       } else {
-                                        _auth.sendVerificationEmail();
                                         if (_auth.getUser() != null) {
                                           Navigator.push(
                                             context,

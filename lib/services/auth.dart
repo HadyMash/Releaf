@@ -15,12 +15,51 @@ class AuthService {
   }
 
   // Send verification email
-  Future sendVerificationEmail() async {
-    if (_auth.currentUser != null) {
-      await _auth.currentUser!.sendEmailVerification();
-    } else {
-      print('user is null');
+  Future sendVerificationEmail(context) async {
+    late final SnackBar snackBar;
+    try {
+      if (_auth.currentUser != null) {
+        await _auth.currentUser!.sendEmailVerification();
+        snackBar = SnackBar(
+          content: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Icon(Icons.check_circle_rounded, color: Colors.green),
+              ),
+              Expanded(
+                child: Text('Success, an email has been sent your address.'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        snackBar = SnackBar(
+          content: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Icon(Icons.warning_rounded, color: Colors.amber),
+              ),
+              Expanded(child: Text('Unkown Error')),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.error_rounded, color: Colors.red[700]),
+            ),
+            Expanded(child: Text(e.toString())),
+          ],
+        ),
+      );
     }
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   // register with email and password
