@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/dashboard.dart';
+import 'package:releaf/screens/home/settings.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/shared/assets/custom_popup_route.dart';
 
 class Dashboard extends StatelessWidget {
   final _auth = AuthService();
@@ -33,6 +35,19 @@ class Dashboard extends StatelessWidget {
       ),
       body: Center(
         child: Text('Dashboard'),
+      ),
+    );
+  }
+}
+
+class Test extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Setting(
+        label: 'test',
+        preference: Icon(Icons.settings),
+        heroTag: 'testSetting',
       ),
     );
   }

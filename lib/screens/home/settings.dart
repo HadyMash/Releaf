@@ -1,8 +1,13 @@
+import 'dart:ui';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:releaf/screens/authentication/change_password.dart';
+import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/shared/assets/custom_popup_route.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -96,12 +101,18 @@ class Settings extends StatelessWidget {
                 ),
                 Setting.clickable(
                   label: 'Change Email',
+                  heroTag: 'changeEmail',
                   preference: Icon(
                     Icons.keyboard_arrow_right_rounded,
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => print('clicked'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CustomPopupRoute(builder: (context) => ChangeEmail()),
+                    );
+                  },
                 ),
                 Setting(
                   label: 'Theme',
@@ -112,6 +123,16 @@ class Settings extends StatelessWidget {
                       onChanged: (newTheme) {
                         _theme.setTheme(newTheme!);
                       }),
+                ),
+                Setting.clickable(
+                  label: 'Info',
+                  heroTag: 'info',
+                  preference: Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                    size: 40,
+                  ),
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -157,6 +178,36 @@ class Settings extends StatelessWidget {
           SliverToBoxAdapter(
             child: SizedBox(height: 20),
           ),
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20, right: 30, left: 30),
+                    child: Text('Legal',
+                        style: Theme.of(context).textTheme.headline4),
+                  ),
+                ),
+                Setting.clickable(
+                  label: 'About',
+                  preference: Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                    size: 40,
+                  ),
+                  onPressed: () => showAboutDialog(
+                    context: context,
+                    applicationName: 'Releaf',
+                    applicationVersion: '0.1 Alpha',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: 20),
+          ),
         ],
       ),
     );
@@ -170,16 +221,16 @@ class Setting extends StatefulWidget {
   final VoidCallback? onPressed;
   final String? heroTag;
 
-  Setting(
-      {required this.label,
-      required this.preference,
-      this.preferencePadding,
-      this.heroTag})
-      : onPressed = null;
+  Setting({
+    required this.label,
+    required this.preference,
+    this.preferencePadding,
+    this.heroTag,
+  }) : onPressed = null;
 
   Setting.clickable({
     required this.label,
-    this.preference,
+    required this.preference,
     this.preferencePadding,
     required this.onPressed,
     this.heroTag,

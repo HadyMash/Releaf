@@ -91,7 +91,7 @@ class _RegisterState extends State<Register>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<AppTheme>(context);
+    final _theme = Provider.of<AppTheme>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -246,7 +246,7 @@ class _RegisterState extends State<Register>
                                   onChanged: (val) {
                                     setState(() => widget.email = val);
                                   },
-                                  decoration: theme.inputDecoration.copyWith(
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
                                       color: _emailFocusNode.hasFocus
@@ -292,7 +292,7 @@ class _RegisterState extends State<Register>
                                   onChanged: (val) {
                                     setState(() => widget.password = val);
                                   },
-                                  decoration: theme.inputDecoration.copyWith(
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
                                       color: _passwordFocusNode.hasFocus
@@ -338,7 +338,7 @@ class _RegisterState extends State<Register>
                                   onChanged: (val) {
                                     setState(() {});
                                   },
-                                  decoration: theme.inputDecoration.copyWith(
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Confirm Password',
                                     labelStyle: TextStyle(
                                       color: _confirmPasswordFocusNode.hasFocus

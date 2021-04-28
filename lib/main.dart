@@ -26,6 +26,7 @@ void main() async {
               backgroundColor: Colors.white,
               primaryColor: Colors.green,
               accentColor: Colors.greenAccent[400],
+              shadowColor: Colors.black.withOpacity(0.6),
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
                 backgroundColor: Colors.white.withAlpha(0),
