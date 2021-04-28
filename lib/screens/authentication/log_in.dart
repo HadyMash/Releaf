@@ -699,7 +699,7 @@ class _LogInMockState extends State<LogInMock>
 
     _topBarAnimController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 700),
     );
 
     _topBarAnim = Tween<double>(begin: -200, end: 0).animate(CurvedAnimation(
@@ -710,7 +710,7 @@ class _LogInMockState extends State<LogInMock>
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    Future.delayed(Duration(milliseconds: 640), () {
+    Future.delayed(Duration(milliseconds: 710), () {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
