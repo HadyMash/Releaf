@@ -13,26 +13,15 @@ class Dashboard extends StatelessWidget {
     final theme = Provider.of<AppTheme>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        // TODO Make it a sliver app bar
-        title: Text(
-          'Dashboard',
-          style: Theme.of(context).textTheme.headline3,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => _auth.logOut(),
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Colors.black,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(
+              'Dashboard',
+              style: Theme.of(context).textTheme.headline3,
             ),
-            splashRadius: 28,
-            padding: EdgeInsets.symmetric(horizontal: 30),
           ),
         ],
-      ),
-      body: Center(
-        child: Text('Dashboard'),
       ),
     );
   }
