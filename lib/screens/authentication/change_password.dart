@@ -5,12 +5,12 @@ import 'package:email_validator/email_validator.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 
-class ChangeEmail extends StatefulWidget {
+class ChangePassword extends StatefulWidget {
   @override
-  _ChangeEmailState createState() => _ChangeEmailState();
+  _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _ChangeEmailState extends State<ChangeEmail> {
+class _ChangePasswordState extends State<ChangePassword> {
   final _formKey = new GlobalKey<FormState>();
   FocusNode _emailFocusNode = new FocusNode();
   String _email = '';
@@ -50,7 +50,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
-                      child: Text('Change Email',
+                      child: Text('Change Password',
+                          textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline3),
                     ),
                     SizedBox(height: 20),
@@ -59,53 +60,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextFormField(
-                            focusNode: _emailFocusNode,
-                            onTap: () => setState(() {}),
-                            initialValue: _email,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (val) {
-                              if (val == null || val.isEmpty) {
-                                return 'Please enter an email';
-                              } else if (EmailValidator.validate(val) ==
-                                  false) {
-                                return 'Please enter a valid email address.';
-                              }
-                            },
-                            autocorrect: false,
-                            onChanged: (val) {
-                              setState(() => _email = val);
-                            },
-                            decoration: _theme.inputDecoration.copyWith(
-                              labelText: 'Email',
-                              labelStyle: TextStyle(
-                                color: _emailFocusNode.hasFocus
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey,
-                              ),
-                              hintText: 'example@domain.com',
-                              focusedBorder: CustomWidgetBorder(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2.2),
-                              prefixIcon: Icon(
-                                Icons.mail,
-                                color: _emailFocusNode.hasFocus
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  Icons.clear,
-                                  color: _emailFocusNode.hasFocus
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.grey,
-                                ),
-                                onPressed: () {},
-                              ),
-                            ),
-                          ),
-                        ],
+                        children: [],
                       ),
                     ),
                   ],

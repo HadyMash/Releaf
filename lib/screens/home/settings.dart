@@ -1,10 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
-import 'package:releaf/shared/assets/custom_popup_route.dart';
+import 'package:releaf/shared/const/custom_popup_route.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -104,12 +105,10 @@ class Settings extends StatelessWidget {
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CustomPopupRoute(builder: (context) => ChangeEmail()),
-                    );
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    CustomPopupRoute(builder: (context) => ChangeEmail()),
+                  ),
                 ),
                 Setting(
                   label: 'Theme',
@@ -152,7 +151,10 @@ class Settings extends StatelessWidget {
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                    context,
+                    CustomPopupRoute(builder: (context) => ChangePassword()),
+                  ),
                 ),
                 Setting(
                   label: 'Log Out',
