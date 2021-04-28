@@ -105,8 +105,8 @@ class AuthService {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-      print(e);
-      return null;
+      print(e.toString());
+      return e.toString();
     }
   }
 
@@ -129,7 +129,8 @@ class AuthService {
   }
 
   // Transfer Account to a new email
-  Future updateEmail({required String newEmail, required context}) async {
+  Future<String?> updateEmail(
+      {required String newEmail, required context}) async {
     try {
       if (_auth.currentUser != null) {
         await _auth.currentUser!.updateEmail(newEmail);
@@ -143,13 +144,14 @@ class AuthService {
               ),
               Expanded(
                 child: Text(
-                    'Success, an email has been sent to the original email to undo this action.'),
+                    'Success, an email has been sent to the original email if you wish to undo this action.'),
               ),
             ],
           ),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return null;
       } else {
         final snackBar = SnackBar(
           content: Row(
@@ -173,12 +175,13 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Expanded(child: Text(getError(e.toString()))),
+            Expanded(child: Text('An error has occurred')),
           ],
         ),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return e.toString();
     }
   }
 
@@ -233,6 +236,8 @@ class AuthService {
         'Email address is already in use',
     '[firebase_auth/user-disabled] The user account has been disabled by an administrator.':
         'Account disabled, please contact us for help.',
+    '[firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.':
+        'Please log out and log in and try again.',
     '': 'Unkown Error',
     null: 'Unkown Error',
   };
