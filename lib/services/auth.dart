@@ -110,27 +110,8 @@ class AuthService {
     }
   }
 
-  // Change Password
-  Future changePassword(
-      {required String oldPassword,
-      required String newPassword,
-      context}) async {
-    try {} catch (e) {}
-  }
-
-  // log out
-  Future logOut() async {
-    try {
-      await googleSignIn.signOut();
-      return await _auth.signOut();
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
   // Transfer Account to a new email
-  Future<String?> updateEmail(
-      {required String newEmail, required context}) async {
+  Future updateEmail({required String newEmail, required context}) async {
     try {
       if (_auth.currentUser != null) {
         await _auth.currentUser!.updateEmail(newEmail);
@@ -175,12 +156,30 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Expanded(child: Text('An error has occurred')),
+            Expanded(child: Text('An Error has occured.')),
           ],
         ),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return e.toString();
+    }
+  }
+
+  // Change Password
+  Future changePassword(
+      {required String oldPassword,
+      required String newPassword,
+      context}) async {
+    try {} catch (e) {}
+  }
+
+  // log out
+  Future logOut() async {
+    try {
+      await googleSignIn.signOut();
+      return await _auth.signOut();
+    } catch (e) {
       return e.toString();
     }
   }
@@ -237,7 +236,7 @@ class AuthService {
     '[firebase_auth/user-disabled] The user account has been disabled by an administrator.':
         'Account disabled, please contact us for help.',
     '[firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.':
-        'Please log out and log in and try again.',
+        'Please log out, log in, then try again.',
     '': 'Unkown Error',
     null: 'Unkown Error',
   };

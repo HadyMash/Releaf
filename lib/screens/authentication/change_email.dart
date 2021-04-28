@@ -152,7 +152,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                   currentFocus.unfocus();
                                 }
 
-                                dynamic result = _auth.updateEmail(
+                                dynamic result = await _auth.updateEmail(
                                     newEmail: _email, context: context);
 
                                 if (result == null) {

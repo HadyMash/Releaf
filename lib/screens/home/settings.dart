@@ -175,9 +175,6 @@ class Settings extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: SizedBox(height: 20),
-          ),
-          SliverToBoxAdapter(
             child: Column(
               children: [
                 Align(
