@@ -97,19 +97,6 @@ class Settings extends StatelessWidget {
                     ),
                   ),
                 ),
-                Setting.clickable(
-                  label: 'Change Email',
-                  heroTag: 'changeEmail',
-                  preference: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                    size: 40,
-                  ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    CustomPopupRoute(builder: (context) => ChangeEmail()),
-                  ),
-                ),
                 Setting(
                   label: 'Theme',
                   preference: DropdownButton<ThemeMode>(
@@ -142,6 +129,19 @@ class Settings extends StatelessWidget {
                     padding: EdgeInsets.only(top: 20, right: 30, left: 30),
                     child: Text('Security',
                         style: Theme.of(context).textTheme.headline4),
+                  ),
+                ),
+                Setting.clickable(
+                  label: 'Change Email',
+                  heroTag: 'changeEmail',
+                  preference: Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                    size: 40,
+                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    CustomPopupRoute(builder: (context) => ChangeEmail()),
                   ),
                 ),
                 Setting.clickable(
