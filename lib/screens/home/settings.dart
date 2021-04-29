@@ -113,7 +113,6 @@ class Settings extends StatelessWidget {
                 ),
                 Setting.clickable(
                   label: 'Info',
-                  heroTag: 'info',
                   preference: Icon(
                     Icons.keyboard_arrow_right_rounded,
                     color: Theme.of(context).iconTheme.color,
@@ -137,7 +136,6 @@ class Settings extends StatelessWidget {
                 ),
                 Setting.clickable(
                   label: 'Change Email',
-                  heroTag: 'changeEmail',
                   preference: Icon(
                     Icons.keyboard_arrow_right_rounded,
                     color: Theme.of(context).iconTheme.color,
@@ -259,13 +257,13 @@ class _SettingState extends State<Setting> {
   double _spreadRadius = 0.0;
 
   void _animateDown() {
-    _shadowColor = Colors.black.withOpacity(0.5);
+    _shadowColor = Theme.of(context).shadowColor.withOpacity(0.5);
     _blurRadius = 30.0;
     _spreadRadius = 5.0;
   }
 
   void _animateUp() {
-    _shadowColor = Colors.black.withOpacity(0.35);
+    _shadowColor = Theme.of(context).shadowColor.withOpacity(0.35);
     _blurRadius = 20.0;
     _spreadRadius = 0.0;
   }
@@ -290,7 +288,7 @@ class _SettingState extends State<Setting> {
                 duration: Duration(milliseconds: 200),
                 padding: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
@@ -339,7 +337,7 @@ class _SettingState extends State<Setting> {
                   duration: Duration(milliseconds: 200),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(

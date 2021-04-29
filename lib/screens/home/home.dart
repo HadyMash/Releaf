@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
           borderRadius: BorderRadius.circular(_borderRadius),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.4),
+              color: Theme.of(context).shadowColor.withOpacity(0.4),
               blurRadius: 22.0,
             ),
           ],
@@ -56,8 +56,8 @@ class _HomeState extends State<Home> {
             topRight: Radius.circular(_borderRadius),
           ),
           child: BottomNavigationBar(
-            unselectedItemColor: Colors.black,
-            selectedItemColor: Colors.green,
+            unselectedItemColor: Theme.of(context).iconTheme.color,
+            selectedItemColor: Theme.of(context).primaryColor,
             showUnselectedLabels: true,
             enableFeedback: true,
             type: BottomNavigationBarType.fixed,

@@ -26,7 +26,7 @@ class Welcome extends StatelessWidget {
                     borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.8),
+                        color: Theme.of(context).shadowColor.withOpacity(0.8),
                         blurRadius: 30.0,
                         spreadRadius: 1.0,
                       )

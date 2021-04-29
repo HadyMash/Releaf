@@ -140,11 +140,15 @@ class _RegisterState extends State<Register>
                                     IconButton(
                                       icon: Icon(
                                         Icons.arrow_back_ios_rounded,
-                                        color: Colors.white,
+                                        color: Theme.of(context)
+                                            .accentIconTheme
+                                            .color,
                                         size: 28.0,
                                       ),
                                       onPressed: () => Navigator.pop(context),
-                                      splashColor: Colors.white,
+                                      splashColor: Theme.of(context)
+                                          .accentIconTheme
+                                          .color,
                                     ),
                                     Text(
                                       'Register',
@@ -157,8 +161,10 @@ class _RegisterState extends State<Register>
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   child: TextButton.icon(
-                                    icon:
-                                        Icon(Icons.person, color: Colors.white),
+                                    icon: Icon(Icons.person,
+                                        color: Theme.of(context)
+                                            .accentIconTheme
+                                            .color),
                                     label: Text(
                                       'Log In',
                                       style: Theme.of(context).textTheme.button,

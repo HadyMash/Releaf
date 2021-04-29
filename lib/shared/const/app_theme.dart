@@ -128,7 +128,8 @@ class _ThemedButtonState extends State<ThemedButton>
   // Animate When Tapped up
   void _animateUp() {
     _color = widget.color ?? Theme.of(context).primaryColor;
-    _shadowColor = widget.shadowColor ?? Colors.black.withOpacity(0.6);
+    _shadowColor =
+        widget.shadowColor ?? Theme.of(context).shadowColor.withOpacity(0.6);
     _shadowBlurRadius = widget.shadowBlurRadius ?? 16.0;
     _shadowSpreadRadius = widget.shadowSpreadRadius ?? 0;
     _shadowOffset = widget.shadowOffset ?? Offset(0, 0);

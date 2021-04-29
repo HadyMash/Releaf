@@ -500,7 +500,7 @@ class _ResetPasswordState extends State<ResetPassword>
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.8),
+                      color: Theme.of(context).shadowColor.withOpacity(0.8),
                       blurRadius: 30.0,
                       spreadRadius: 1.0,
                     )
@@ -521,11 +521,13 @@ class _ResetPasswordState extends State<ResetPassword>
                               IconButton(
                                 icon: Icon(
                                   Icons.arrow_back_ios_rounded,
-                                  color: Colors.white,
+                                  color:
+                                      Theme.of(context).accentIconTheme.color,
                                   size: 28.0,
                                 ),
                                 onPressed: () => Navigator.pop(context),
-                                splashColor: Colors.white,
+                                splashColor:
+                                    Theme.of(context).accentIconTheme.color,
                               ),
                               Expanded(
                                 child: Text(
@@ -745,7 +747,7 @@ class _LogInMockState extends State<LogInMock>
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.8),
+                      color: Theme.of(context).shadowColor.withOpacity(0.8),
                       blurRadius: 30.0,
                       spreadRadius: 1.0,
                     )
@@ -777,11 +779,15 @@ class _LogInMockState extends State<LogInMock>
                                     IconButton(
                                       icon: Icon(
                                         Icons.arrow_back_ios_rounded,
-                                        color: Colors.white,
+                                        color: Theme.of(context)
+                                            .accentIconTheme
+                                            .color,
                                         size: 28.0,
                                       ),
                                       onPressed: () => Navigator.pop(context),
-                                      splashColor: Colors.white,
+                                      splashColor: Theme.of(context)
+                                          .accentIconTheme
+                                          .color,
                                     ),
                                     Text(
                                       'Log In',
@@ -794,8 +800,10 @@ class _LogInMockState extends State<LogInMock>
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   child: TextButton.icon(
-                                    icon:
-                                        Icon(Icons.person, color: Colors.white),
+                                    icon: Icon(Icons.person,
+                                        color: Theme.of(context)
+                                            .accentIconTheme
+                                            .color),
                                     label: Text(
                                       'Register',
                                       style: Theme.of(context).textTheme.button,

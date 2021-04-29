@@ -74,7 +74,7 @@ class _VerifyState extends State<Verify> {
                         'Verify',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          color: Colors.black87,
+                          color: Theme.of(context).textTheme.headline4!.color,
                           fontWeight: FontWeight.bold,
                           fontSize: 36,
                         ),
