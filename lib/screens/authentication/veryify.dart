@@ -13,7 +13,7 @@ class _VerifyState extends State<Verify> {
   late Timer timer;
   late Timer countdownUpdate;
   bool checkingVerification = false;
-  int timerCountdown = 10;
+  int timerCountdown = 30;
 
   Future checkVerified() async {
     await _auth.reloadUser();
@@ -22,7 +22,7 @@ class _VerifyState extends State<Verify> {
       // TODO add rive page transition.
       Navigator.popUntil(context, (route) => route.isFirst);
     } else {
-      timerCountdown = 11;
+      timerCountdown = 30;
       countdownUpdate = Timer.periodic(Duration(seconds: 1), (timer) {
         if (timerCountdown > 0) {
           setState(() => timerCountdown--);
@@ -33,7 +33,7 @@ class _VerifyState extends State<Verify> {
 
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 11), (timer) {
+    timer = Timer.periodic(Duration(seconds: 30), (timer) {
       countdownUpdate.cancel();
       checkVerified();
     });

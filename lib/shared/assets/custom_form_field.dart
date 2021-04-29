@@ -8,12 +8,7 @@ class CustomWidgetBorder extends OutlineInputBorder {
       : super(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: Color.fromRGBO(
-              color!.red,
-              color.green,
-              color.blue,
-              color.opacity,
-            ),
+            color: color!,
             width: width,
           ),
         );

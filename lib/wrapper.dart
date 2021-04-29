@@ -12,6 +12,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
     final _auth = AuthService();
+    // ignore: unused_local_variable
     final theme = Provider.of<AppTheme>(context);
 
     return user == null

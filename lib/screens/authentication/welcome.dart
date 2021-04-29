@@ -9,6 +9,7 @@ class Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final theme = Provider.of<AppTheme>(context);
     return Scaffold(
       body: Stack(
@@ -18,6 +19,7 @@ class Welcome extends StatelessWidget {
             child: Hero(
               tag: "Welcome Screen Center Box",
               child: Material(
+                color: Colors.white.withOpacity(0),
                 child: Container(
                   height: 350,
                   width: 350,
