@@ -276,6 +276,8 @@ class AuthService {
         'Account disabled, please contact us for help.',
     '[firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.':
         'Please log out, log in, then try again.',
+    '[firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.':
+        'Requests from this device have been temporarliy blocked due to unusual activity. Please try again later.',
     '': 'Unkown Error',
     null: 'Unkown Error',
   };
