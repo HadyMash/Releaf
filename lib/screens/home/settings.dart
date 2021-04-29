@@ -55,6 +55,9 @@ class Settings extends StatelessWidget {
       // TODO make body custom scroll view.
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(height: 20),
+          ),
           SliverAppBar(
             title: Text(
               'Settings',

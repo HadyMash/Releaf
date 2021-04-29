@@ -97,7 +97,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             TextFormField(
                               focusNode: _oldPasswordFocusNode,
                               initialValue: _password,
-                              obscureText: false,
+                              obscureText: true,
                               validator: (val) {
                                 if (val == null || val.isEmpty) {
                                   return 'Please enter a password';
@@ -139,7 +139,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             TextFormField(
                               focusNode: _newPasswordFocusNode,
                               initialValue: _password,
-                              obscureText: false,
+                              obscureText: true,
                               validator: (val) {
                                 if (val == null || val.isEmpty) {
                                   return 'Please enter a password';
@@ -183,7 +183,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             SizedBox(height: 20),
                             TextFormField(
                               focusNode: _confirmPasswordFocusNode,
-                              obscureText: false,
+                              obscureText: true,
                               validator: (val) {
                                 if (val == null || val.isEmpty) {
                                   return 'Please enter a password';

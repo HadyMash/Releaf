@@ -5,12 +5,14 @@ import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/screens/authentication/welcome.dart';
 import 'package:releaf/screens/home/home.dart';
 import 'package:releaf/services/auth.dart';
+import 'package:releaf/shared/const/app_theme.dart';
 
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
     final _auth = AuthService();
+    final theme = Provider.of<AppTheme>(context);
 
     return user == null
         ? Welcome()

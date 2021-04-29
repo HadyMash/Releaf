@@ -280,7 +280,7 @@ class _RegisterState extends State<Register>
                                 child: TextFormField(
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
-                                  obscureText: false,
+                                  obscureText: true,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
                                       return 'Please enter a password';
@@ -324,7 +324,7 @@ class _RegisterState extends State<Register>
                               Material(
                                 child: TextFormField(
                                   focusNode: _confirmPasswordFocusNode,
-                                  obscureText: false,
+                                  obscureText: true,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
                                       return 'Please enter a password';

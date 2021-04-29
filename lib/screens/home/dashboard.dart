@@ -15,6 +15,9 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(height: 20),
+          ),
           SliverAppBar(
             title: Text(
               'Dashboard',

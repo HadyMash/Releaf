@@ -280,7 +280,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                 child: TextFormField(
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
-                                  obscureText: false,
+                                  obscureText: true,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
                                       return 'Please enter a password';
@@ -877,7 +877,7 @@ class _LogInMockState extends State<LogInMock>
                               SizedBox(height: 20),
                               Material(
                                 child: TextFormField(
-                                  obscureText: false,
+                                  obscureText: true,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
                                       return 'Please enter a password';
