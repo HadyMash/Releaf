@@ -54,7 +54,7 @@ class AuthService {
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Icon(Icons.error_rounded, color: Colors.red[700]),
             ),
-            Expanded(child: Text(e.toString())),
+            Expanded(child: Text(getError(e.toString()))),
           ],
         ),
       );
