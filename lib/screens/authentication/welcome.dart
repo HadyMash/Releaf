@@ -11,6 +11,16 @@ class Welcome extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final theme = Provider.of<AppTheme>(context);
+
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+    final _ratio = MediaQuery.of(context).devicePixelRatio;
+
+    // * iPhone 12 Pro Max screen info
+    // width: 428.0
+    // height: 926.0
+    // ratio: 3.0
+
     return Scaffold(
       body: Stack(
         children: [
@@ -21,8 +31,8 @@ class Welcome extends StatelessWidget {
               child: Material(
                 color: Colors.white.withOpacity(0),
                 child: Container(
-                  height: 350,
-                  width: 350,
+                  height: (1050 / 2778) * _height,
+                  width: (1050 / 1284) * _width,
                   decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.circular(25),
@@ -90,6 +100,7 @@ class Welcome extends StatelessWidget {
                                   },
                                 ),
                               ),
+                              tapDownFeedback: true,
                             ),
                             SizedBox(height: 30),
                             ThemedButton.icon(
@@ -108,6 +119,7 @@ class Welcome extends StatelessWidget {
                                 color: Theme.of(context).accentIconTheme.color,
                               ),
                               onPressed: () => _auth.logInWithGoogle(),
+                              tapDownFeedback: true,
                             ),
                             SizedBox(height: 20),
                           ],

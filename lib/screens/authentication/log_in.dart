@@ -374,6 +374,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   }
                                   setState(() {});
                                 },
+                                tapDownFeedback: true,
+                                tapFeedback: true,
                               ),
                               SizedBox(height: 20),
                               RichText(

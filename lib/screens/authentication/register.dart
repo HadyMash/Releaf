@@ -427,6 +427,8 @@ class _RegisterState extends State<Register>
                                     setState(() => _showingErrors = true);
                                   }
                                 },
+                                tapDownFeedback: true,
+                                tapFeedback: true,
                               ),
                             ],
                           ),
