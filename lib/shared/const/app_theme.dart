@@ -56,7 +56,6 @@ class AppTheme with ChangeNotifier {
   Future getSavedTheme() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String theme = preferences.getString('theme') ?? 'system';
-    print(theme);
     switch (theme) {
       case 'system':
         {
