@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 
@@ -195,6 +196,7 @@ class _ThemedButtonState extends State<ThemedButton>
 
   @override
   Widget build(BuildContext context) {
+    final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
       onTap: widget.onPressed,
       onTapDown: (TapDownDetails) => setState(() {
