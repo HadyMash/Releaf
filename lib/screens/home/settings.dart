@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
+import 'package:releaf/screens/home/setting_popup.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
@@ -118,7 +119,10 @@ class Settings extends StatelessWidget {
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                    context,
+                    CustomPopupRoute(builder: (context) => Info()),
+                  ),
                 ),
               ],
             ),
@@ -368,5 +372,25 @@ class _SettingState extends State<Setting> {
               ),
             ),
           );
+  }
+}
+
+class Info extends StatelessWidget {
+  final _auth = AuthService();
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Provider.of<AppTheme>(context);
+    return SettingPopup(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // TODO Make text better looking.
+          Text('Name: ${_auth.getUser()!.displayName}'),
+          SizedBox(height: 10),
+          Text('Email: ${_auth.getUser()!.email}'),
+        ],
+      ),
+    );
   }
 }
