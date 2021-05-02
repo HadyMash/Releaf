@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 
 class AppTheme with ChangeNotifier {
   ThemeData light;
   ThemeData dark;
-  late ThemeMode themeMode;
+  ThemeMode themeMode = ThemeMode
+      .system; // TODO make loading screen so that this can be late and have it initialised.
 
   var inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -22,13 +22,62 @@ class AppTheme with ChangeNotifier {
   AppTheme({
     required this.light,
     required this.dark,
-  }) {
-    themeMode = ThemeMode.system; // TODO Load from user preference
+  });
+
+  void setTheme(ThemeMode theme) async {
+    themeMode = theme;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    switch (theme) {
+      case ThemeMode.system:
+        {
+          await preferences.setString('theme', 'system');
+        }
+        break;
+      case ThemeMode.light:
+        {
+          await preferences.setString('theme', 'light');
+        }
+        break;
+      case ThemeMode.dark:
+        {
+          await preferences.setString('theme', 'dark');
+        }
+        break;
+      default:
+        {
+          await preferences.setString('theme', 'system');
+        }
+        break;
+    }
+    notifyListeners();
   }
 
-  void setTheme(ThemeMode theme) {
-    themeMode = theme;
-    notifyListeners();
+  Future getSavedTheme() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String theme = preferences.getString('theme') ?? 'system';
+    print(theme);
+    switch (theme) {
+      case 'system':
+        {
+          themeMode = ThemeMode.system;
+        }
+        break;
+      case 'light':
+        {
+          themeMode = ThemeMode.light;
+        }
+        break;
+      case 'dark':
+        {
+          themeMode = ThemeMode.dark;
+        }
+        break;
+      default:
+        {
+          themeMode = ThemeMode.system;
+        }
+        break;
+    }
   }
 }
 

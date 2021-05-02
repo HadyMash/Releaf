@@ -103,16 +103,37 @@ void main() async {
   );
 }
 
-class ThemedApp extends StatelessWidget {
+class ThemedApp extends StatefulWidget {
+  @override
+  _ThemedAppState createState() => _ThemedAppState();
+}
+
+class _ThemedAppState extends State<ThemedApp> {
   @override
   Widget build(BuildContext context) {
     final AppTheme theme = Provider.of<AppTheme>(context);
+    return FutureBuilder(
+      future: theme.getSavedTheme(),
+      builder: (context, snapshot) {
+        return MaterialApp(
+          home: Wrapper(),
+          theme: theme.light,
+          darkTheme: theme.dark,
+          themeMode: theme.themeMode,
+        );
+      },
+    );
+  }
+}
 
-    return MaterialApp(
-      home: Wrapper(),
-      theme: theme.light,
-      darkTheme: theme.dark,
-      themeMode: theme.themeMode,
+// TODO Implement Loading widget to preload data.
+class Loading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('Loading'),
+      ),
     );
   }
 }
