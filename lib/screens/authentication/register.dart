@@ -92,6 +92,10 @@ class _RegisterState extends State<Register>
   @override
   Widget build(BuildContext context) {
     final _theme = Provider.of<AppTheme>(context);
+
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -101,8 +105,8 @@ class _RegisterState extends State<Register>
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: 490,
-                width: 380,
+                height: (1470 / 2778) * _height,
+                width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(25),

@@ -12,13 +12,13 @@ class Welcome extends StatelessWidget {
     // ignore: unused_local_variable
     final theme = Provider.of<AppTheme>(context);
 
-    final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery.of(context).size.width;
     final _ratio = MediaQuery.of(context).devicePixelRatio;
 
     // * iPhone 12 Pro Max screen info
-    // width: 428.0
-    // height: 926.0
+    // height: 926.0 -> 2778
+    // width: 428.0 -> 1284
     // ratio: 3.0
 
     return Scaffold(

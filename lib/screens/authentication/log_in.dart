@@ -92,6 +92,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -101,8 +104,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: 490,
-                width: 380,
+                height: (1470 / 2778) * _height,
+                width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(25),
@@ -486,6 +489,9 @@ class _ResetPasswordState extends State<ResetPassword>
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -495,8 +501,8 @@ class _ResetPasswordState extends State<ResetPassword>
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: 490,
-                width: 380,
+                height: (1470 / 2778) * _height,
+                width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(25),
@@ -733,6 +739,9 @@ class _LogInMockState extends State<LogInMock>
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -742,8 +751,8 @@ class _LogInMockState extends State<LogInMock>
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: 490,
-                width: 380,
+                height: (1470 / 2778) * _height,
+                width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.circular(25),
