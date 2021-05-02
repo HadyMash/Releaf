@@ -10,6 +10,7 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
 
 class Settings extends StatelessWidget {
+  // TODO add option to enable or disable haptics throughout the app.
   @override
   Widget build(BuildContext context) {
     final _auth = new AuthService();
