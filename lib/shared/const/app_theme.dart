@@ -103,6 +103,8 @@ class ThemedButton extends StatefulWidget {
   final double? pressedShadowSpreadRadius;
   final Offset? shadowOffset;
   final Offset? pressedShadowOffset;
+  final HapticFeedback? tapDownFeedback;
+  final HapticFeedback? tapFeedback;
 
   // * Constructors
   final bool iconButton;
@@ -124,6 +126,8 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowSpreadRadius,
     this.shadowOffset,
     this.pressedShadowOffset,
+    this.tapDownFeedback,
+    this.tapFeedback,
   })  : icon = Container(height: 0, width: 0),
         iconButton = false,
         gap = 0.0;
@@ -148,6 +152,8 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowBlurRadius,
     this.pressedShadowSpreadRadius,
     this.pressedShadowOffset,
+    this.tapDownFeedback,
+    this.tapFeedback,
   }) : iconButton = true;
 
   @override
@@ -256,6 +262,8 @@ class ThemedFlatButton extends StatefulWidget {
   final Color? color;
   final Color? pressedColor;
   final double? borderRadius;
+  final HapticFeedback? tapDownFeedback;
+  final HapticFeedback? tapFeedback;
 
   // * Constructors
   final bool iconButton;
@@ -269,6 +277,8 @@ class ThemedFlatButton extends StatefulWidget {
     this.color,
     this.pressedColor,
     this.borderRadius,
+    this.tapDownFeedback,
+    this.tapFeedback,
   })  : icon = Container(height: 0, width: 0),
         iconButton = false,
         gap = 0.0;
@@ -285,6 +295,8 @@ class ThemedFlatButton extends StatefulWidget {
     this.color,
     this.borderRadius,
     this.pressedColor,
+    this.tapDownFeedback,
+    this.tapFeedback,
   }) : iconButton = true;
 
   @override

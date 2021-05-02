@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.releaf">
+    package="com.chads.releaf">
+    <uses-permission android:name="android.permission.VIBRATE"/>
    <application
         android:label="releaf"
         android:icon="@mipmap/ic_launcher">
