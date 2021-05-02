@@ -103,8 +103,8 @@ class ThemedButton extends StatefulWidget {
   final double? pressedShadowSpreadRadius;
   final Offset? shadowOffset;
   final Offset? pressedShadowOffset;
-  final HapticFeedback? tapDownFeedback;
-  final HapticFeedback? tapFeedback;
+  final bool? tapDownFeedback;
+  final bool? tapFeedback;
 
   // * Constructors
   final bool iconButton;
@@ -199,10 +199,18 @@ class _ThemedButtonState extends State<ThemedButton>
   Widget build(BuildContext context) {
     final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
-      onTap: widget.onPressed,
+      onTap: () {
+        widget.onPressed!();
+        if (widget.tapFeedback == true) {
+          HapticFeedback.mediumImpact();
+        }
+      },
       onTapDown: (TapDownDetails) => setState(() {
         _animateDown();
         SystemSound.play(SystemSoundType.click);
+        if (widget.tapDownFeedback == true) {
+          HapticFeedback.lightImpact();
+        }
       }),
       onTapUp: (TapUpDetails) => setState(() => _animateUp()),
       onTapCancel: () => setState(() => _animateUp()),
@@ -262,8 +270,8 @@ class ThemedFlatButton extends StatefulWidget {
   final Color? color;
   final Color? pressedColor;
   final double? borderRadius;
-  final HapticFeedback? tapDownFeedback;
-  final HapticFeedback? tapFeedback;
+  final bool? tapDownFeedback;
+  final bool? tapFeedback;
 
   // * Constructors
   final bool iconButton;
@@ -332,10 +340,18 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton>
   Widget build(BuildContext context) {
     final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
-      onTap: widget.onPressed,
+      onTap: () {
+        widget.onPressed!();
+        if (widget.tapFeedback == true) {
+          HapticFeedback.mediumImpact();
+        }
+      },
       onTapDown: (TapDownDetails) => setState(() {
         _animateDown();
         SystemSound.play(SystemSoundType.click);
+        if (widget.tapDownFeedback == true) {
+          HapticFeedback.lightImpact();
+        }
       }),
       onTapUp: (TapUpDetails) => setState(() => _animateUp()),
       onTapCancel: () => setState(() => _animateUp()),

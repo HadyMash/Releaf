@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
@@ -168,6 +169,8 @@ class Settings extends StatelessWidget {
                   preference: ThemedFlatButton(
                     label: 'Log out',
                     onPressed: () => _auth.logOut(),
+                    tapDownFeedback: true,
+                    tapFeedback: true,
                   ),
                 ),
                 Setting(
