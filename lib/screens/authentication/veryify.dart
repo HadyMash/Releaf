@@ -16,6 +16,7 @@ class _VerifyState extends State<Verify> {
   int timerCountdown = 30;
 
   Future checkVerified() async {
+    // TODO try using a provider.of<User?>(context) instead of reload user.
     await _auth.reloadUser();
     if (_auth.getUser()!.emailVerified) {
       timer.cancel();

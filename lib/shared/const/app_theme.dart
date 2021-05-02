@@ -158,7 +158,6 @@ class ThemedButton extends StatefulWidget {
 class _ThemedButtonState extends State<ThemedButton>
     with SingleTickerProviderStateMixin {
   // Variables
-  bool _initialised = false;
   late Color _color;
   late Color _shadowColor;
   late double _shadowBlurRadius;
@@ -187,10 +186,7 @@ class _ThemedButtonState extends State<ThemedButton>
 
   @override
   void didChangeDependencies() {
-    if (!_initialised) {
-      _animateUp();
-      _initialised = true;
-    }
+    _animateUp();
     super.didChangeDependencies();
   }
 
@@ -299,7 +295,6 @@ class ThemedFlatButton extends StatefulWidget {
 class _ThemedFlattButtonState extends State<ThemedFlatButton>
     with SingleTickerProviderStateMixin {
   // Variables
-  bool _initialised = false;
   late Color _color;
   late Color _shadowColor;
   late double _shadowBlurRadius;
@@ -318,15 +313,13 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton>
 
   @override
   void didChangeDependencies() {
-    if (!_initialised) {
-      _animateUp();
-      _initialised = true;
-    }
+    _animateUp();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
       onTap: widget.onPressed,
       onTapDown: (TapDownDetails) => setState(() {

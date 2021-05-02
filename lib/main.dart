@@ -19,6 +19,8 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => AppTheme(
+            // TODO update accentColor to colorScheme.
+            // TODO update accentIconColor to colorScheme.
             // * Light Theme
             light: ThemeData(
               brightness: Brightness.light,
