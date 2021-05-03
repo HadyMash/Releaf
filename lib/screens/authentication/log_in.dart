@@ -5,6 +5,7 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/screens/authentication/register.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 

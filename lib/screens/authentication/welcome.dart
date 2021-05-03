@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/log_in.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:releaf/shared/assets/themed_button.dart';
 
 class Welcome extends StatelessWidget {
   final _auth = AuthService();

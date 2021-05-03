@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:releaf/shared/assets/themed_button.dart';
 
 class Verify extends StatefulWidget {
   @override

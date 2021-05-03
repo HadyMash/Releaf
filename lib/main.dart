@@ -115,7 +115,7 @@ class _ThemedAppState extends State<ThemedApp> {
   Widget build(BuildContext context) {
     final AppTheme theme = Provider.of<AppTheme>(context);
     return FutureBuilder(
-      future: theme.getSavedTheme(),
+      future: theme.getSavedData(),
       builder: (context, snapshot) {
         return MaterialApp(
           home: Wrapper(),
