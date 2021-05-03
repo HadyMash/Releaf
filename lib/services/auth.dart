@@ -278,6 +278,8 @@ class AuthService {
         'Please log out, log in, then try again.',
     '[firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.':
         'Requests from this device have been temporarliy blocked due to unusual activity. Please try again later.',
+    '[firebase_auth/network-request-failed] Network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+        'Connection to server failed.',
     '': 'Unkown Error',
     null: 'Unkown Error',
   };

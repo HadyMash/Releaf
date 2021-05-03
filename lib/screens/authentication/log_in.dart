@@ -104,7 +104,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: (1470 / 2778) * _height,
+                height: (435 / 380) * _width,
                 width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
@@ -501,7 +501,7 @@ class _ResetPasswordState extends State<ResetPassword>
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: (1470 / 2778) * _height,
+                height: (435 / 380) * _width,
                 width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
@@ -751,7 +751,7 @@ class _LogInMockState extends State<LogInMock>
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: (1470 / 2778) * _height,
+                height: (435 / 380) * _width,
                 width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,

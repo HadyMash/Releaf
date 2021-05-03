@@ -105,7 +105,7 @@ class _RegisterState extends State<Register>
               tag: "Welcome Screen Center Box",
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: (1470 / 2778) * _height,
+                height: (435 / 380) * _width,
                 width: (1140 / 1284) * _width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,

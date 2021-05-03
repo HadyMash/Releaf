@@ -31,7 +31,7 @@ class Welcome extends StatelessWidget {
               child: Material(
                 color: Colors.white.withOpacity(0),
                 child: Container(
-                  height: (1050 / 2778) * _height,
+                  height: (1050 / 1284) * _width,
                   width: (1050 / 1284) * _width,
                   decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
