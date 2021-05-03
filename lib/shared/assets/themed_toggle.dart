@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
+// TODO add icon support
 class ThemedToggle extends StatefulWidget {
   // * Variables
   final ValueChanged<bool> onChanged;
@@ -45,7 +46,7 @@ class _ThemedToggleState extends State<ThemedToggle>
   late Color? _backgroundColor;
   late Color? _pegShadowColor;
   late Color? _backgroundShadowColor;
-  final double _width = 75;
+  final double _width = 65;
   late final Duration _duration;
   late double _offset;
 
@@ -58,7 +59,7 @@ class _ThemedToggleState extends State<ThemedToggle>
     _pegShadowColor = widget.pegEnabledShadowColor ??
         Theme.of(context).shadowColor.withOpacity(0.6);
     _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
-        Theme.of(context).primaryColor.withOpacity(0.6);
+        Theme.of(context).primaryColor.withOpacity(0.7);
     _state = !_state;
     _offset = 10;
     _controller.forward();
@@ -72,6 +73,7 @@ class _ThemedToggleState extends State<ThemedToggle>
     _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
         Theme.of(context).disabledColor.withOpacity(0.6);
     _state = !_state;
+    _offset = -10;
     _controller.reverse();
   }
 
@@ -91,9 +93,21 @@ class _ThemedToggleState extends State<ThemedToggle>
   @override
   void didChangeDependencies() {
     if (_state == true) {
-      _toggleOn();
+      _backgroundColor =
+          widget.backgroundEnabledColor ?? Theme.of(context).primaryColor;
+      _pegShadowColor = widget.pegEnabledShadowColor ??
+          Theme.of(context).shadowColor.withOpacity(0.6);
+      _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
+          Theme.of(context).primaryColor.withOpacity(0.7);
+      _offset = 10;
     } else {
-      _toggleOff();
+      _backgroundColor =
+          widget.backgroundEnabledColor ?? Theme.of(context).disabledColor;
+      _pegShadowColor = widget.pegEnabledShadowColor ??
+          Theme.of(context).shadowColor.withOpacity(0.6);
+      _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
+          Theme.of(context).disabledColor.withOpacity(0.6);
+      _offset = -10;
     }
     super.didChangeDependencies();
   }
