@@ -118,7 +118,8 @@ class Settings extends StatelessWidget {
                 Setting(
                   label: 'Haptics',
                   preference: ThemedToggle(
-                    onChanged: (state) {},
+                    onChanged: (state) => _theme.setHaptics(state),
+                    defaultState: _theme.haptics,
                   ),
                 ),
                 Setting.clickable(
