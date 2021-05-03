@@ -206,10 +206,7 @@ class AuthService {
   }
 
   // Change Password
-  Future changePassword(
-      {required String oldPassword,
-      required String newPassword,
-      context}) async {
+  Future verifyCurrentPassword(String password) async {
     try {} catch (e) {}
   }
 

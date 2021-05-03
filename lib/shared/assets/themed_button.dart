@@ -125,14 +125,14 @@ class _ThemedButtonState extends State<ThemedButton> {
           HapticFeedback.mediumImpact();
         }
       },
-      onTapDown: (TapDownDetails) => setState(() {
+      onTapDown: (details) => setState(() {
         _animateDown();
         SystemSound.play(SystemSoundType.click);
         if (widget.tapFeedback == true && _theme.haptics == true) {
           HapticFeedback.lightImpact();
         }
       }),
-      onTapUp: (TapUpDetails) => setState(() => _animateUp()),
+      onTapUp: (details) => setState(() => _animateUp()),
       onTapCancel: () => setState(() => _animateUp()),
       // * AnimatedContainer
       child: AnimatedContainer(
@@ -261,14 +261,14 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton> {
           HapticFeedback.mediumImpact();
         }
       },
-      onTapDown: (TapDownDetails) => setState(() {
+      onTapDown: (details) => setState(() {
         _animateDown();
         SystemSound.play(SystemSoundType.click);
         if (widget.tapFeedback == true && _theme.haptics == true) {
           HapticFeedback.lightImpact();
         }
       }),
-      onTapUp: (TapUpDetails) => setState(() => _animateUp()),
+      onTapUp: (details) => setState(() => _animateUp()),
       onTapCancel: () => setState(() => _animateUp()),
       // * AnimatedContainer
       child: AnimatedContainer(

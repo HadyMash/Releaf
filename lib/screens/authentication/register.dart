@@ -9,15 +9,16 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:email_validator/email_validator.dart';
 
+// ignore: must_be_immutable
 class Register extends StatefulWidget {
   String? email;
   String? password;
   bool? animate;
 
   Register({this.email, this.password, this.animate}) {
-    email ?? '';
-    password ?? '';
-    animate ?? true;
+    email = email ?? '';
+    password = password ?? '';
+    animate = animate ?? true;
   }
 
   @override

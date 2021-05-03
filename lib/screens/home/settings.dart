@@ -120,6 +120,9 @@ class Settings extends StatelessWidget {
                   preference: ThemedToggle(
                     onChanged: (state) => _theme.setHaptics(state),
                     defaultState: _theme.haptics,
+                    icon: Icon(Icons.clear_rounded),
+                    enabledIcon: Icon(Icons.check_rounded),
+                    tapFeedback: true,
                   ),
                 ),
                 Setting.clickable(
@@ -241,6 +244,7 @@ class Settings extends StatelessWidget {
   }
 }
 
+// TODO make shadow color change on theme change.
 class Setting extends StatefulWidget {
   final String label;
   final Widget? preference;
@@ -286,6 +290,7 @@ class _SettingState extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
+    final _theme = Provider.of<AppTheme>(context);
     return widget.heroTag == null
         ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),

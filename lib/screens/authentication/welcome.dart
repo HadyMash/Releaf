@@ -102,6 +102,7 @@ class Welcome extends StatelessWidget {
                                 ),
                               ),
                               tapDownFeedback: true,
+                              tapFeedback: true,
                             ),
                             SizedBox(height: 30),
                             ThemedButton.icon(
@@ -121,6 +122,7 @@ class Welcome extends StatelessWidget {
                               ),
                               onPressed: () => _auth.logInWithGoogle(),
                               tapDownFeedback: true,
+                              tapFeedback: true,
                             ),
                             SizedBox(height: 20),
                           ],

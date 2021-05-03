@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_form_field.dart';
@@ -9,15 +10,16 @@ import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 
+// ignore: must_be_immutable
 class LogIn extends StatefulWidget {
   String? email;
   String? password;
   bool? animate;
 
   LogIn({this.email, this.password, this.animate}) {
-    email ?? '';
-    password ?? '';
-    animate ?? true;
+    email = email ?? '';
+    password = password ?? '';
+    animate = animate ?? true;
   }
 
   @override
@@ -54,7 +56,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
 
   late AnimationController _topBarAnimController;
   late Animation<double> _topBarAnim;
-
   @override
   void initState() {
     super.initState();
@@ -93,6 +94,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    final _theme = Provider.of<AppTheme>(context);
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 

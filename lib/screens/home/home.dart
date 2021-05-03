@@ -16,8 +16,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // double _borderRadius = 25;
-  double _borderRadius = 0;
+  double _borderRadius = 25;
+  // double _borderRadius = 0;
 
   int _currentIndex = 2;
   final List<Widget> _pages = <Widget>[
