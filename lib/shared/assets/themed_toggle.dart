@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +10,9 @@ class ThemedToggle extends StatefulWidget {
   // * Variables
   final ValueChanged<bool> onChanged;
   final bool? defaultState;
+  final Widget? icon;
+  final Widget? enabledIcon;
+  late final bool transformIcon;
   final Color? pegColor;
   final Color? backgroundDisabledColor;
   final Color? backgroundEnabledColor;
@@ -23,6 +28,8 @@ class ThemedToggle extends StatefulWidget {
   ThemedToggle({
     required this.onChanged,
     this.defaultState,
+    this.icon,
+    this.enabledIcon,
     this.pegColor,
     this.backgroundDisabledColor,
     this.backgroundEnabledColor,
@@ -34,7 +41,9 @@ class ThemedToggle extends StatefulWidget {
     this.duration,
     this.tapFeedback,
     this.tapDownFeedback,
-  });
+  }) {
+    transformIcon = enabledIcon != null ? true : false;
+  }
 
   @override
   _ThemedToggleState createState() => _ThemedToggleState();
@@ -80,7 +89,7 @@ class _ThemedToggleState extends State<ThemedToggle>
   @override
   void initState() {
     _state = widget.defaultState ?? false;
-    _duration = widget.duration ?? Duration(milliseconds: 266);
+    _duration = widget.duration ?? Duration(milliseconds: 399);
 
     _controller = AnimationController(
       vsync: this,
@@ -100,6 +109,7 @@ class _ThemedToggleState extends State<ThemedToggle>
       _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
           Theme.of(context).primaryColor.withOpacity(0.7);
       _offset = 10;
+      _controller.animateTo(1);
     } else {
       _backgroundColor =
           widget.backgroundEnabledColor ?? Theme.of(context).disabledColor;
@@ -108,6 +118,7 @@ class _ThemedToggleState extends State<ThemedToggle>
       _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
           Theme.of(context).disabledColor.withOpacity(0.6);
       _offset = -10;
+      _controller.animateBack(0);
     }
     super.didChangeDependencies();
   }
@@ -160,13 +171,17 @@ class _ThemedToggleState extends State<ThemedToggle>
               offset: Offset(
                   (_animation.value * (_width - 31)) - (((_width - 31) / 2)),
                   0),
-              child: child,
+              child: Transform.rotate(
+                angle: (pi * _animation.value) - pi,
+                child: child,
+              ),
             );
           },
           child: AnimatedContainer(
+            duration: _duration,
             height: 30,
             width: 30,
-            duration: _duration,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: widget.pegColor ?? Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.circular(10000),
@@ -178,6 +193,32 @@ class _ThemedToggleState extends State<ThemedToggle>
                 ),
               ],
             ),
+            child: widget.transformIcon == true
+                ? Stack(
+                    children: [
+                      AnimatedBuilder(
+                        animation: _animation,
+                        builder: (context, child) {
+                          return Opacity(
+                            opacity: (_animation.value - 1).abs(),
+                            child: child,
+                          );
+                        },
+                        child: widget.icon,
+                      ),
+                      AnimatedBuilder(
+                        animation: _animation,
+                        builder: (context, child) {
+                          return Opacity(
+                            opacity: _animation.value,
+                            child: child,
+                          );
+                        },
+                        child: widget.enabledIcon,
+                      ),
+                    ],
+                  )
+                : widget.icon,
           ),
         ),
       ),
