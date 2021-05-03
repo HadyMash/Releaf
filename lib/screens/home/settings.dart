@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
 import 'package:releaf/screens/home/setting_popup.dart';
+import 'package:releaf/shared/assets/themed_toggle.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/services/auth.dart';
@@ -117,9 +117,8 @@ class Settings extends StatelessWidget {
                 ),
                 Setting(
                   label: 'Haptics',
-                  preference: ElevatedButton(
-                    child: Text('test'),
-                    onPressed: () {},
+                  preference: ThemedToggle(
+                    onChanged: (state) {},
                   ),
                 ),
                 Setting.clickable(

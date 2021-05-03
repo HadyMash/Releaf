@@ -81,8 +81,7 @@ class ThemedButton extends StatefulWidget {
   _ThemedButtonState createState() => _ThemedButtonState();
 }
 
-class _ThemedButtonState extends State<ThemedButton>
-    with SingleTickerProviderStateMixin {
+class _ThemedButtonState extends State<ThemedButton> {
   // Variables
   late Color _color;
   late Color _shadowColor;
@@ -138,7 +137,7 @@ class _ThemedButtonState extends State<ThemedButton>
       // * AnimatedContainer
       child: AnimatedContainer(
         duration: Duration(milliseconds: 133),
-        margin: widget.margin ?? EdgeInsets.all(0),
+        margin: widget.margin,
         padding: widget.padding ??
             EdgeInsets.symmetric(
               vertical: 8.0,
@@ -149,10 +148,11 @@ class _ThemedButtonState extends State<ThemedButton>
           borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
           boxShadow: [
             BoxShadow(
-                blurRadius: _shadowBlurRadius,
-                spreadRadius: _shadowSpreadRadius,
-                color: _shadowColor,
-                offset: _shadowOffset),
+              blurRadius: _shadowBlurRadius,
+              spreadRadius: _shadowSpreadRadius,
+              color: _shadowColor,
+              offset: _shadowOffset,
+            )
           ],
         ),
         // Text
@@ -231,8 +231,7 @@ class ThemedFlatButton extends StatefulWidget {
   _ThemedFlattButtonState createState() => _ThemedFlattButtonState();
 }
 
-class _ThemedFlattButtonState extends State<ThemedFlatButton>
-    with SingleTickerProviderStateMixin {
+class _ThemedFlattButtonState extends State<ThemedFlatButton> {
   // Variables
   late Color _color;
 
