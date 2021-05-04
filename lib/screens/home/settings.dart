@@ -289,6 +289,12 @@ class _SettingState extends State<Setting> {
   }
 
   @override
+  void didChangeDependencies() {
+    _animateUp();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _theme = Provider.of<AppTheme>(context);
     return widget.heroTag == null
