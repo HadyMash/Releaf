@@ -139,6 +139,8 @@ class _ThemedToggleState extends State<ThemedToggle>
       onTapDown: (details) {
         //animate down
 
+        SystemSound.play(SystemSoundType.click);
+
         if (widget.tapDownFeedback == true && _theme.haptics == true) {
           HapticFeedback.lightImpact();
         }
