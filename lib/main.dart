@@ -119,6 +119,86 @@ class _ThemedAppState extends State<ThemedApp> {
       future: theme.getSavedData(),
       builder: (context, snapshot) {
         return MaterialApp(
+          builder: (context, child) {
+            final double height = MediaQuery.of(context).size.height;
+            final theme = Provider.of<AppTheme>(context);
+
+            theme.light = ThemeData(
+              brightness: Brightness.light,
+              scaffoldBackgroundColor: Colors.grey[200],
+              backgroundColor: Colors.white,
+              primaryColor: Colors.green,
+              accentColor: Colors.greenAccent[400],
+              shadowColor: Colors.black,
+              disabledColor: Colors.grey,
+              appBarTheme: AppBarTheme(
+                brightness: Brightness.light,
+                backgroundColor: Colors.white.withAlpha(0),
+                elevation: 0,
+                centerTitle: false,
+                titleSpacing: 28,
+                titleTextStyle: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              textTheme: TextTheme(
+                headline1: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32 - ((926 * 0.01) - (height * 0.01)),
+                ),
+                headline2: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 28 - ((926 * 0.008) - (height * 0.008)),
+                ),
+                headline3: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40 - ((926 * 0.008) - (height * 0.008)),
+                  height: 1,
+                ),
+                headline4: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 30 - ((926 * 0.008) - (height * 0.008)),
+                  color: Colors.grey[800],
+                  fontWeight: FontWeight.w700,
+                ),
+                subtitle1: TextStyle(
+                  // TextFields
+                  fontFamily: 'Poppins',
+                ),
+                subtitle2: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 26 - ((926 * 0.008) - (height * 0.008)),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+                bodyText1: TextStyle(),
+                bodyText2: TextStyle(),
+                caption: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18 - ((926 * 0.008) - (height * 0.008)),
+                ),
+                button: TextStyle(
+                  fontFamily:
+                      'Poppins', // TODO find font similar to Rift for buttons
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 18 - ((926 * 0.008) - (height * 0.008)),
+                ),
+              ),
+              iconTheme: IconThemeData(color: Colors.black),
+              accentIconTheme: IconThemeData(color: Colors.white),
+            );
+
+            return child!;
+          },
           home: Wrapper(),
           theme: theme.light,
           darkTheme: theme.dark,
