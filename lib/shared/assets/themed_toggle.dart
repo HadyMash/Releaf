@@ -153,7 +153,6 @@ class _ThemedToggleState extends State<ThemedToggle>
         }
       },
       onTapDown: (details) {
-        //animate down
         _tapDown();
 
         SystemSound.play(SystemSoundType.click);
@@ -162,16 +161,12 @@ class _ThemedToggleState extends State<ThemedToggle>
           HapticFeedback.lightImpact();
         }
       },
-      onTapUp: (details) {
-        // animate up
-        setState(() => _animateUp());
-      },
+      onTapUp: (details) => _animateUp(),
       onTapCancel: () => _animateUp(),
       // TODO Make toggle work with drag right and left
       child: AnimatedContainer(
         duration: _duration,
         margin: widget.margin,
-        // padding: EdgeInsets.symmetric(vertical: 2),
         width: _width,
         alignment: Alignment.center,
         decoration: BoxDecoration(
