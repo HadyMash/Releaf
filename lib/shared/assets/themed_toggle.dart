@@ -50,7 +50,7 @@ class ThemedToggle extends StatefulWidget {
 }
 
 class _ThemedToggleState extends State<ThemedToggle>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late bool _state;
   late Color? _backgroundColor;
   late Color? _pegShadowColor;
@@ -61,6 +61,8 @@ class _ThemedToggleState extends State<ThemedToggle>
 
   late AnimationController _controller;
   late CurvedAnimation _animation;
+  late AnimationController _scaleController;
+  late CurvedAnimation _scaleAnimation;
 
   void _toggleOn() {
     _backgroundColor =
@@ -87,9 +89,13 @@ class _ThemedToggleState extends State<ThemedToggle>
   }
 
   // TODO make animations for on tap down and up
-  void _tapDown() {}
+  void _tapDown() {
+    _scaleController.forward();
+  }
 
-  void _tapUp() {}
+  void _animateUp() {
+    _scaleController.reverse();
+  }
 
   @override
   void initState() {
@@ -101,11 +107,22 @@ class _ThemedToggleState extends State<ThemedToggle>
       duration: _duration,
     );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: _duration,
+    );
+    _scaleAnimation = CurvedAnimation(
+      parent: _scaleController,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
+    _scaleController.animateTo(0);
     if (_state == true) {
       _backgroundColor =
           widget.backgroundEnabledColor ?? Theme.of(context).primaryColor;
@@ -143,6 +160,7 @@ class _ThemedToggleState extends State<ThemedToggle>
       },
       onTapDown: (details) {
         //animate down
+        _tapDown();
 
         SystemSound.play(SystemSoundType.click);
 
@@ -152,7 +170,9 @@ class _ThemedToggleState extends State<ThemedToggle>
       },
       onTapUp: (details) {
         // animate up
+        setState(() => _animateUp());
       },
+      onTapCancel: () => _animateUp(),
       // TODO Make toggle work with drag right and left
       child: AnimatedContainer(
         duration: _duration,
@@ -184,52 +204,61 @@ class _ThemedToggleState extends State<ThemedToggle>
               ),
             );
           },
-          child: Container(
-            height: 35,
-            width: 35,
-            alignment: Alignment.center,
-            child: AnimatedContainer(
-              duration: _duration,
-              height: 30,
-              width: 30,
+          child: AnimatedBuilder(
+            animation: _scaleAnimation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: 1 - (_scaleAnimation.value * 0.2),
+                child: child,
+              );
+            },
+            child: Container(
+              height: 35,
+              width: 35,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: widget.pegColor ?? Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(10000),
-                boxShadow: [
-                  BoxShadow(
-                    color: _pegShadowColor!,
-                    blurRadius: 14.0,
-                    spreadRadius: 0.0,
-                  ),
-                ],
+              child: AnimatedContainer(
+                duration: _duration,
+                height: 30,
+                width: 30,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: widget.pegColor ?? Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.circular(10000),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _pegShadowColor!,
+                      blurRadius: 14.0,
+                      spreadRadius: 0.0,
+                    ),
+                  ],
+                ),
+                child: widget.transformIcon == true
+                    ? Stack(
+                        children: [
+                          AnimatedBuilder(
+                            animation: _animation,
+                            builder: (context, child) {
+                              return Opacity(
+                                opacity: (_animation.value - 1).abs(),
+                                child: child,
+                              );
+                            },
+                            child: widget.icon,
+                          ),
+                          AnimatedBuilder(
+                            animation: _animation,
+                            builder: (context, child) {
+                              return Opacity(
+                                opacity: _animation.value,
+                                child: child,
+                              );
+                            },
+                            child: widget.enabledIcon,
+                          ),
+                        ],
+                      )
+                    : widget.icon,
               ),
-              child: widget.transformIcon == true
-                  ? Stack(
-                      children: [
-                        AnimatedBuilder(
-                          animation: _animation,
-                          builder: (context, child) {
-                            return Opacity(
-                              opacity: (_animation.value - 1).abs(),
-                              child: child,
-                            );
-                          },
-                          child: widget.icon,
-                        ),
-                        AnimatedBuilder(
-                          animation: _animation,
-                          builder: (context, child) {
-                            return Opacity(
-                              opacity: _animation.value,
-                              child: child,
-                            );
-                          },
-                          child: widget.enabledIcon,
-                        ),
-                      ],
-                    )
-                  : widget.icon,
             ),
           ),
         ),
