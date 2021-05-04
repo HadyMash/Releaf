@@ -55,7 +55,7 @@ class _ThemedToggleState extends State<ThemedToggle>
   late Color? _backgroundColor;
   late Color? _pegShadowColor;
   late Color? _backgroundShadowColor;
-  final double _width = 65;
+  final double _width = 75;
   late final Duration _duration;
   late double _offset;
 
@@ -85,6 +85,11 @@ class _ThemedToggleState extends State<ThemedToggle>
     _offset = -10;
     _controller.reverse();
   }
+
+  // TODO make animations for on tap down and up
+  void _tapDown() {}
+
+  void _tapUp() {}
 
   @override
   void initState() {
@@ -171,7 +176,7 @@ class _ThemedToggleState extends State<ThemedToggle>
           builder: (context, child) {
             return Transform.translate(
               offset: Offset(
-                  (_animation.value * (_width - 31)) - (((_width - 31) / 2)),
+                  (_animation.value * (_width - 36)) - (((_width - 36) / 2)),
                   0),
               child: Transform.rotate(
                 angle: (pi * _animation.value) - pi,
@@ -179,48 +184,53 @@ class _ThemedToggleState extends State<ThemedToggle>
               ),
             );
           },
-          child: AnimatedContainer(
-            duration: _duration,
-            height: 30,
-            width: 30,
+          child: Container(
+            height: 35,
+            width: 35,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: widget.pegColor ?? Theme.of(context).backgroundColor,
-              borderRadius: BorderRadius.circular(10000),
-              boxShadow: [
-                BoxShadow(
-                  color: _pegShadowColor!,
-                  blurRadius: 14.0,
-                  spreadRadius: 0.0,
-                ),
-              ],
+            child: AnimatedContainer(
+              duration: _duration,
+              height: 30,
+              width: 30,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: widget.pegColor ?? Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.circular(10000),
+                boxShadow: [
+                  BoxShadow(
+                    color: _pegShadowColor!,
+                    blurRadius: 14.0,
+                    spreadRadius: 0.0,
+                  ),
+                ],
+              ),
+              child: widget.transformIcon == true
+                  ? Stack(
+                      children: [
+                        AnimatedBuilder(
+                          animation: _animation,
+                          builder: (context, child) {
+                            return Opacity(
+                              opacity: (_animation.value - 1).abs(),
+                              child: child,
+                            );
+                          },
+                          child: widget.icon,
+                        ),
+                        AnimatedBuilder(
+                          animation: _animation,
+                          builder: (context, child) {
+                            return Opacity(
+                              opacity: _animation.value,
+                              child: child,
+                            );
+                          },
+                          child: widget.enabledIcon,
+                        ),
+                      ],
+                    )
+                  : widget.icon,
             ),
-            child: widget.transformIcon == true
-                ? Stack(
-                    children: [
-                      AnimatedBuilder(
-                        animation: _animation,
-                        builder: (context, child) {
-                          return Opacity(
-                            opacity: (_animation.value - 1).abs(),
-                            child: child,
-                          );
-                        },
-                        child: widget.icon,
-                      ),
-                      AnimatedBuilder(
-                        animation: _animation,
-                        builder: (context, child) {
-                          return Opacity(
-                            opacity: _animation.value,
-                            child: child,
-                          );
-                        },
-                        child: widget.enabledIcon,
-                      ),
-                    ],
-                  )
-                : widget.icon,
           ),
         ),
       ),
