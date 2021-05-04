@@ -57,7 +57,6 @@ class _ThemedToggleState extends State<ThemedToggle>
   late Color? _backgroundShadowColor;
   final double _width = 75;
   late final Duration _duration;
-  late double _offset;
 
   late AnimationController _controller;
   late CurvedAnimation _animation;
@@ -72,7 +71,6 @@ class _ThemedToggleState extends State<ThemedToggle>
     _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
         Theme.of(context).primaryColor.withOpacity(0.7);
     _state = !_state;
-    _offset = 10;
     _controller.forward();
   }
 
@@ -84,11 +82,9 @@ class _ThemedToggleState extends State<ThemedToggle>
     _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
         Theme.of(context).disabledColor.withOpacity(0.6);
     _state = !_state;
-    _offset = -10;
     _controller.reverse();
   }
 
-  // TODO make animations for on tap down and up
   void _tapDown() {
     _scaleController.forward();
   }
@@ -130,7 +126,6 @@ class _ThemedToggleState extends State<ThemedToggle>
           Theme.of(context).shadowColor.withOpacity(0.6);
       _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
           Theme.of(context).primaryColor.withOpacity(0.7);
-      _offset = 10;
       _controller.animateTo(1);
     } else {
       _backgroundColor =
@@ -139,7 +134,6 @@ class _ThemedToggleState extends State<ThemedToggle>
           Theme.of(context).shadowColor.withOpacity(0.6);
       _backgroundShadowColor = widget.backgroundEnabledShadowColor ??
           Theme.of(context).disabledColor.withOpacity(0.6);
-      _offset = -10;
       _controller.animateBack(0);
     }
     super.didChangeDependencies();
