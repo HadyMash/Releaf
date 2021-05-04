@@ -111,7 +111,7 @@ class _ThemedToggleState extends State<ThemedToggle>
     _scaleAnimation = CurvedAnimation(
       parent: _scaleController,
       curve: Curves.easeOutCubic,
-      reverseCurve: Curves.easeInCubic,
+      reverseCurve: Curves.easeInQuart,
     );
     super.initState();
   }
