@@ -146,7 +146,7 @@ class _ThemedAppState extends State<ThemedApp> {
                   fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 32 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 32 - ((926 * 0.008) - (height * 0.008)),
                 ),
                 headline2: TextStyle(
                   fontFamily: 'Poppins',
