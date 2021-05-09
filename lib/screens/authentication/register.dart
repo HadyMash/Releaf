@@ -134,6 +134,7 @@ class _RegisterState extends State<Register>
                         );
                       },
                       child: Material(
+                        color: Colors.white.withOpacity(0),
                         child: Container(
                           color: Theme.of(context).primaryColor,
                           child: Padding(
@@ -220,6 +221,7 @@ class _RegisterState extends State<Register>
                     ),
                     SizedBox(height: _showingErrors ? 13 : 30),
                     Material(
+                      color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
@@ -241,6 +243,7 @@ class _RegisterState extends State<Register>
                             children: <Widget>[
                               // * Email
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _emailFocusNode,
                                   onTap: () => setState(() {}),
@@ -289,6 +292,7 @@ class _RegisterState extends State<Register>
                               ),
                               SizedBox(height: _showingErrors ? 10 : 20),
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
@@ -334,6 +338,7 @@ class _RegisterState extends State<Register>
                               ),
                               SizedBox(height: _showingErrors ? 10 : 20),
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _confirmPasswordFocusNode,
                                   obscureText: true,
