@@ -151,6 +151,7 @@ class AuthService {
 
   // Transfer Account to a new email
   Future updateEmail({required String newEmail, required context}) async {
+    // TODO use verifyBeforeUpdateEmail
     try {
       if (_auth.currentUser != null) {
         await _auth.currentUser!.updateEmail(newEmail);
@@ -207,7 +208,64 @@ class AuthService {
 
   // Change Password
   Future verifyCurrentPassword(String password) async {
-    try {} catch (e) {}
+    try {
+      User? user = _auth.currentUser;
+
+      var authCredential =
+          EmailAuthProvider.credential(email: user!.email!, password: password);
+
+      var authResult = await user.reauthenticateWithCredential(authCredential);
+
+      return authResult.user != null;
+    } catch (e) {
+      print(e.toString());
+      return getError(e.toString());
+    }
+  }
+
+  Future updatePassword({
+    required String oldPassword,
+    required String newPassword,
+    required BuildContext context,
+  }) async {
+    // TODO add verification code logic
+    try {
+      dynamic oldPasswordVerified = await verifyCurrentPassword(oldPassword);
+      if (oldPasswordVerified == true) {
+        await _auth.currentUser!.updatePassword(newPassword);
+        final snackBar = SnackBar(
+          content: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Icon(Icons.check_circle_rounded, color: Colors.green),
+              ),
+              Expanded(
+                child: Text('Success, your password has been changed.'),
+              ),
+            ],
+          ),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return true;
+      }
+    } catch (e) {
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.error_rounded, color: Colors.red[700]),
+            ),
+            Expanded(child: Text('An Error has occured.')),
+          ],
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return getError(e.toString());
+    }
   }
 
   // log out

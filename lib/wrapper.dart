@@ -8,6 +8,8 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class Wrapper extends StatelessWidget {
+  // TODO make wrapper transition between screens and use navigator's first route to change them.
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);

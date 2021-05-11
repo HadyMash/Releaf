@@ -20,7 +20,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   FocusNode _newPasswordFocusNode = new FocusNode();
   FocusNode _confirmPasswordFocusNode = new FocusNode();
   String _oldPassword = '';
-  String _password = '';
+  String? _oldPasswordError;
+  String _newPassword = '';
   String? _error;
 
   @override
@@ -86,30 +87,57 @@ class _ChangePasswordState extends State<ChangePassword> {
                   onChanged: (val) {
                     setState(() => _oldPassword = val);
                   },
-                  decoration: _theme.inputDecoration.copyWith(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
                     labelText: 'Old Password',
                     labelStyle: TextStyle(
-                      color: _oldPasswordFocusNode.hasFocus
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey,
+                      color:
+                          (_oldPasswordError == null || _oldPasswordError == '')
+                              ? (_oldPasswordFocusNode.hasFocus
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey)
+                              : Theme.of(context).errorColor,
                     ),
+                    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+                    enabledBorder: CustomWidgetBorder(
+                        color:
+                            _oldPasswordError == null || _oldPasswordError == ''
+                                ? Colors.grey
+                                : Theme.of(context).errorColor,
+                        width: 1.2),
+                    errorBorder:
+                        CustomWidgetBorder(color: Colors.red[300], width: 1.5),
+                    focusedErrorBorder:
+                        CustomWidgetBorder(color: Colors.red[300], width: 2.4),
+                    errorStyle: TextStyle(fontSize: 14),
                     focusedBorder: CustomWidgetBorder(
-                        color: Theme.of(context).primaryColor, width: 2.2),
+                        color:
+                            _oldPasswordError == null || _oldPasswordError == ''
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).errorColor,
+                        width: 2.2),
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: _oldPasswordFocusNode.hasFocus
-                          ? Theme.of(context).primaryColor
-                          : Colors.grey,
+                      color:
+                          _oldPasswordError == null || _oldPasswordError == ''
+                              ? (_oldPasswordFocusNode.hasFocus
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey)
+                              : Theme.of(context).errorColor,
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         Icons.clear,
-                        color: _oldPasswordFocusNode.hasFocus
-                            ? Theme.of(context).primaryColor
-                            : Colors.grey,
+                        color:
+                            _oldPasswordError == null || _oldPasswordError == ''
+                                ? (_oldPasswordFocusNode.hasFocus
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.grey)
+                                : Theme.of(context).errorColor,
                       ),
                       onPressed: () => print('clear'),
                     ),
+                    errorText: _oldPasswordError,
                   ),
                 ),
                 // * Enter new password
@@ -127,7 +155,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                   autocorrect: false,
                   onChanged: (val) {
-                    setState(() => _password = val);
+                    setState(() => _newPassword = val);
                   },
                   decoration: _theme.inputDecoration.copyWith(
                     labelText: 'Password',
@@ -165,7 +193,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       return 'Please enter a password';
                     } else if (val.length < 8) {
                       return 'Password needs to be at least 8 characters';
-                    } else if (val != _password) {
+                    } else if (val != _newPassword) {
                       return 'Passwords do not match';
                     }
                   },
@@ -213,7 +241,36 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 ThemedButton(
                   label: 'Change Password',
-                  onPressed: () async {},
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      dynamic oldPassResult =
+                          await _auth.verifyCurrentPassword(_oldPassword);
+                      print('result: $oldPassResult');
+                      if (oldPassResult != true) {
+                        setState(() {
+                          if (oldPassResult == 'Incorrect Email or Password') {
+                            _oldPasswordError = 'Incorrect Password';
+                          } else {
+                            _oldPasswordError = oldPassResult;
+                          }
+                        });
+                      } else if (oldPassResult == true) {
+                        setState(() => _oldPasswordError = null);
+                        dynamic newPassResult = await _auth.updatePassword(
+                          oldPassword: _oldPassword,
+                          newPassword: _newPassword,
+                          context: context,
+                        );
+                        if (newPassResult == true) {
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                          Navigator.pop(context);
+                        }
+                      }
+                    }
+                  },
                 )
               ],
             ),
