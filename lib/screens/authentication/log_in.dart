@@ -135,6 +135,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                         );
                       },
                       child: Material(
+                        color: Colors.white.withOpacity(0),
                         child: Container(
                           color: Theme.of(context).primaryColor,
                           child: Padding(
@@ -215,6 +216,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                     ),
                     SizedBox(height: 40),
                     Material(
+                      color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
@@ -237,6 +239,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                             children: <Widget>[
                               // * Email
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _emailFocusNode,
                                   onTap: () => setState(() {}),
@@ -284,6 +287,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                               ),
                               SizedBox(height: 20),
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _passwordFocusNode,
                                   initialValue: widget.password,
@@ -524,6 +528,7 @@ class _ResetPasswordState extends State<ResetPassword>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Material(
+                      color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Theme.of(context).primaryColor,
                         child: Padding(
@@ -554,6 +559,7 @@ class _ResetPasswordState extends State<ResetPassword>
                     ),
                     SizedBox(height: 40),
                     Material(
+                      color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
@@ -576,6 +582,7 @@ class _ResetPasswordState extends State<ResetPassword>
                             children: <Widget>[
                               // * Email
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _emailFocusNode,
                                   onTap: () => setState(() {}),
@@ -782,6 +789,7 @@ class _LogInMockState extends State<LogInMock>
                         );
                       },
                       child: Material(
+                        color: Colors.white.withOpacity(0),
                         child: Container(
                           color: Theme.of(context).primaryColor,
                           child: Padding(
@@ -839,6 +847,7 @@ class _LogInMockState extends State<LogInMock>
                     ),
                     SizedBox(height: 40),
                     Material(
+                      color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
@@ -861,6 +870,7 @@ class _LogInMockState extends State<LogInMock>
                             children: <Widget>[
                               // * Email
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   onTap: () => setState(() {}),
                                   keyboardType: TextInputType.emailAddress,
@@ -899,6 +909,7 @@ class _LogInMockState extends State<LogInMock>
                               ),
                               SizedBox(height: 20),
                               Material(
+                                color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   obscureText: true,
                                   validator: (val) {
