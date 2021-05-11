@@ -29,6 +29,7 @@ void main() async {
               primaryColor: Colors.green,
               accentColor: Colors.greenAccent[400],
               shadowColor: Colors.black,
+              errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
