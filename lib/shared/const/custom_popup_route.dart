@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class CustomPopupRoute extends PopupRoute {
@@ -39,11 +41,20 @@ class CustomPopupRoute extends PopupRoute {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    return Transform(
-      transform: Matrix4.diagonal3Values(1,
-          CurvedAnimation(curve: Curves.easeInOut, parent: animation).value, 1),
-      alignment: FractionalOffset.center,
-      child: child,
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      child: BackdropFilter(
+        filter:
+            ColorFilter.mode(Colors.black.withOpacity(0.55), BlendMode.darken),
+        child: Transform(
+          transform: Matrix4.diagonal3Values(
+              1,
+              CurvedAnimation(curve: Curves.easeInOut, parent: animation).value,
+              1),
+          alignment: FractionalOffset.center,
+          child: child,
+        ),
+      ),
     );
   }
 
