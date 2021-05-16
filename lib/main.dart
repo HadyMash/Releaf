@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:releaf/shared/assets/custom_form_field.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -121,8 +122,26 @@ class _ThemedAppState extends State<ThemedApp> {
       builder: (context, snapshot) {
         return MaterialApp(
           builder: (context, child) {
-            final double height = MediaQuery.of(context).size.height;
             final theme = Provider.of<AppTheme>(context);
+            final height = MediaQuery.of(context).size.height;
+            final width = MediaQuery.of(context).size.width;
+
+            theme.inputDecoration = InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(
+                (10 / 428) * width,
+                (15 / 926) * height,
+                (8 / 428) * width,
+                (20 / 926) * height,
+              ),
+              border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+              enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
+              errorBorder:
+                  CustomWidgetBorder(color: Colors.red[300], width: 1.5),
+              focusedErrorBorder:
+                  CustomWidgetBorder(color: Colors.red[300], width: 2.4),
+              errorStyle:
+                  TextStyle(fontSize: 14 - ((926 * 0.002) - (height * 0.002))),
+            );
 
             theme.light = ThemeData(
               brightness: Brightness.light,
@@ -147,24 +166,24 @@ class _ThemedAppState extends State<ThemedApp> {
                   fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 32 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 32 - ((926 * 0.01) - (height * 0.01)),
                 ),
                 headline2: TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
-                  fontSize: 28 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 28 - ((926 * 0.01) - (height * 0.01)),
                 ),
                 headline3: TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 40 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 40 - ((926 * 0.01) - (height * 0.01)),
                   height: 1,
                 ),
                 headline4: TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 30 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 30 - ((926 * 0.01) - (height * 0.01)),
                   color: Colors.grey[800],
                   fontWeight: FontWeight.w700,
                 ),
@@ -174,24 +193,28 @@ class _ThemedAppState extends State<ThemedApp> {
                 ),
                 subtitle2: TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 26 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 26 - ((926 * 0.01) - (height * 0.01)),
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
-                bodyText1: TextStyle(),
-                bodyText2: TextStyle(),
+                bodyText1: TextStyle(
+                  fontSize: 14 - ((926 * 0.01) - (height * 0.01)),
+                ),
+                bodyText2: TextStyle(
+                  fontSize: 14 - ((926 * 0.01) - (height * 0.01)),
+                ),
                 caption: TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
-                  fontSize: 18 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 18 - ((926 * 0.01) - (height * 0.01)),
                 ),
                 button: TextStyle(
                   fontFamily:
                       'Poppins', // TODO find font similar to Rift for buttons
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
-                  fontSize: 18 - ((926 * 0.008) - (height * 0.008)),
+                  fontSize: 18 - ((926 * 0.01) - (height * 0.01)),
                 ),
               ),
               iconTheme: IconThemeData(color: Colors.black),

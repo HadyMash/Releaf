@@ -219,14 +219,18 @@ class _RegisterState extends State<Register>
                         ),
                       ),
                     ),
-                    SizedBox(height: _showingErrors ? 13 : 30),
+                    SizedBox(
+                        height: _showingErrors
+                            ? (13 / 926) * _height
+                            : (30 / 926) * _height),
                     Material(
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
                           '[Releaf Logo]',
-                          style: TextStyle(fontSize: 40),
+                          style: TextStyle(
+                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
                         ),
                       ),
                     ),
@@ -261,6 +265,10 @@ class _RegisterState extends State<Register>
                                   onChanged: (val) {
                                     setState(() => widget.email = val);
                                   },
+                                  // style: TextStyle(
+                                  //   fontSize: 16 -
+                                  //       ((926 * 0.008) - (_height * 0.008)),
+                                  // ),
                                   decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
@@ -290,7 +298,10 @@ class _RegisterState extends State<Register>
                                   ),
                                 ),
                               ),
-                              SizedBox(height: _showingErrors ? 10 : 20),
+                              SizedBox(
+                                  height: _showingErrors
+                                      ? (10 / 926) * _height
+                                      : (20 / 926) * _height),
                               Material(
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
@@ -336,7 +347,10 @@ class _RegisterState extends State<Register>
                                   ),
                                 ),
                               ),
-                              SizedBox(height: _showingErrors ? 10 : 20),
+                              SizedBox(
+                                  height: _showingErrors
+                                      ? (10 / 926) * _height
+                                      : (20 / 926) * _height),
                               Material(
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
@@ -386,9 +400,9 @@ class _RegisterState extends State<Register>
                               ),
                               SizedBox(
                                   height: _showingErrors
-                                      ? 10
+                                      ? (10 / 926) * _height
                                       : (_error == null || _error == ''
-                                          ? 30
+                                          ? (30 / 926) * _height
                                           : 0)),
                               Padding(
                                 padding: EdgeInsets.symmetric(
@@ -399,7 +413,8 @@ class _RegisterState extends State<Register>
                                     style: TextStyle(
                                       fontSize: (_error == null || _error == '')
                                           ? 0
-                                          : 14,
+                                          : 14 -
+                                              ((926 * 0.01) - (_height * 0.01)),
                                       color: Colors.red[800],
                                     ),
                                     textAlign: TextAlign.center),

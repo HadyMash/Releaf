@@ -56,6 +56,7 @@ class _VerifyState extends State<Verify> {
 
   @override
   Widget build(BuildContext context) {
+    final _height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -78,20 +79,20 @@ class _VerifyState extends State<Verify> {
                           fontFamily: 'Poppins',
                           color: Theme.of(context).textTheme.headline4!.color,
                           fontWeight: FontWeight.bold,
-                          fontSize: 36,
+                          fontSize: 36 - ((926 * 0.01) - (_height * 0.01)),
                         ),
                       ),
                       Text('Please verify your email address.',
                           style: Theme.of(context).textTheme.caption),
-                      SizedBox(height: 20),
+                      SizedBox(height: (20 / 926) * _height),
                       Text(
                         'Checking in $timerCountdown...',
                         style: TextStyle(
                           color: Colors.grey[800],
-                          fontSize: 16,
+                          fontSize: 16 - ((926 * 0.01) - (_height * 0.01)),
                         ),
                       ),
-                      SizedBox(height: 25),
+                      SizedBox(height: (25 / 926) * _height),
                       SizedBox(width: 20),
                       ThemedButton.icon(
                         onPressed: () => _auth.getUser()!.emailVerified
@@ -104,7 +105,7 @@ class _VerifyState extends State<Verify> {
                         label: 'Resend Email',
                         tapDownFeedback: true,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: (20 / 926) * _height),
                       ThemedButton.icon(
                         label: 'Log out',
                         icon: Icon(Icons.logout_rounded,

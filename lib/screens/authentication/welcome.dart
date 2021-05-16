@@ -71,7 +71,8 @@ class Welcome extends StatelessWidget {
                                     'Poppins', // TODO find font similar to Rift for buttons
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
-                                fontSize: 23,
+                                fontSize:
+                                    23 - ((926 * 0.01) - (_height * 0.01)),
                               ),
                               notAllCaps: true,
                               icon: Icon(
@@ -112,7 +113,8 @@ class Welcome extends StatelessWidget {
                                     'Poppins', // TODO find font similar to Rift for buttons
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
-                                fontSize: 23,
+                                fontSize:
+                                    23 - ((926 * 0.01) - (_height * 0.01)),
                               ),
                               notAllCaps: true,
                               icon: Icon(

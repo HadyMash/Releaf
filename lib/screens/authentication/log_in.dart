@@ -33,15 +33,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passwordFocusNode = new FocusNode();
 
-  final inputDecoration = InputDecoration(
-    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
-    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
-    enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
-    errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
-    focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
-    errorStyle: TextStyle(fontSize: 14),
-  );
-
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -214,19 +205,20 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: (40 / 926) * _height),
                     Material(
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
                           '[Releaf Logo]',
-                          style: TextStyle(fontSize: 40),
+                          style: TextStyle(
+                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
                         ),
                       ),
                     ),
-                    // SizedBox(height: 50),
                     Expanded(
+                      // TODO fix all vertical padding to chang based on height
                       child: Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -256,14 +248,24 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   autocorrect: false,
                                   onChanged: (val) =>
                                       setState(() => widget.email = val),
-                                  decoration: inputDecoration.copyWith(
+                                  style: TextStyle(
+                                    fontSize: 16 -
+                                        ((926 * 0.008) - (_height * 0.008)),
+                                  ),
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
                                       color: _emailFocusNode.hasFocus
                                           ? Theme.of(context).primaryColor
                                           : Colors.grey,
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
                                     ),
                                     hintText: 'example@domain.com',
+                                    hintStyle: TextStyle(
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
+                                    ),
                                     focusedBorder: CustomWidgetBorder(
                                         color: Theme.of(context).primaryColor,
                                         width: 2.2),
@@ -285,7 +287,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: (20 / 926) * _height),
                               Material(
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
@@ -302,12 +304,22 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   autocorrect: false,
                                   onChanged: (val) =>
                                       setState(() => widget.password = val),
-                                  decoration: inputDecoration.copyWith(
+                                  style: TextStyle(
+                                    fontSize: 16 -
+                                        ((926 * 0.008) - (_height * 0.008)),
+                                  ),
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
                                       color: _passwordFocusNode.hasFocus
                                           ? Theme.of(context).primaryColor
                                           : Colors.grey,
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
+                                    ),
+                                    hintStyle: TextStyle(
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
                                     ),
                                     focusedBorder: CustomWidgetBorder(
                                         color: Theme.of(context).primaryColor,
@@ -331,8 +343,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      _error == null || _error == '' ? 30 : 0),
+                                  height: _error == null || _error == ''
+                                      ? (30 / 926) * _height
+                                      : 0),
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                   vertical:
@@ -342,7 +355,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                     style: TextStyle(
                                       fontSize: (_error == null || _error == '')
                                           ? 0
-                                          : 14,
+                                          : 14 -
+                                              ((926 * 0.01) - (_height * 0.01)),
                                       color: Colors.red[800],
                                     ),
                                     textAlign: TextAlign.center),
@@ -388,7 +402,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                 tapDownFeedback: true,
                                 tapFeedback: true,
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: (20 / 926) * _height),
                               RichText(
                                 text: TextSpan(
                                   style: TextStyle(
@@ -557,18 +571,18 @@ class _ResetPasswordState extends State<ResetPassword>
                         ),
                       ),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: (40 / 926) * _height),
                     Material(
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
                           '[Releaf Logo]',
-                          style: TextStyle(fontSize: 40),
+                          style: TextStyle(
+                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
                         ),
                       ),
                     ),
-                    // SizedBox(height: 50),
                     Expanded(
                       child: Padding(
                         padding:
@@ -599,6 +613,10 @@ class _ResetPasswordState extends State<ResetPassword>
                                   autocorrect: false,
                                   onChanged: (val) =>
                                       setState(() => widget.email = val),
+                                  style: TextStyle(
+                                    fontSize: 16 -
+                                        ((926 * 0.008) - (_height * 0.008)),
+                                  ),
                                   decoration: inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
@@ -630,8 +648,9 @@ class _ResetPasswordState extends State<ResetPassword>
                               ),
 
                               SizedBox(
-                                  height:
-                                      _error == null || _error == '' ? 30 : 0),
+                                  height: _error == null || _error == ''
+                                      ? (30 / 926) * _height
+                                      : 0),
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                   vertical:
@@ -689,15 +708,6 @@ class _LogInMockState extends State<LogInMock>
     with SingleTickerProviderStateMixin {
   // TODO Simplify Login mock code because it won't be used.
 
-  final inputDecoration = InputDecoration(
-    contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
-    border: CustomWidgetBorder(color: Colors.grey, width: 1.2),
-    enabledBorder: CustomWidgetBorder(color: Colors.grey, width: 1.2),
-    errorBorder: CustomWidgetBorder(color: Colors.red[300], width: 1.5),
-    focusedErrorBorder: CustomWidgetBorder(color: Colors.red[300], width: 2.4),
-    errorStyle: TextStyle(fontSize: 14),
-  );
-
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -750,6 +760,7 @@ class _LogInMockState extends State<LogInMock>
 
   @override
   Widget build(BuildContext context) {
+    final _theme = Provider.of<AppTheme>(context);
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
@@ -845,18 +856,18 @@ class _LogInMockState extends State<LogInMock>
                         ),
                       ),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: (40 / 926) * _height),
                     Material(
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
                         child: Text(
                           '[Releaf Logo]',
-                          style: TextStyle(fontSize: 40),
+                          style: TextStyle(
+                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
                         ),
                       ),
                     ),
-                    // SizedBox(height: 50),
                     Expanded(
                       child: Padding(
                         padding:
@@ -884,12 +895,18 @@ class _LogInMockState extends State<LogInMock>
                                   },
                                   autocorrect: false,
                                   onChanged: (val) => setState(() {}),
-                                  decoration: inputDecoration.copyWith(
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
                                       color: Colors.grey,
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
                                     ),
                                     hintText: 'example@domain.com',
+                                    hintStyle: TextStyle(
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
+                                    ),
                                     focusedBorder: CustomWidgetBorder(
                                         color: Theme.of(context).primaryColor,
                                         width: 2.2),
@@ -907,7 +924,7 @@ class _LogInMockState extends State<LogInMock>
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: (20 / 926) * _height),
                               Material(
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
@@ -921,10 +938,16 @@ class _LogInMockState extends State<LogInMock>
                                   },
                                   autocorrect: false,
                                   onChanged: (val) => setState(() {}),
-                                  decoration: inputDecoration.copyWith(
+                                  decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
                                       color: Colors.grey,
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
+                                    ),
+                                    hintStyle: TextStyle(
+                                      fontSize: 16 -
+                                          ((926 * 0.008) - (_height * 0.008)),
                                     ),
                                     focusedBorder: CustomWidgetBorder(
                                         color: Theme.of(context).primaryColor,
@@ -943,12 +966,12 @@ class _LogInMockState extends State<LogInMock>
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 35),
+                              SizedBox(height: (35 / 926) * _height),
                               ThemedButton(
                                 label: 'Log In',
                                 onPressed: () {},
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: (20 / 926) * _height),
                               RichText(
                                 text: new TextSpan(
                                   style: TextStyle(
