@@ -9,6 +9,7 @@ class AppTheme with ChangeNotifier {
   ThemeMode themeMode = ThemeMode
       .system; // TODO make loading screen so that this can be late and have it initialised.
   late bool haptics;
+  double bottomNavigationBarBorderRadius = 25;
 
   var inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),

@@ -10,6 +10,8 @@ import 'package:releaf/screens/home/dashboard.dart';
 import 'package:releaf/screens/home/journal.dart';
 import 'package:releaf/screens/home/settings.dart';
 
+// TODO get rid of home page and make pages routes instead
+@deprecated
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();

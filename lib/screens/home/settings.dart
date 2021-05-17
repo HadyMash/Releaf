@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
+import 'package:releaf/screens/home/navigation_bar.dart';
 import 'package:releaf/screens/home/setting_popup.dart';
 import 'package:releaf/shared/assets/themed_toggle.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -11,11 +12,12 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
 
 class Settings extends StatelessWidget {
-  // TODO add option to enable or disable haptics throughout the app.
+  void _changePage(int index) {}
+
   @override
   Widget build(BuildContext context) {
     final _auth = new AuthService();
-    final _theme = Provider.of<AppTheme>(context);
+    final theme = Provider.of<AppTheme>(context);
 
     // # Name Setting
     final _nameController =
@@ -109,17 +111,17 @@ class Settings extends StatelessWidget {
                   label: 'Theme',
                   preference: DropdownButton<ThemeMode>(
                       underline: Container(),
-                      value: _theme.themeMode,
+                      value: theme.themeMode,
                       items: themes,
                       onChanged: (newTheme) {
-                        _theme.setTheme(newTheme!);
+                        theme.setTheme(newTheme!);
                       }),
                 ),
                 Setting(
                   label: 'Haptics',
                   preference: ThemedToggle(
-                    onChanged: (state) => _theme.setHaptics(state),
-                    defaultState: _theme.haptics,
+                    onChanged: (state) => theme.setHaptics(state),
+                    defaultState: theme.haptics,
                     icon: Icon(Icons.clear_rounded),
                     enabledIcon: Icon(Icons.check_rounded),
                     tapFeedback: true,
@@ -240,6 +242,7 @@ class Settings extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: ThemedNavigationBar(4),
     );
   }
 }
@@ -296,7 +299,6 @@ class _SettingState extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
-    final _theme = Provider.of<AppTheme>(context);
     return widget.heroTag == null
         ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),

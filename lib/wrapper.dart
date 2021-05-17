@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/screens/authentication/welcome.dart';
-import 'package:releaf/screens/home/home.dart';
+import 'package:releaf/screens/home/dashboard.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
@@ -17,8 +17,10 @@ class Wrapper extends StatelessWidget {
     // ignore: unused_local_variable
     final theme = Provider.of<AppTheme>(context);
 
+    Navigator.popUntil(context, (route) => route.isFirst);
+
     return user == null
         ? Welcome()
-        : (_auth.getUser()!.emailVerified ? Home() : Verify());
+        : (_auth.getUser()!.emailVerified ? Dashboard() : Verify());
   }
 }
