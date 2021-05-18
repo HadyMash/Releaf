@@ -43,9 +43,8 @@ class CustomPopupRoute extends PopupRoute {
   ) {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-      child: BackdropFilter(
-        filter:
-            ColorFilter.mode(Colors.black.withOpacity(0.55), BlendMode.darken),
+      child: Container(
+        color: Colors.black.withOpacity(0.55 * animation.value),
         child: Transform(
           transform: Matrix4.diagonal3Values(
               1,
