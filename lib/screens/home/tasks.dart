@@ -82,10 +82,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
         ),
         onPressed: () {},
       ),
-      bottomNavigationBar: ThemedNavigationBar(
-        pageIndex: 1,
-        animateFloatingActionButton: false,
-      ),
     );
   }
 }

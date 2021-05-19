@@ -70,10 +70,6 @@ class _DashboardState extends State<Dashboard>
           onPressed: () {},
         ),
       ),
-      bottomNavigationBar: ThemedNavigationBar(
-        pageIndex: 2,
-        animateFloatingActionButton: true,
-      ),
     );
   }
 }

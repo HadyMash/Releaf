@@ -7,6 +7,7 @@ import 'package:releaf/screens/home/settings.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
+@deprecated
 class ThemedNavigationBar extends StatelessWidget {
   final int pageIndex;
   final bool animateFloatingActionButton;

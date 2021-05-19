@@ -83,10 +83,6 @@ class _MeditationState extends State<Meditation>
           onPressed: () {},
         ),
       ),
-      bottomNavigationBar: ThemedNavigationBar(
-        pageIndex: 0,
-        animateFloatingActionButton: true,
-      ),
     );
   }
 }

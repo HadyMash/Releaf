@@ -205,33 +205,7 @@ class _SettingsState extends State<Settings>
                   preferencePadding: 10,
                   preference: ThemedFlatButton(
                     label: 'Log out',
-                    onPressed: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
-                      // TODO Add rive animation animation on top of current page to make transition smoother.
-                      Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration: Duration(milliseconds: 300),
-                          pageBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation) {
-                            return Wrapper();
-                          },
-                          transitionsBuilder: (BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child) {
-                            return Align(
-                              child: FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                      _auth.logOut();
-                    },
+                    onPressed: () => _auth.logOut(),
                     tapDownFeedback: true,
                     tapFeedback: true,
                   ),
@@ -313,10 +287,6 @@ class _SettingsState extends State<Settings>
           ),
           onPressed: () {},
         ),
-      ),
-      bottomNavigationBar: ThemedNavigationBar(
-        pageIndex: 4,
-        animateFloatingActionButton: true,
       ),
     );
   }

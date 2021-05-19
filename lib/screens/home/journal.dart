@@ -89,10 +89,6 @@ class _JournalState extends State<Journal> with SingleTickerProviderStateMixin {
         ),
         onPressed: () {},
       ),
-      bottomNavigationBar: ThemedNavigationBar(
-        pageIndex: 3,
-        animateFloatingActionButton: false,
-      ),
     );
   }
 }

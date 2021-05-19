@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +11,6 @@ import 'package:releaf/screens/home/dashboard.dart';
 import 'package:releaf/screens/home/journal.dart';
 import 'package:releaf/screens/home/settings.dart';
 
-// TODO get rid of home page and make pages routes instead
-@deprecated
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -20,26 +19,55 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   double _borderRadius = 25;
   // double _borderRadius = 0;
+  bool animate = true;
 
   int _currentIndex = 2;
-  final List<Widget> _pages = <Widget>[
-    Meditation(),
-    Tasks(false),
-    Dashboard(),
-    Journal(false),
-    Settings(),
-  ];
-
-  void _changePage(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  // final List<Widget> _pages = <Widget>[
+  //   Meditation(),
+  //   Tasks(false),
+  //   Dashboard(),
+  //   Journal(false),
+  //   Settings(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
+    void _changePage(int index) {
+      if (index == 0 || index == 2 || index == 4) {
+        animate = true;
+      } else {
+        animate = false;
+      }
+
+      setState(() {
+        _currentIndex = index;
+      });
+    }
+
+    final List<Widget> pages = <Widget>[
+      Meditation(),
+      Tasks(animate), // TODO make it set the condition
+      Dashboard(),
+      Journal(animate), // TODO make it set the condition
+      Settings(),
+    ];
+
     return Scaffold(
-      body: _pages.elementAt(_currentIndex),
+      body: PageTransitionSwitcher(
+        transitionBuilder: (
+          Widget child,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+        ) {
+          return Align(
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+        child: pages.elementAt(_currentIndex),
+      ),
 
       // TODO make rive icons
       bottomNavigationBar: Container(
