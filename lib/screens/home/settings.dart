@@ -11,6 +11,8 @@ import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
 
+import '../../wrapper.dart';
+
 class Settings extends StatelessWidget {
   void _changePage(int index) {}
 
@@ -182,7 +184,33 @@ class Settings extends StatelessWidget {
                   preferencePadding: 10,
                   preference: ThemedFlatButton(
                     label: 'Log out',
-                    onPressed: () => _auth.logOut(),
+                    onPressed: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      // TODO Add rive animation animation on top of current page to make transition smoother.
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 300),
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return Wrapper();
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return Align(
+                              child: FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                      _auth.logOut();
+                    },
                     tapDownFeedback: true,
                     tapFeedback: true,
                   ),
