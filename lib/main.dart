@@ -79,7 +79,10 @@ void main() async {
                   color: Colors.black,
                 ),
                 bodyText1: TextStyle(),
-                bodyText2: TextStyle(),
+                bodyText2: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                ),
                 caption: TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.black,
@@ -201,7 +204,8 @@ class _ThemedAppState extends State<ThemedApp> {
                   fontSize: 14 - ((926 * 0.01) - (height * 0.01)),
                 ),
                 bodyText2: TextStyle(
-                  fontSize: 14 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 16 - ((926 * 0.01) - (height * 0.01)),
+                  fontWeight: FontWeight.w400,
                 ),
                 caption: TextStyle(
                   fontFamily: 'Poppins',

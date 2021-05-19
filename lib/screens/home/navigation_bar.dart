@@ -9,29 +9,31 @@ import 'package:releaf/shared/const/app_theme.dart';
 
 class ThemedNavigationBar extends StatelessWidget {
   final int pageIndex;
-  ThemedNavigationBar(this.pageIndex);
-
-  final List _pages = [
-    Meditation(),
-    Tasks(),
-    Dashboard(),
-    Journal(),
-    Settings(),
-  ];
+  final bool animateFloatingActionButton;
+  ThemedNavigationBar(
+      {required this.pageIndex, required this.animateFloatingActionButton});
 
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context);
+
+    final List pages = [
+      Meditation(),
+      Tasks(animateFloatingActionButton),
+      Dashboard(),
+      Journal(animateFloatingActionButton),
+      Settings(),
+    ];
 
     void _changePage(index) {
       if (index != pageIndex) {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 250),
+            transitionDuration: Duration(milliseconds: 320),
             pageBuilder: (BuildContext context, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
-              return _pages[index];
+              return pages[index];
             },
             transitionsBuilder: (BuildContext context,
                 Animation<double> animation,

@@ -24,9 +24,9 @@ class _HomeState extends State<Home> {
   int _currentIndex = 2;
   final List<Widget> _pages = <Widget>[
     Meditation(),
-    Tasks(),
+    Tasks(false),
     Dashboard(),
-    Journal(),
+    Journal(false),
     Settings(),
   ];
 

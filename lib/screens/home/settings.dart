@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,13 +14,33 @@ import 'package:releaf/shared/const/custom_popup_route.dart';
 
 import '../../wrapper.dart';
 
-class Settings extends StatelessWidget {
-  void _changePage(int index) {}
+class Settings extends StatefulWidget {
+  @override
+  _SettingsState createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController controller;
+  late final CurvedAnimation animation;
+
+  @override
+  void initState() {
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 320));
+    super.initState();
+    animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
+
+    super.initState();
+
+    controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
     final _auth = new AuthService();
     final theme = Provider.of<AppTheme>(context);
+    final width = MediaQuery.of(context).size.width;
 
     // # Name Setting
     final _nameController =
@@ -270,7 +291,33 @@ class Settings extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: ThemedNavigationBar(4),
+      floatingActionButton: Transform.translate(
+        offset: Offset(
+            MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          splashColor: Theme.of(context).accentColor,
+          child: AnimatedBuilder(
+            animation: animation,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: (pi * animation.value) / 2,
+                child: child,
+              );
+            },
+            child: Icon(
+              Icons.add_rounded,
+              color: Theme.of(context).accentIconTheme.color,
+              size: 40,
+            ),
+          ),
+          onPressed: () {},
+        ),
+      ),
+      bottomNavigationBar: ThemedNavigationBar(
+        pageIndex: 4,
+        animateFloatingActionButton: true,
+      ),
     );
   }
 }

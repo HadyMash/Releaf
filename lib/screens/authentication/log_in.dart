@@ -166,7 +166,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                         Navigator.of(context).pushReplacement(
                                       PageRouteBuilder(
                                         transitionDuration:
-                                            Duration(milliseconds: 1),
+                                            Duration(milliseconds: 0),
                                         pageBuilder: (BuildContext context,
                                             Animation<double> animation,
                                             Animation<double>
