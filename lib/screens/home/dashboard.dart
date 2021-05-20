@@ -47,6 +47,7 @@ class _DashboardState extends State<Dashboard>
           ),
         ],
       ),
+      // TODO fix button popping out
       floatingActionButton: Transform.translate(
         offset: Offset(
             MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),

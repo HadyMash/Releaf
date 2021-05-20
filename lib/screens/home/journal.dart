@@ -8,6 +8,7 @@ import 'package:releaf/screens/home/navigation_bar.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/shared/assets/themed_button.dart';
 
 class Journal extends StatefulWidget {
   final bool animate;
@@ -215,7 +216,55 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Journal Entry Form'),
+        title: Text(
+          'Journal Entry',
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        leading: Icon(
+          Icons.arrow_back_ios_rounded,
+          color: Theme.of(context).iconTheme.color,
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ThemedButton(
+                label: 'pick photo',
+                onPressed: () async {},
+                tapDownFeedback: true,
+                tapFeedback: true,
+              ),
+              ThemedButton(
+                label: 'change date',
+                onPressed: () async {},
+                tapDownFeedback: true,
+                tapFeedback: true,
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                  fillColor: Colors.grey[300],
+                  filled: true,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  labelText: "paragraph"),
+              keyboardType: TextInputType.multiline,
+              maxLines: 12,
+            ),
+          ),
+        ],
       ),
     );
   }
