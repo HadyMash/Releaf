@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/dashboard.dart';
@@ -70,24 +71,44 @@ class _JournalState extends State<Journal> with SingleTickerProviderStateMixin {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        splashColor: Theme.of(context).accentColor,
-        child: AnimatedBuilder(
-          animation: animation,
-          builder: (context, child) {
-            return Transform.rotate(
-              angle: (pi * 2) - ((pi * animation.value) / 2),
-              child: child,
+      floatingActionButton: Hero(
+        tag: 'floatingActionButton',
+        child: OpenContainer(
+          transitionDuration: Duration(milliseconds: 500),
+          transitionType: ContainerTransitionType.fade,
+          closedElevation: 6.0,
+          closedShape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(56 / 2),
+            ),
+          ),
+          closedColor: Theme.of(context).primaryColor,
+          closedBuilder: (BuildContext context, VoidCallback openContainer) {
+            return SizedBox(
+              height: 56,
+              width: 56,
+              child: Center(
+                child: AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: (pi * 2) - ((pi * animation.value) / 2),
+                      child: child,
+                    );
+                  },
+                  child: Icon(
+                    Icons.add_rounded,
+                    color: Theme.of(context).accentIconTheme.color,
+                    size: 40,
+                  ),
+                ),
+              ),
             );
           },
-          child: Icon(
-            Icons.add_rounded,
-            color: Theme.of(context).accentIconTheme.color,
-            size: 40,
-          ),
+          openBuilder: (BuildContext context, VoidCallback _) {
+            return JournalEntryForm();
+          },
         ),
-        onPressed: () {},
       ),
     );
   }
@@ -142,6 +163,22 @@ class _JournalEntryState extends State<JournalEntry> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class JournalEntryForm extends StatefulWidget {
+  @override
+  _JournalEntryFormState createState() => _JournalEntryFormState();
+}
+
+class _JournalEntryFormState extends State<JournalEntryForm> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Journal Entry Form'),
       ),
     );
   }
