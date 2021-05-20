@@ -16,20 +16,46 @@ class Journal extends StatefulWidget {
   _JournalState createState() => _JournalState();
 }
 
-class _JournalState extends State<Journal> with SingleTickerProviderStateMixin {
+class _JournalState extends State<Journal> with TickerProviderStateMixin {
   late final AnimationController controller;
   late final CurvedAnimation animation;
+
+  late final AnimationController fabController;
+  late final Animation fabColorAnimation;
+  late final Animation<double> fabElevationTween;
+
+  bool initialised = false;
 
   @override
   void initState() {
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    super.initState();
     animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
 
     if (widget.animate == true) {
       controller.forward();
     }
+
+    fabController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+
+    fabElevationTween = Tween<double>(begin: 6, end: 10)
+        .animate(CurvedAnimation(parent: fabController, curve: Curves.linear));
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (initialised == false) {
+      fabColorAnimation = ColorTween(
+              begin: Theme.of(context).primaryColor,
+              end: Theme.of(context).accentColor)
+          .animate(
+              CurvedAnimation(curve: Curves.linear, parent: fabController));
+      initialised = true;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -73,41 +99,52 @@ class _JournalState extends State<Journal> with SingleTickerProviderStateMixin {
       ),
       floatingActionButton: Hero(
         tag: 'floatingActionButton',
-        child: OpenContainer(
-          transitionDuration: Duration(milliseconds: 500),
-          transitionType: ContainerTransitionType.fade,
-          closedElevation: 6.0,
-          closedShape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(56 / 2),
-            ),
-          ),
-          closedColor: Theme.of(context).primaryColor,
-          closedBuilder: (BuildContext context, VoidCallback openContainer) {
-            return SizedBox(
-              height: 56,
-              width: 56,
-              child: Center(
-                child: AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) {
-                    return Transform.rotate(
-                      angle: (pi * 2) - ((pi * animation.value) / 2),
-                      child: child,
-                    );
-                  },
-                  child: Icon(
-                    Icons.add_rounded,
-                    color: Theme.of(context).accentIconTheme.color,
-                    size: 40,
+        child: GestureDetector(
+          onTapDown: (_) => fabController.forward(),
+          onTapUp: (_) => fabController.reverse(),
+          onTapCancel: () => fabController.reverse(),
+          child: AnimatedBuilder(
+            animation: fabController,
+            builder: (context, child) {
+              return OpenContainer(
+                transitionDuration: Duration(milliseconds: 500),
+                transitionType: ContainerTransitionType.fade,
+                closedElevation: fabElevationTween.value,
+                closedShape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(56 / 2),
                   ),
                 ),
-              ),
-            );
-          },
-          openBuilder: (BuildContext context, VoidCallback _) {
-            return JournalEntryForm();
-          },
+                closedColor: fabColorAnimation.value,
+                closedBuilder:
+                    (BuildContext context, VoidCallback openContainer) {
+                  return SizedBox(
+                    height: 56,
+                    width: 56,
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: animation,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: (pi * 2) - ((pi * animation.value) / 2),
+                            child: child,
+                          );
+                        },
+                        child: Icon(
+                          Icons.add_rounded,
+                          color: Theme.of(context).accentIconTheme.color,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                openBuilder: (BuildContext context, VoidCallback _) {
+                  return JournalEntryForm();
+                },
+              );
+            },
+          ),
         ),
       ),
     );
