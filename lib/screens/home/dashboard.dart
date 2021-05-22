@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/shared/assets/navigation_bar.dart';
@@ -14,18 +13,17 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+class _DashboardState extends State<Dashboard>
+    with SingleTickerProviderStateMixin {
   late final AnimationController controller;
   late final CurvedAnimation animation;
-  late final AnimationController _tempController;
 
   @override
   void initState() {
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
+    super.initState();
     animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
-    _tempController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
 
     super.initState();
 
@@ -59,70 +57,24 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       floatingActionButton: Transform.translate(
         offset: Offset(
             MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),
-        child: Hero(
-          tag: 'floatingActionButton',
-          child: GestureDetector(
-            child: AnimatedBuilder(
-              animation: _tempController,
-              builder: (context, child) {
-                return OpenContainer(
-                  transitionDuration: Duration(milliseconds: 500),
-                  closedElevation: 6,
-                  closedShape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(56 / 2),
-                    ),
-                  ),
-                  closedColor: Theme.of(context).primaryColor,
-                  closedBuilder:
-                      (BuildContext context, VoidCallback openContainer) {
-                    return SizedBox(
-                      height: 56,
-                      width: 56,
-                      child: Center(
-                        child: AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, child) {
-                            return Transform.rotate(
-                              angle: (pi * 2) - ((pi * animation.value) / 2),
-                              child: child,
-                            );
-                          },
-                          child: Icon(
-                            Icons.add_rounded,
-                            color: Theme.of(context).accentIconTheme.color,
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  openBuilder: (BuildContext context, VoidCallback _) {
-                    return SizedBox(
-                      height: 56,
-                      width: 56,
-                      child: Center(
-                        child: AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, child) {
-                            return Transform.rotate(
-                              angle: (pi * 2) - ((pi * animation.value) / 2),
-                              child: child,
-                            );
-                          },
-                          child: Icon(
-                            Icons.add_rounded,
-                            color: Theme.of(context).accentIconTheme.color,
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          splashColor: Theme.of(context).accentColor,
+          child: AnimatedBuilder(
+            animation: animation,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: (pi * animation.value) / 2,
+                child: child,
+              );
+            },
+            child: Icon(
+              Icons.add_rounded,
+              color: Theme.of(context).accentIconTheme.color,
+              size: 40,
             ),
           ),
+          onPressed: () {},
         ),
       ),
       bottomNavigationBar:
