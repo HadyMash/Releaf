@@ -17,10 +17,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late HeroController _heroController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _heroController = HeroController(createRectTween: _createRectTween);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Navigator(
       key: AppTheme.homeNavkey,
+      observers: [_heroController],
       initialRoute: '/Dashboard',
       onGenerateRoute: (RouteSettings route) {
         Widget page;
@@ -67,125 +77,8 @@ class _HomeState extends State<Home> {
       },
     );
   }
-}
 
-/*
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  double _borderRadius = 25;
-  // double _borderRadius = 0;
-  bool animate = true;
-
-  int _currentIndex = 2;
-  // final List<Widget> _pages = <Widget>[
-  //   Meditation(),
-  //   Tasks(false),
-  //   Dashboard(),
-  //   Journal(false),
-  //   Settings(),
-  // ];
-
-  @override
-  Widget build(BuildContext context) {
-    void _changePage(int index) {
-      if (index == 0 || index == 2 || index == 4) {
-        animate = true;
-      } else {
-        animate = false;
-      }
-
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-
-    final List<Widget> pages = <Widget>[
-      Meditation(),
-      Tasks(animate), // TODO make it set the condition
-      Dashboard(),
-      Journal(animate), // TODO make it set the condition
-      Settings(),
-    ];
-
-    return Scaffold(
-      body: PageTransitionSwitcher(
-        transitionBuilder: (
-          Widget child,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return Align(
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
-        },
-        child: pages.elementAt(_currentIndex),
-      ),
-
-      // TODO make rive icons
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(_borderRadius),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.4),
-              blurRadius: 22.0,
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(_borderRadius),
-            topRight: Radius.circular(_borderRadius),
-          ),
-          child: BottomNavigationBar(
-            unselectedItemColor: Theme.of(context).iconTheme.color,
-            selectedItemColor: Theme.of(context).primaryColor,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            selectedFontSize: 0,
-            unselectedFontSize: 0,
-            enableFeedback: true,
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.sports_handball_outlined, size: 28),
-                activeIcon: Icon(Icons.sports_handball, size: 28),
-                label: 'Meditation',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.assignment_turned_in_outlined, size: 28),
-                activeIcon: Icon(Icons.assignment_turned_in, size: 28),
-                label: 'Goals',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard_outlined, size: 28),
-                activeIcon: Icon(Icons.dashboard_rounded, size: 28),
-                label: 'Dashboard',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book_outlined, size: 28),
-                activeIcon: Icon(Icons.book_rounded, size: 28),
-                label: 'Journal',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined, size: 28),
-                activeIcon: Icon(Icons.settings, size: 28),
-                label: 'Settings',
-              ),
-            ],
-            currentIndex: _currentIndex,
-            onTap: _changePage,
-          ),
-        ),
-      ),
-    );
+  Tween<Rect?> _createRectTween(Rect? begin, Rect? end) {
+    return MaterialRectArcTween(begin: begin, end: end);
   }
 }
-*/
