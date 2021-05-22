@@ -80,7 +80,8 @@ class Welcome extends StatelessWidget {
                                 size: 28,
                                 color: Theme.of(context).accentIconTheme.color,
                               ),
-                              onPressed: () => Navigator.of(context).push(
+                              onPressed: () =>
+                                  AppTheme.mainNavKey.currentState!.push(
                                 PageRouteBuilder(
                                   transitionDuration:
                                       Duration(milliseconds: 600),

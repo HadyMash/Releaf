@@ -11,6 +11,11 @@ class AppTheme with ChangeNotifier {
   late bool haptics;
   double bottomNavigationBarBorderRadius = 25;
 
+  static final GlobalKey<NavigatorState> mainNavKey =
+      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> homeNavkey =
+      GlobalKey<NavigatorState>();
+
   var inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
     border: CustomWidgetBorder(color: Colors.grey, width: 1.2),

@@ -266,7 +266,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           if (!currentFocus.hasPrimaryFocus) {
                             currentFocus.unfocus();
                           }
-                          Navigator.pop(context);
+                          AppTheme.mainNavKey.currentState!.pop(context);
                         }
                       }
                     }

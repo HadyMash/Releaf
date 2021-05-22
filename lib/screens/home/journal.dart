@@ -4,7 +4,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/dashboard.dart';
-import 'package:releaf/screens/home/navigation_bar.dart';
+import 'package:releaf/shared/assets/navigation_bar.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
@@ -46,6 +46,13 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    fabController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     if (initialised == false) {
       fabColorAnimation = ColorTween(
@@ -69,6 +76,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
               'Journal',
               style: Theme.of(context).textTheme.headline3,
             ),
+            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(child: SizedBox(height: 20)),
           SliverToBoxAdapter(
@@ -147,6 +155,8 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
           ),
         ),
       ),
+      bottomNavigationBar:
+          ThemedNavigationBar(pageIndex: 3, animateFloatingActionButton: false),
     );
   }
 }

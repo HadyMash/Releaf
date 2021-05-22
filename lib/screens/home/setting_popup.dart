@@ -15,7 +15,7 @@ class SettingPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
-      onTap: () => Navigator.pop(context),
+      onTap: () => AppTheme.mainNavKey.currentState!.pop(context),
       child: Scaffold(
         backgroundColor: Colors.white.withOpacity(0),
         body: Center(

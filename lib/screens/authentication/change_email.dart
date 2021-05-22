@@ -122,7 +122,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
                       if (result == null) {
                         // TODO send verification email if email isn't verified before popping.
-                        Navigator.pop(context);
+                        AppTheme.mainNavKey.currentState!.pop(context);
                         print('no errors, email changed');
                         // TODO make success animation
                       } else {

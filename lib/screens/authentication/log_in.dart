@@ -142,7 +142,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                         color: Colors.white,
                                         size: 28.0,
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => AppTheme
+                                          .mainNavKey.currentState!
+                                          .pop(context),
                                       splashColor: Colors.white,
                                     ),
                                     Text(
@@ -162,8 +164,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       'Register',
                                       style: Theme.of(context).textTheme.button,
                                     ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pushReplacement(
+                                    onPressed: () => AppTheme
+                                        .mainNavKey.currentState!
+                                        .pushReplacement(
                                       PageRouteBuilder(
                                         transitionDuration:
                                             Duration(milliseconds: 0),
@@ -379,12 +382,12 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       _error = null;
                                       if (_auth.getUser()!.emailVerified) {
                                         // TODO make rive page transition.
-                                        Navigator.popUntil(
-                                            context, (route) => route.isFirst);
+                                        AppTheme.mainNavKey.currentState!
+                                            .popUntil((route) => route.isFirst);
                                       } else {
                                         if (_auth.getUser() != null) {
-                                          Navigator.push(
-                                            context,
+                                          AppTheme.mainNavKey.currentState!
+                                              .push(
                                             MaterialPageRoute(
                                               builder: (context) => Verify(),
                                             ),
@@ -412,10 +415,11 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   text: 'Forgot Password',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.of(context).pushReplacement(
+                                      AppTheme.mainNavKey.currentState!
+                                          .pushReplacement(
                                         PageRouteBuilder(
                                           transitionDuration:
-                                              Duration(milliseconds: 1),
+                                              Duration(milliseconds: 0),
                                           pageBuilder: (BuildContext context,
                                               Animation<double> animation,
                                               Animation<double>
@@ -556,7 +560,9 @@ class _ResetPasswordState extends State<ResetPassword>
                                       Theme.of(context).accentIconTheme.color,
                                   size: 28.0,
                                 ),
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => AppTheme
+                                    .mainNavKey.currentState!
+                                    .pop(context),
                                 splashColor:
                                     Theme.of(context).accentIconTheme.color,
                               ),
@@ -741,8 +747,7 @@ class _LogInMockState extends State<LogInMock>
   void didChangeDependencies() async {
     super.didChangeDependencies();
     Future.delayed(Duration(milliseconds: 710), () {
-      Navigator.pushReplacement(
-        context,
+      AppTheme.mainNavKey.currentState!.pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) =>
               LogIn(animate: false),
@@ -818,7 +823,9 @@ class _LogInMockState extends State<LogInMock>
                                             .color,
                                         size: 28.0,
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => AppTheme
+                                          .mainNavKey.currentState!
+                                          .pop(context),
                                       splashColor: Theme.of(context)
                                           .accentIconTheme
                                           .color,

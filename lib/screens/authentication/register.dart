@@ -152,7 +152,9 @@ class _RegisterState extends State<Register>
                                             .color,
                                         size: 28.0,
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => AppTheme
+                                          .mainNavKey.currentState!
+                                          .pop(context),
                                       splashColor: Theme.of(context)
                                           .accentIconTheme
                                           .color,
@@ -176,8 +178,9 @@ class _RegisterState extends State<Register>
                                       'Log In',
                                       style: Theme.of(context).textTheme.button,
                                     ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pushReplacement(
+                                    onPressed: () => AppTheme
+                                        .mainNavKey.currentState!
+                                        .pushReplacement(
                                       PageRouteBuilder(
                                         transitionDuration:
                                             Duration(milliseconds: 1),
@@ -441,8 +444,8 @@ class _RegisterState extends State<Register>
                                       if (!_auth.getUser()!.emailVerified) {
                                         await _auth
                                             .sendVerificationEmail(context);
-                                        Navigator.popUntil(
-                                            context, (route) => route.isFirst);
+                                        AppTheme.mainNavKey.currentState!
+                                            .popUntil((route) => route.isFirst);
                                       }
                                     } else {
                                       setState(() =>

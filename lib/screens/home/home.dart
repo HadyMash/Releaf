@@ -17,6 +17,65 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: AppTheme.homeNavkey,
+      initialRoute: '/Dashboard',
+      onGenerateRoute: (RouteSettings route) {
+        Widget page;
+
+        switch (route.name) {
+          case '/Meditation':
+            page = Meditation();
+            break;
+          case '/Tasks':
+            page = Tasks(false);
+            break;
+          case '/Dashboard':
+            page = Dashboard();
+            break;
+          case '/Journal':
+            page = Journal(false);
+            break;
+          case '/Settings':
+            page = Settings();
+            break;
+          default:
+            page = Dashboard();
+            break;
+        }
+
+        return PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 250),
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return page;
+          },
+          transitionsBuilder: (BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child) {
+            return Align(
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+/*
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   double _borderRadius = 25;
   // double _borderRadius = 0;
   bool animate = true;
@@ -129,3 +188,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
+*/

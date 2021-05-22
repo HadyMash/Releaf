@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
-import 'package:releaf/screens/home/navigation_bar.dart';
+import 'package:releaf/shared/assets/navigation_bar.dart';
 import 'package:releaf/screens/home/setting_popup.dart';
 import 'package:releaf/shared/assets/themed_toggle.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -34,6 +34,12 @@ class _SettingsState extends State<Settings>
     super.initState();
 
     controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -92,6 +98,7 @@ class _SettingsState extends State<Settings>
               'Settings',
               style: Theme.of(context).textTheme.headline3,
             ),
+            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -157,8 +164,7 @@ class _SettingsState extends State<Settings>
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
+                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
                     CustomPopupRoute(builder: (context) => Info()),
                   ),
                 ),
@@ -183,8 +189,7 @@ class _SettingsState extends State<Settings>
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
+                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
                     CustomPopupRoute(builder: (context) => ChangeEmail()),
                   ),
                 ),
@@ -195,8 +200,7 @@ class _SettingsState extends State<Settings>
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
+                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
                     CustomPopupRoute(builder: (context) => ChangePassword()),
                   ),
                 ),
@@ -288,6 +292,8 @@ class _SettingsState extends State<Settings>
           onPressed: () {},
         ),
       ),
+      bottomNavigationBar:
+          ThemedNavigationBar(pageIndex: 4, animateFloatingActionButton: true),
     );
   }
 }

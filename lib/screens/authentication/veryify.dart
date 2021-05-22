@@ -22,7 +22,7 @@ class _VerifyState extends State<Verify> {
     if (_auth.getUser()!.emailVerified) {
       timer.cancel();
       // TODO add rive page transition.
-      Navigator.popUntil(context, (route) => route.isFirst);
+      AppTheme.mainNavKey.currentState!.popUntil((route) => route.isFirst);
     } else {
       timerCountdown = 30;
       countdownUpdate = Timer.periodic(Duration(seconds: 1), (timer) {

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/dashboard.dart';
-import 'package:releaf/screens/home/navigation_bar.dart';
+import 'package:releaf/shared/assets/navigation_bar.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
@@ -30,6 +30,12 @@ class _MeditationState extends State<Meditation>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context);
     final width = MediaQuery.of(context).size.width;
@@ -43,6 +49,7 @@ class _MeditationState extends State<Meditation>
               'Meditation',
               style: Theme.of(context).textTheme.headline3,
             ),
+            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(child: SizedBox(height: 100)),
           SliverToBoxAdapter(
@@ -83,6 +90,8 @@ class _MeditationState extends State<Meditation>
           onPressed: () {},
         ),
       ),
+      bottomNavigationBar:
+          ThemedNavigationBar(pageIndex: 0, animateFloatingActionButton: true),
     );
   }
 }

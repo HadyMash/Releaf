@@ -228,6 +228,7 @@ class _ThemedAppState extends State<ThemedApp> {
             return child!;
           },
           home: Wrapper(),
+          navigatorKey: AppTheme.mainNavKey,
           theme: theme.light,
           darkTheme: theme.dark,
           themeMode: theme.themeMode,
