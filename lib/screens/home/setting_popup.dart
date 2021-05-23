@@ -1,10 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/shared/assets/custom_widget_border.dart';
 
 class SettingPopup extends StatelessWidget {
   final Widget? child;

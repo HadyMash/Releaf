@@ -17,6 +17,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   final _auth = AuthService();
   final _formKey = new GlobalKey<FormState>();
   FocusNode _emailFocusNode = new FocusNode();
+  TextEditingController _emailController = TextEditingController(text: '');
   String _email = '';
   String? _error;
 
@@ -31,6 +32,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   void dispose() {
     _formKey.currentState?.dispose();
     _emailFocusNode.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -55,8 +57,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
               children: [
                 TextFormField(
                   focusNode: _emailFocusNode,
+                  controller: _emailController,
                   onTap: () => setState(() {}),
-                  initialValue: _email,
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
                     if (val == null || val.isEmpty) {
@@ -92,7 +94,10 @@ class _ChangeEmailState extends State<ChangeEmail> {
                             ? Theme.of(context).primaryColor
                             : Colors.grey,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _emailController.clear();
+                        _email = '';
+                      },
                     ),
                   ),
                 ),
