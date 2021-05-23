@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/dashboard.dart';
+import 'package:releaf/screens/home/hidden_fab.dart';
 import 'package:releaf/shared/assets/navigation_bar.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
@@ -67,30 +68,7 @@ class _MeditationState extends State<Meditation>
           ),
         ],
       ),
-      floatingActionButton: Transform.translate(
-        offset: Offset(
-            MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),
-        child: FloatingActionButton(
-          heroTag: 'floatingActionButton',
-          backgroundColor: Theme.of(context).primaryColor,
-          splashColor: Theme.of(context).accentColor,
-          child: AnimatedBuilder(
-            animation: animation,
-            builder: (context, child) {
-              return Transform.rotate(
-                angle: (pi * animation.value) / 2,
-                child: child,
-              );
-            },
-            child: Icon(
-              Icons.add_rounded,
-              color: Theme.of(context).accentIconTheme.color,
-              size: 40,
-            ),
-          ),
-          onPressed: () {},
-        ),
-      ),
+      floatingActionButton: HiddenFAB(),
       bottomNavigationBar:
           ThemedNavigationBar(pageIndex: 0, animateFloatingActionButton: true),
     );
