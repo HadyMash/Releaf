@@ -11,8 +11,6 @@ class _HiddenFABState extends State<HiddenFAB>
   late final AnimationController controller;
   late final CurvedAnimation animation;
 
-  final GlobalKey _fabKey = new GlobalKey();
-
   @override
   void initState() {
     controller =
@@ -35,7 +33,6 @@ class _HiddenFABState extends State<HiddenFAB>
       offset:
           Offset(((width / 6) > 56 ? width / 6 : 60) + ((1 / 428) * width), 0),
       child: FloatingActionButton(
-        key: _fabKey,
         heroTag: 'floatingActionButton',
         backgroundColor: Theme.of(context).primaryColor,
         splashColor: Theme.of(context).accentColor,

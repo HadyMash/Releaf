@@ -10,32 +10,7 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 
-class Dashboard extends StatefulWidget {
-  @override
-  _DashboardState createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController controller;
-  late final CurvedAnimation animation;
-
-  @override
-  void initState() {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
-
-    super.initState();
-    controller.forward();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context);

@@ -13,36 +13,7 @@ import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
 
-import '../../wrapper.dart';
-
-class Settings extends StatefulWidget {
-  @override
-  _SettingsState createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController controller;
-  late final CurvedAnimation animation;
-
-  @override
-  void initState() {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    super.initState();
-    animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
-
-    super.initState();
-
-    controller.forward();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = new AuthService();

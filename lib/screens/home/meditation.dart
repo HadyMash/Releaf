@@ -8,34 +8,7 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 
-class Meditation extends StatefulWidget {
-  @override
-  _MeditationState createState() => _MeditationState();
-}
-
-class _MeditationState extends State<Meditation>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController controller;
-  late final CurvedAnimation animation;
-
-  @override
-  void initState() {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    super.initState();
-    animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
-
-    super.initState();
-
-    controller.forward();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+class Meditation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context);
