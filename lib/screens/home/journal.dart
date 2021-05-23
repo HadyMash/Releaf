@@ -107,51 +107,54 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
       ),
       floatingActionButton: Hero(
         tag: 'floatingActionButton',
-        child: GestureDetector(
-          onTapDown: (_) => fabController.forward(),
-          onTapUp: (_) => fabController.reverse(),
-          onTapCancel: () => fabController.reverse(),
-          child: AnimatedBuilder(
-            animation: fabController,
-            builder: (context, child) {
-              return OpenContainer(
-                transitionDuration: Duration(milliseconds: 500),
-                transitionType: ContainerTransitionType.fade,
-                closedElevation: fabElevationTween.value,
-                closedShape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(56 / 2),
+        child: Transform.translate(
+          offset: Offset(0, 0),
+          child: GestureDetector(
+            onTapDown: (_) => fabController.forward(),
+            onTapUp: (_) => fabController.reverse(),
+            onTapCancel: () => fabController.reverse(),
+            child: AnimatedBuilder(
+              animation: fabController,
+              builder: (context, child) {
+                return OpenContainer(
+                  transitionDuration: Duration(milliseconds: 500),
+                  transitionType: ContainerTransitionType.fade,
+                  closedElevation: fabElevationTween.value,
+                  closedShape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(56 / 2),
+                    ),
                   ),
-                ),
-                closedColor: fabColorAnimation.value,
-                closedBuilder:
-                    (BuildContext context, VoidCallback openContainer) {
-                  return SizedBox(
-                    height: 56,
-                    width: 56,
-                    child: Center(
-                      child: AnimatedBuilder(
-                        animation: animation,
-                        builder: (context, child) {
-                          return Transform.rotate(
-                            angle: (pi * 2) - ((pi * animation.value) / 2),
-                            child: child,
-                          );
-                        },
-                        child: Icon(
-                          Icons.add_rounded,
-                          color: Theme.of(context).accentIconTheme.color,
-                          size: 40,
+                  closedColor: fabColorAnimation.value,
+                  closedBuilder:
+                      (BuildContext context, VoidCallback openContainer) {
+                    return SizedBox(
+                      height: 56,
+                      width: 56,
+                      child: Center(
+                        child: AnimatedBuilder(
+                          animation: animation,
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle: (pi * 2) - ((pi * animation.value) / 2),
+                              child: child,
+                            );
+                          },
+                          child: Icon(
+                            Icons.add_rounded,
+                            color: Theme.of(context).accentIconTheme.color,
+                            size: 40,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                openBuilder: (BuildContext context, VoidCallback _) {
-                  return JournalEntryForm();
-                },
-              );
-            },
+                    );
+                  },
+                  openBuilder: (BuildContext context, VoidCallback _) {
+                    return JournalEntryForm();
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),

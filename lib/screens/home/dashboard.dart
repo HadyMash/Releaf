@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/shared/assets/navigation_bar.dart';
@@ -22,11 +23,9 @@ class _DashboardState extends State<Dashboard>
   void initState() {
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    super.initState();
     animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
 
     super.initState();
-
     controller.forward();
   }
 
@@ -58,6 +57,7 @@ class _DashboardState extends State<Dashboard>
         offset: Offset(
             MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),
         child: FloatingActionButton(
+          heroTag: 'floatingActionButton',
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).accentColor,
           child: AnimatedBuilder(

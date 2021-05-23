@@ -71,6 +71,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'floatingActionButton',
         backgroundColor: Theme.of(context).primaryColor,
         splashColor: Theme.of(context).accentColor,
         child: AnimatedBuilder(

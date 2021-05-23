@@ -273,6 +273,7 @@ class _SettingsState extends State<Settings>
         offset: Offset(
             MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),
         child: FloatingActionButton(
+          heroTag: 'floatingActionButton',
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).accentColor,
           child: AnimatedBuilder(
