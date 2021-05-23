@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 import 'package:releaf/screens/authentication/register.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
