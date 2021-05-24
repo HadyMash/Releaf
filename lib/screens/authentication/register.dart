@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_widget_border.dart';
 import 'package:releaf/screens/authentication/log_in.dart';

@@ -1,13 +1,7 @@
 import 'dart:math';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:releaf/screens/home/dashboard.dart';
 import 'package:releaf/shared/assets/navigation_bar.dart';
-import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/services/auth.dart';
-import 'package:releaf/services/database.dart';
 
 class Journal extends StatefulWidget {
   final bool animate;

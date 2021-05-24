@@ -1,10 +1,5 @@
-import 'package:animations/animations.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/services/auth.dart';
-import 'package:releaf/services/database.dart';
 import 'package:releaf/screens/home/meditation.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/screens/home/dashboard.dart';

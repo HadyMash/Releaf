@@ -503,18 +503,6 @@ class _ResetPasswordState extends State<ResetPassword>
     errorStyle: TextStyle(fontSize: 14),
   );
 
-  Color _getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.white.withOpacity(0.3);
-    }
-    return Colors.white.withOpacity(0.3);
-  }
-
   @override
   void initState() {
     _emailController = TextEditingController(text: widget.email);

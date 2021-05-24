@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class SettingPopup extends StatelessWidget {
@@ -9,7 +8,6 @@ class SettingPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
       onTap: () => AppTheme.mainNavKey.currentState!.pop(context),
       child: Scaffold(

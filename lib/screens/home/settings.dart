@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +16,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = new AuthService();
-    final theme = Provider.of<AppTheme>(context);
-    final width = MediaQuery.of(context).size.width;
+    final _theme = Provider.of<AppTheme>(context);
 
     // # Name Setting
     final _nameController =
@@ -113,17 +111,17 @@ class Settings extends StatelessWidget {
                   label: 'Theme',
                   preference: DropdownButton<ThemeMode>(
                       underline: Container(),
-                      value: theme.themeMode,
+                      value: _theme.themeMode,
                       items: themes,
                       onChanged: (newTheme) {
-                        theme.setTheme(newTheme!);
+                        _theme.setTheme(newTheme!);
                       }),
                 ),
                 Setting(
                   label: 'Haptics',
                   preference: ThemedToggle(
-                    onChanged: (state) => theme.setHaptics(state),
-                    defaultState: theme.haptics,
+                    onChanged: (state) => _theme.setHaptics(state),
+                    defaultState: _theme.haptics,
                     icon: Icon(Icons.clear_rounded),
                     enabledIcon: Icon(Icons.check_rounded),
                     tapFeedback: true,
@@ -403,9 +401,9 @@ class _SettingState extends State<Setting> {
 
 class Info extends StatelessWidget {
   final _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    final _theme = Provider.of<AppTheme>(context);
     return SettingPopup(
       child: Column(
         mainAxisSize: MainAxisSize.min,
