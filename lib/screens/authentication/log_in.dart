@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 import 'package:releaf/screens/authentication/register.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
@@ -31,7 +31,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   dynamic _error;
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
+  late TextEditingController _emailController;
   FocusNode _passwordFocusNode = new FocusNode();
+  late TextEditingController _passwordController;
 
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -49,6 +51,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   late Animation<double> _topBarAnim;
   @override
   void initState() {
+    _emailController = TextEditingController(text: widget.email);
+    _passwordController = TextEditingController(text: widget.password);
+
     super.initState();
 
     _topBarAnimController = AnimationController(
@@ -79,7 +84,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
     _topBarAnimController.dispose();
     _formKey.currentState?.dispose();
     _emailFocusNode.dispose();
+    _emailController.dispose();
     _passwordFocusNode.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -114,7 +121,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AnimatedBuilder(
@@ -142,7 +148,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                         color: Colors.white,
                                         size: 28.0,
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => AppTheme
+                                          .mainNavKey.currentState!
+                                          .pop(context),
                                       splashColor: Colors.white,
                                     ),
                                     Text(
@@ -162,8 +170,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       'Register',
                                       style: Theme.of(context).textTheme.button,
                                     ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pushReplacement(
+                                    onPressed: () => AppTheme
+                                        .mainNavKey.currentState!
+                                        .pushReplacement(
                                       PageRouteBuilder(
                                         transitionDuration:
                                             Duration(milliseconds: 0),
@@ -234,8 +243,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _emailFocusNode,
+                                  controller: _emailController,
                                   onTap: () => setState(() {}),
-                                  initialValue: widget.email,
+                                  // initialValue: widget.email,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -246,8 +256,10 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                     }
                                   },
                                   autocorrect: false,
-                                  onChanged: (val) =>
-                                      setState(() => widget.email = val),
+                                  onChanged: (val) => setState(() {
+                                    widget.email = val;
+                                    print('value changed: $val');
+                                  }),
                                   style: TextStyle(
                                     fontSize: 16 -
                                         ((926 * 0.008) - (_height * 0.008)),
@@ -282,7 +294,10 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _emailController.clear();
+                                        widget.email = '';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -292,7 +307,8 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _passwordFocusNode,
-                                  initialValue: widget.password,
+                                  controller: _passwordController,
+                                  // initialValue: widget.password,
                                   obscureText: true,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -337,7 +353,10 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _passwordController.clear();
+                                        widget.password = '';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -379,12 +398,12 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       _error = null;
                                       if (_auth.getUser()!.emailVerified) {
                                         // TODO make rive page transition.
-                                        Navigator.popUntil(
-                                            context, (route) => route.isFirst);
+                                        AppTheme.mainNavKey.currentState!
+                                            .popUntil((route) => route.isFirst);
                                       } else {
                                         if (_auth.getUser() != null) {
-                                          Navigator.push(
-                                            context,
+                                          AppTheme.mainNavKey.currentState!
+                                              .push(
                                             MaterialPageRoute(
                                               builder: (context) => Verify(),
                                             ),
@@ -412,10 +431,11 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   text: 'Forgot Password',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.of(context).pushReplacement(
+                                      AppTheme.mainNavKey.currentState!
+                                          .pushReplacement(
                                         PageRouteBuilder(
                                           transitionDuration:
-                                              Duration(milliseconds: 1),
+                                              Duration(milliseconds: 0),
                                           pageBuilder: (BuildContext context,
                                               Animation<double> animation,
                                               Animation<double>
@@ -472,6 +492,7 @@ class _ResetPasswordState extends State<ResetPassword>
   dynamic _error;
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
+  late TextEditingController _emailController;
 
   final inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),
@@ -482,20 +503,9 @@ class _ResetPasswordState extends State<ResetPassword>
     errorStyle: TextStyle(fontSize: 14),
   );
 
-  Color _getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.white.withOpacity(0.3);
-    }
-    return Colors.white.withOpacity(0.3);
-  }
-
   @override
   void initState() {
+    _emailController = TextEditingController(text: widget.email);
     super.initState();
     _emailFocusNode.addListener(() {
       setState(() {});
@@ -506,6 +516,7 @@ class _ResetPasswordState extends State<ResetPassword>
   void dispose() {
     _formKey.currentState?.dispose();
     _emailFocusNode.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -556,7 +567,9 @@ class _ResetPasswordState extends State<ResetPassword>
                                       Theme.of(context).accentIconTheme.color,
                                   size: 28.0,
                                 ),
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => AppTheme
+                                    .mainNavKey.currentState!
+                                    .pop(context),
                                 splashColor:
                                     Theme.of(context).accentIconTheme.color,
                               ),
@@ -599,8 +612,8 @@ class _ResetPasswordState extends State<ResetPassword>
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _emailFocusNode,
+                                  controller: _emailController,
                                   onTap: () => setState(() {}),
-                                  initialValue: widget.email,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -641,7 +654,10 @@ class _ResetPasswordState extends State<ResetPassword>
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _emailController.clear();
+                                        widget.email = '';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -741,8 +757,7 @@ class _LogInMockState extends State<LogInMock>
   void didChangeDependencies() async {
     super.didChangeDependencies();
     Future.delayed(Duration(milliseconds: 710), () {
-      Navigator.pushReplacement(
-        context,
+      AppTheme.mainNavKey.currentState!.pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) =>
               LogIn(animate: false),
@@ -818,7 +833,9 @@ class _LogInMockState extends State<LogInMock>
                                             .color,
                                         size: 28.0,
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => AppTheme
+                                          .mainNavKey.currentState!
+                                          .pop(context),
                                       splashColor: Theme.of(context)
                                           .accentIconTheme
                                           .color,

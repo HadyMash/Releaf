@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 import 'package:releaf/screens/authentication/log_in.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
@@ -31,8 +30,13 @@ class _RegisterState extends State<Register>
   dynamic _error;
   final _formKey = GlobalKey<FormState>(debugLabel: 'form key');
   FocusNode _emailFocusNode = new FocusNode();
+  late TextEditingController _emailController;
   FocusNode _passwordFocusNode = new FocusNode();
+  late TextEditingController _passwordController;
   FocusNode _confirmPasswordFocusNode = new FocusNode();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
+  String? _confirmPasswordText;
 
   bool _showingErrors = false;
 
@@ -53,6 +57,9 @@ class _RegisterState extends State<Register>
 
   @override
   void initState() {
+    _emailController = TextEditingController(text: widget.email);
+    _passwordController = TextEditingController(text: widget.password);
+
     super.initState();
 
     _topBarAnimController = AnimationController(
@@ -88,6 +95,9 @@ class _RegisterState extends State<Register>
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -152,7 +162,9 @@ class _RegisterState extends State<Register>
                                             .color,
                                         size: 28.0,
                                       ),
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () => AppTheme
+                                          .mainNavKey.currentState!
+                                          .pop(context),
                                       splashColor: Theme.of(context)
                                           .accentIconTheme
                                           .color,
@@ -176,8 +188,9 @@ class _RegisterState extends State<Register>
                                       'Log In',
                                       style: Theme.of(context).textTheme.button,
                                     ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pushReplacement(
+                                    onPressed: () => AppTheme
+                                        .mainNavKey.currentState!
+                                        .pushReplacement(
                                       PageRouteBuilder(
                                         transitionDuration:
                                             Duration(milliseconds: 1),
@@ -250,8 +263,8 @@ class _RegisterState extends State<Register>
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _emailFocusNode,
+                                  controller: _emailController,
                                   onTap: () => setState(() {}),
-                                  initialValue: widget.email,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -293,7 +306,10 @@ class _RegisterState extends State<Register>
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _emailController.clear();
+                                        widget.email = '';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -306,7 +322,7 @@ class _RegisterState extends State<Register>
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _passwordFocusNode,
-                                  initialValue: widget.password,
+                                  controller: _passwordController,
                                   obscureText: true,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
@@ -342,7 +358,10 @@ class _RegisterState extends State<Register>
                                             ? Theme.of(context).primaryColor
                                             : Colors.grey,
                                       ),
-                                      onPressed: () => print('clear'),
+                                      onPressed: () {
+                                        _passwordController.clear();
+                                        widget.password = '';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -355,19 +374,24 @@ class _RegisterState extends State<Register>
                                 color: Colors.white.withOpacity(0),
                                 child: TextFormField(
                                   focusNode: _confirmPasswordFocusNode,
+                                  controller: _confirmPasswordController,
                                   obscureText: true,
                                   validator: (val) {
-                                    if (val == null || val.isEmpty) {
+                                    if (_confirmPasswordText == null ||
+                                        (_confirmPasswordText ?? '').isEmpty) {
                                       return 'Please enter a password';
-                                    } else if (val.length < 8) {
+                                    } else if ((_confirmPasswordText ?? '')
+                                            .length <
+                                        8) {
                                       return 'Password needs to be at least 8 characters';
-                                    } else if (val != widget.password) {
+                                    } else if ((_confirmPasswordText ?? '') !=
+                                        widget.password) {
                                       return 'Passwords do not match';
                                     }
                                   },
                                   autocorrect: false,
                                   onChanged: (val) {
-                                    setState(() {});
+                                    setState(() => _confirmPasswordText = val);
                                   },
                                   decoration: _theme.inputDecoration.copyWith(
                                     labelText: 'Confirm Password',
@@ -393,7 +417,10 @@ class _RegisterState extends State<Register>
                                                 ? Theme.of(context).primaryColor
                                                 : Colors.grey,
                                       ),
-                                      onPressed: () => print('clear'),
+                                      onPressed: () {
+                                        _confirmPasswordController.clear();
+                                        _confirmPasswordText = '';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -441,8 +468,8 @@ class _RegisterState extends State<Register>
                                       if (!_auth.getUser()!.emailVerified) {
                                         await _auth
                                             .sendVerificationEmail(context);
-                                        Navigator.popUntil(
-                                            context, (route) => route.isFirst);
+                                        AppTheme.mainNavKey.currentState!
+                                            .popUntil((route) => route.isFirst);
                                       }
                                     } else {
                                       setState(() =>

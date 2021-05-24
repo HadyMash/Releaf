@@ -1,10 +1,10 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
-import 'package:releaf/screens/home/navigation_bar.dart';
+import 'package:releaf/screens/home/hidden_fab.dart';
+import 'package:releaf/shared/assets/navigation_bar.dart';
 import 'package:releaf/screens/home/setting_popup.dart';
 import 'package:releaf/shared/assets/themed_toggle.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -12,35 +12,11 @@ import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
 
-import '../../wrapper.dart';
-
-class Settings extends StatefulWidget {
-  @override
-  _SettingsState createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController controller;
-  late final CurvedAnimation animation;
-
-  @override
-  void initState() {
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    super.initState();
-    animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
-
-    super.initState();
-
-    controller.forward();
-  }
-
+class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = new AuthService();
-    final theme = Provider.of<AppTheme>(context);
-    final width = MediaQuery.of(context).size.width;
+    final _theme = Provider.of<AppTheme>(context);
 
     // # Name Setting
     final _nameController =
@@ -92,6 +68,7 @@ class _SettingsState extends State<Settings>
               'Settings',
               style: Theme.of(context).textTheme.headline3,
             ),
+            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(
             child: Column(
@@ -134,17 +111,17 @@ class _SettingsState extends State<Settings>
                   label: 'Theme',
                   preference: DropdownButton<ThemeMode>(
                       underline: Container(),
-                      value: theme.themeMode,
+                      value: _theme.themeMode,
                       items: themes,
                       onChanged: (newTheme) {
-                        theme.setTheme(newTheme!);
+                        _theme.setTheme(newTheme!);
                       }),
                 ),
                 Setting(
                   label: 'Haptics',
                   preference: ThemedToggle(
-                    onChanged: (state) => theme.setHaptics(state),
-                    defaultState: theme.haptics,
+                    onChanged: (state) => _theme.setHaptics(state),
+                    defaultState: _theme.haptics,
                     icon: Icon(Icons.clear_rounded),
                     enabledIcon: Icon(Icons.check_rounded),
                     tapFeedback: true,
@@ -157,8 +134,7 @@ class _SettingsState extends State<Settings>
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
+                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
                     CustomPopupRoute(builder: (context) => Info()),
                   ),
                 ),
@@ -183,8 +159,7 @@ class _SettingsState extends State<Settings>
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
+                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
                     CustomPopupRoute(builder: (context) => ChangeEmail()),
                   ),
                 ),
@@ -195,8 +170,7 @@ class _SettingsState extends State<Settings>
                     color: Theme.of(context).iconTheme.color,
                     size: 40,
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
+                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
                     CustomPopupRoute(builder: (context) => ChangePassword()),
                   ),
                 ),
@@ -265,30 +239,10 @@ class _SettingsState extends State<Settings>
           ),
         ],
       ),
-      // TODO fix button popping out
-      floatingActionButton: Transform.translate(
-        offset: Offset(
-            MediaQuery.of(context).size.width / 6 + ((1 / 428) * width), 0),
-        child: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          splashColor: Theme.of(context).accentColor,
-          child: AnimatedBuilder(
-            animation: animation,
-            builder: (context, child) {
-              return Transform.rotate(
-                angle: (pi * animation.value) / 2,
-                child: child,
-              );
-            },
-            child: Icon(
-              Icons.add_rounded,
-              color: Theme.of(context).accentIconTheme.color,
-              size: 40,
-            ),
-          ),
-          onPressed: () {},
-        ),
-      ),
+
+      floatingActionButton: HiddenFAB(),
+      bottomNavigationBar:
+          ThemedNavigationBar(pageIndex: 4, animateFloatingActionButton: true),
     );
   }
 }
@@ -448,9 +402,9 @@ class _SettingState extends State<Setting> {
 
 class Info extends StatelessWidget {
   final _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    final _theme = Provider.of<AppTheme>(context);
     return SettingPopup(
       child: Column(
         mainAxisSize: MainAxisSize.min,

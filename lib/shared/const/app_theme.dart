@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 
 class AppTheme with ChangeNotifier {
   ThemeData light;
@@ -10,6 +10,11 @@ class AppTheme with ChangeNotifier {
       .system; // TODO make loading screen so that this can be late and have it initialised.
   late bool haptics;
   double bottomNavigationBarBorderRadius = 25;
+
+  static final GlobalKey<NavigatorState> mainNavKey =
+      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> homeNavkey =
+      GlobalKey<NavigatorState>();
 
   var inputDecoration = InputDecoration(
     contentPadding: EdgeInsets.fromLTRB(10, 15, 8, 20),

@@ -1,12 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:releaf/screens/home/dashboard.dart';
-import 'package:releaf/screens/home/navigation_bar.dart';
-import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/services/auth.dart';
-import 'package:releaf/services/database.dart';
+import 'package:releaf/shared/assets/navigation_bar.dart';
 
 class Tasks extends StatefulWidget {
   final bool animate;
@@ -34,10 +28,13 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Provider.of<AppTheme>(context);
-    final width = MediaQuery.of(context).size.width;
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -47,6 +44,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
               'Tasks',
               style: Theme.of(context).textTheme.headline3,
             ),
+            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(
             child: Hero(
@@ -64,6 +62,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'floatingActionButton',
         backgroundColor: Theme.of(context).primaryColor,
         splashColor: Theme.of(context).accentColor,
         child: AnimatedBuilder(
@@ -82,6 +81,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
         ),
         onPressed: () {},
       ),
+      bottomNavigationBar:
+          ThemedNavigationBar(pageIndex: 1, animateFloatingActionButton: false),
     );
   }
 }

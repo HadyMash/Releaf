@@ -6,7 +6,7 @@ import 'package:releaf/screens/home/setting_popup.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 
 class ChangeEmail extends StatefulWidget {
   @override
@@ -17,6 +17,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   final _auth = AuthService();
   final _formKey = new GlobalKey<FormState>();
   FocusNode _emailFocusNode = new FocusNode();
+  TextEditingController _emailController = TextEditingController(text: '');
   String _email = '';
   String? _error;
 
@@ -31,6 +32,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   void dispose() {
     _formKey.currentState?.dispose();
     _emailFocusNode.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -55,8 +57,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
               children: [
                 TextFormField(
                   focusNode: _emailFocusNode,
+                  controller: _emailController,
                   onTap: () => setState(() {}),
-                  initialValue: _email,
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
                     if (val == null || val.isEmpty) {
@@ -92,7 +94,10 @@ class _ChangeEmailState extends State<ChangeEmail> {
                             ? Theme.of(context).primaryColor
                             : Colors.grey,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _emailController.clear();
+                        _email = '';
+                      },
                     ),
                   ),
                 ),
@@ -122,7 +127,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
                       if (result == null) {
                         // TODO send verification email if email isn't verified before popping.
-                        Navigator.pop(context);
+                        AppTheme.mainNavKey.currentState!.pop(context);
                         print('no errors, email changed');
                         // TODO make success animation
                       } else {

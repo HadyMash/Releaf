@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -228,6 +228,7 @@ class _ThemedAppState extends State<ThemedApp> {
             return child!;
           },
           home: Wrapper(),
+          navigatorKey: AppTheme.mainNavKey,
           theme: theme.light,
           darkTheme: theme.dark,
           themeMode: theme.themeMode,

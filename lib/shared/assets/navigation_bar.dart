@@ -7,7 +7,7 @@ import 'package:releaf/screens/home/settings.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
-@deprecated
+// TODO add glow under icon that is being pressed
 class ThemedNavigationBar extends StatelessWidget {
   final int pageIndex;
   final bool animateFloatingActionButton;
@@ -28,8 +28,7 @@ class ThemedNavigationBar extends StatelessWidget {
 
     void _changePage(index) {
       if (index != pageIndex) {
-        Navigator.pushReplacement(
-          context,
+        AppTheme.homeNavkey.currentState!.pushReplacement(
           PageRouteBuilder(
             transitionDuration: Duration(milliseconds: 320),
             pageBuilder: (BuildContext context, Animation<double> animation,
@@ -78,6 +77,7 @@ class ThemedNavigationBar extends StatelessWidget {
           enableFeedback: true,
           type: BottomNavigationBarType.fixed,
           items: [
+            // TODO make rive icons.
             BottomNavigationBarItem(
               icon: Icon(Icons.sports_handball_outlined, size: 28),
               activeIcon: Icon(Icons.sports_handball, size: 28),

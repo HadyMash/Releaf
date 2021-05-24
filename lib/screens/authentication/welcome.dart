@@ -15,7 +15,6 @@ class Welcome extends StatelessWidget {
 
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
-    final _ratio = MediaQuery.of(context).devicePixelRatio;
 
     // * iPhone 12 Pro Max screen info
     // height: 926.0 -> 2778
@@ -80,7 +79,8 @@ class Welcome extends StatelessWidget {
                                 size: 28,
                                 color: Theme.of(context).accentIconTheme.color,
                               ),
-                              onPressed: () => Navigator.of(context).push(
+                              onPressed: () =>
+                                  AppTheme.mainNavKey.currentState!.push(
                                 PageRouteBuilder(
                                   transitionDuration:
                                       Duration(milliseconds: 600),

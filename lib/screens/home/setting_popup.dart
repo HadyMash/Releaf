@@ -1,10 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
 
 class SettingPopup extends StatelessWidget {
   final Widget? child;
@@ -13,9 +8,8 @@ class SettingPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _theme = Provider.of<AppTheme>(context);
     return GestureDetector(
-      onTap: () => Navigator.pop(context),
+      onTap: () => AppTheme.mainNavKey.currentState!.pop(context),
       child: Scaffold(
         backgroundColor: Colors.white.withOpacity(0),
         body: Center(

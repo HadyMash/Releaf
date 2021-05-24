@@ -1,13 +1,7 @@
 import 'dart:math';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:releaf/screens/home/dashboard.dart';
-import 'package:releaf/screens/home/navigation_bar.dart';
-import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/services/auth.dart';
-import 'package:releaf/services/database.dart';
+import 'package:releaf/shared/assets/navigation_bar.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 
 class Journal extends StatefulWidget {
@@ -47,6 +41,13 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    fabController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     if (initialised == false) {
       fabColorAnimation = ColorTween(
@@ -70,6 +71,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
               'Journal',
               style: Theme.of(context).textTheme.headline3,
             ),
+            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(child: SizedBox(height: 20)),
           SliverToBoxAdapter(
@@ -100,54 +102,59 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
       ),
       floatingActionButton: Hero(
         tag: 'floatingActionButton',
-        child: GestureDetector(
-          onTapDown: (_) => fabController.forward(),
-          onTapUp: (_) => fabController.reverse(),
-          onTapCancel: () => fabController.reverse(),
-          child: AnimatedBuilder(
-            animation: fabController,
-            builder: (context, child) {
-              return OpenContainer(
-                transitionDuration: Duration(milliseconds: 500),
-                transitionType: ContainerTransitionType.fade,
-                closedElevation: fabElevationTween.value,
-                closedShape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(56 / 2),
+        child: Transform.translate(
+          offset: Offset(0, 0),
+          child: GestureDetector(
+            onTapDown: (_) => fabController.forward(),
+            onTapUp: (_) => fabController.reverse(),
+            onTapCancel: () => fabController.reverse(),
+            child: AnimatedBuilder(
+              animation: fabController,
+              builder: (context, child) {
+                return OpenContainer(
+                  transitionDuration: Duration(milliseconds: 500),
+                  transitionType: ContainerTransitionType.fade,
+                  closedElevation: fabElevationTween.value,
+                  closedShape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(56 / 2),
+                    ),
                   ),
-                ),
-                closedColor: fabColorAnimation.value,
-                closedBuilder:
-                    (BuildContext context, VoidCallback openContainer) {
-                  return SizedBox(
-                    height: 56,
-                    width: 56,
-                    child: Center(
-                      child: AnimatedBuilder(
-                        animation: animation,
-                        builder: (context, child) {
-                          return Transform.rotate(
-                            angle: (pi * 2) - ((pi * animation.value) / 2),
-                            child: child,
-                          );
-                        },
-                        child: Icon(
-                          Icons.add_rounded,
-                          color: Theme.of(context).accentIconTheme.color,
-                          size: 40,
+                  closedColor: fabColorAnimation.value,
+                  closedBuilder:
+                      (BuildContext context, VoidCallback openContainer) {
+                    return SizedBox(
+                      height: 56,
+                      width: 56,
+                      child: Center(
+                        child: AnimatedBuilder(
+                          animation: animation,
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle: (pi * 2) - ((pi * animation.value) / 2),
+                              child: child,
+                            );
+                          },
+                          child: Icon(
+                            Icons.add_rounded,
+                            color: Theme.of(context).accentIconTheme.color,
+                            size: 40,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                openBuilder: (BuildContext context, VoidCallback _) {
-                  return JournalEntryForm();
-                },
-              );
-            },
+                    );
+                  },
+                  openBuilder: (BuildContext context, VoidCallback _) {
+                    return JournalEntryForm();
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),
+      bottomNavigationBar:
+          ThemedNavigationBar(pageIndex: 3, animateFloatingActionButton: false),
     );
   }
 }

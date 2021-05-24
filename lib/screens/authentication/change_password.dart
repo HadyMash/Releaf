@@ -5,7 +5,7 @@ import 'package:releaf/screens/home/setting_popup.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
-import 'package:releaf/shared/assets/custom_form_field.dart';
+import 'package:releaf/shared/assets/custom_widget_border.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -16,9 +16,11 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _auth = AuthService();
   final _formKey = new GlobalKey<FormState>();
   FocusNode _oldPasswordFocusNode = new FocusNode();
-  TextEditingController _oldPasswordController = new TextEditingController();
+  TextEditingController _oldPasswordController = TextEditingController();
   FocusNode _newPasswordFocusNode = new FocusNode();
+  TextEditingController _newPasswordController = TextEditingController();
   FocusNode _confirmPasswordFocusNode = new FocusNode();
+  TextEditingController _confirmPasswordController = TextEditingController();
   String _oldPassword = '';
   String? _oldPasswordError;
   String _newPassword = '';
@@ -43,9 +45,11 @@ class _ChangePasswordState extends State<ChangePassword> {
   void dispose() {
     _formKey.currentState?.dispose();
     _oldPasswordFocusNode.dispose();
-    _oldPasswordController.dispose();
     _newPasswordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -135,7 +139,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     : Colors.grey)
                                 : Theme.of(context).errorColor,
                       ),
-                      onPressed: () => print('clear'),
+                      onPressed: () {
+                        _oldPasswordController.clear();
+                        _oldPassword = '';
+                      },
                     ),
                     errorText: _oldPasswordError,
                   ),
@@ -144,6 +151,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(height: 20),
                 TextFormField(
                   focusNode: _newPasswordFocusNode,
+                  controller: _newPasswordController,
                   obscureText: true,
                   validator: (val) {
                     if (val == null || val.isEmpty) {
@@ -179,7 +187,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                             ? Theme.of(context).primaryColor
                             : Colors.grey,
                       ),
-                      onPressed: () => print('clear'),
+                      onPressed: () {
+                        _newPasswordController.clear();
+                        _newPassword = '';
+                      },
                     ),
                   ),
                 ),
@@ -187,6 +198,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(height: 20),
                 TextFormField(
                   focusNode: _confirmPasswordFocusNode,
+                  controller: _confirmPasswordController,
                   obscureText: true,
                   validator: (val) {
                     if (val == null || val.isEmpty) {
@@ -223,7 +235,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                             ? Theme.of(context).primaryColor
                             : Colors.grey,
                       ),
-                      onPressed: () => print('clear'),
+                      onPressed: () {
+                        _confirmPasswordController.clear();
+                      },
                     ),
                   ),
                 ),
@@ -245,7 +259,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     if (_formKey.currentState!.validate()) {
                       dynamic oldPassResult =
                           await _auth.verifyCurrentPassword(_oldPassword);
-                      print('result: $oldPassResult');
                       if (oldPassResult != true) {
                         setState(() {
                           if (oldPassResult == 'Incorrect Email or Password') {
@@ -266,7 +279,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           if (!currentFocus.hasPrimaryFocus) {
                             currentFocus.unfocus();
                           }
-                          Navigator.pop(context);
+                          AppTheme.mainNavKey.currentState!.pop(context);
                         }
                       }
                     }
