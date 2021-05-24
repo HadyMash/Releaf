@@ -209,6 +209,7 @@ class _JournalEntryState extends State<JournalEntry> {
 class JournalEntryForm extends StatefulWidget {
   @override
   _JournalEntryFormState createState() => _JournalEntryFormState();
+  late DateTime _dateTime;
 }
 
 class _JournalEntryFormState extends State<JournalEntryForm> {
@@ -220,37 +221,46 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
           'Journal Entry',
           style: Theme.of(context).textTheme.headline3,
         ),
-        leading: Icon(
-          Icons.arrow_back_ios_rounded,
-          color: Theme.of(context).iconTheme.color,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ThemedButton(
-                label: 'pick photo',
-                onPressed: () async {},
-                tapDownFeedback: true,
-                tapFeedback: true,
-              ),
-              ThemedButton(
-                label: 'change date',
-                onPressed: () async {},
-                tapDownFeedback: true,
-                tapFeedback: true,
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              decoration: InputDecoration(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ThemedButton(
+                  label: 'pick photo',
+                  onPressed: () async {},
+                  tapDownFeedback: true,
+                  tapFeedback: true,
+                ),
+                ThemedButton(
+                  label: 'change date',
+                  onPressed: () async {},
+                  tapDownFeedback: true,
+                  tapFeedback: true,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: TextField(
+                expands: true,
+                decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
                   contentPadding:
@@ -259,11 +269,21 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
-                  labelText: "paragraph"),
-              keyboardType: TextInputType.multiline,
-              maxLines: 12,
+                  hintText: "Lorem ipsum",
+                ),
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+              ),
             ),
           ),
+          SizedBox(height: 10),
+          ThemedButton(
+            label: 'submit text',
+            onPressed: () async {},
+            tapDownFeedback: true,
+            tapFeedback: true,
+          ),
+          SizedBox(height: 15),
         ],
       ),
     );
