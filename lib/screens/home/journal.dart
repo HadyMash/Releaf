@@ -209,12 +209,13 @@ class _JournalEntryState extends State<JournalEntry> {
 class JournalEntryForm extends StatefulWidget {
   @override
   _JournalEntryFormState createState() => _JournalEntryFormState();
-  late DateTime _dateTime;
 }
 
 class _JournalEntryFormState extends State<JournalEntryForm> {
+  DateTime _currentDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    print(_currentDate);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -248,7 +249,18 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                 ),
                 ThemedButton(
                   label: 'change date',
-                  onPressed: () async {},
+                  onPressed: () {
+                    showDatePicker(
+                            context: context,
+                            initialDate: _currentDate,
+                            firstDate: DateTime(2001),
+                            lastDate: DateTime(2023))
+                        .then((date) {
+                      setState(() {
+                        _currentDate = date!;
+                      });
+                    });
+                  },
                   tapDownFeedback: true,
                   tapFeedback: true,
                 ),
@@ -277,11 +289,22 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
             ),
           ),
           SizedBox(height: 10),
-          ThemedButton(
-            label: 'submit text',
-            onPressed: () async {},
-            tapDownFeedback: true,
-            tapFeedback: true,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // TODO add rive feeling selector
+              Placeholder(
+                fallbackHeight: 70,
+                fallbackWidth: 150,
+              ),
+              ThemedButton(
+                label: 'submit text',
+                onPressed: () async {},
+                tapDownFeedback: true,
+                tapFeedback: true,
+              ),
+            ],
           ),
           SizedBox(height: 15),
         ],
