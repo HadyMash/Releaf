@@ -30,8 +30,7 @@ class _HiddenFABState extends State<HiddenFAB>
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     return Transform.translate(
-      offset:
-          Offset(((width / 6) > 56 ? width / 6 : 60) + ((1 / 428) * width), 0),
+      offset: Offset(((width / 6) > 56 ? width / 6 : 60) + (width / 428), 0),
       child: FloatingActionButton(
         heroTag: 'floatingActionButton',
         backgroundColor: Theme.of(context).primaryColor,
