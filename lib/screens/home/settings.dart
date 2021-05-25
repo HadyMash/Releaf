@@ -240,6 +240,7 @@ class Settings extends StatelessWidget {
           ),
         ],
       ),
+
       floatingActionButton: HiddenFAB(),
       bottomNavigationBar:
           ThemedNavigationBar(pageIndex: 4, animateFloatingActionButton: true),
