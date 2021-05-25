@@ -34,7 +34,7 @@ void main() async {
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
-                backgroundColor: Colors.white.withAlpha(0),
+                backgroundColor: AppTheme.transparent,
                 elevation: 0,
                 centerTitle: false,
                 titleSpacing: 28,
@@ -78,8 +78,9 @@ void main() async {
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
-                bodyText1: TextStyle(),
+                bodyText1: TextStyle(fontSize: 16),
                 bodyText2: TextStyle(
+                  fontSize: 16,
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                 ),
@@ -97,7 +98,7 @@ void main() async {
                   fontSize: 18,
                 ),
               ),
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(color: Colors.black, size: 34),
               accentIconTheme: IconThemeData(color: Colors.white),
             ),
             // * Dark Theme
@@ -156,7 +157,7 @@ class _ThemedAppState extends State<ThemedApp> {
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
-                backgroundColor: Colors.white.withAlpha(0),
+                backgroundColor: AppTheme.transparent,
                 elevation: 0,
                 centerTitle: false,
                 titleSpacing: 28,
@@ -201,7 +202,7 @@ class _ThemedAppState extends State<ThemedApp> {
                   color: Colors.black,
                 ),
                 bodyText1: TextStyle(
-                  fontSize: 14 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 16 - ((926 * 0.01) - (height * 0.01)),
                 ),
                 bodyText2: TextStyle(
                   fontSize: 16 - ((926 * 0.01) - (height * 0.01)),
@@ -221,7 +222,7 @@ class _ThemedAppState extends State<ThemedApp> {
                   fontSize: 18 - ((926 * 0.01) - (height * 0.01)),
                 ),
               ),
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(color: Colors.black, size: 34),
               accentIconTheme: IconThemeData(color: Colors.white),
             );
 

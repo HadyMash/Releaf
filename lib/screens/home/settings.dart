@@ -122,8 +122,9 @@ class Settings extends StatelessWidget {
                   preference: ThemedToggle(
                     onChanged: (state) => _theme.setHaptics(state),
                     defaultState: _theme.haptics,
-                    icon: Icon(Icons.clear_rounded),
-                    enabledIcon: Icon(Icons.check_rounded),
+                    icon: Center(child: Icon(Icons.clear_rounded, size: 24)),
+                    enabledIcon:
+                        Center(child: Icon(Icons.check_rounded, size: 24)),
                     tapFeedback: true,
                   ),
                 ),
