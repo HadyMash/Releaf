@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:releaf/screens/home/hidden_fab.dart';
-import 'package:releaf/shared/assets/navigation_bar.dart';
+import 'package:releaf/shared/assets/home/navigation_bar.dart';
 
 class Meditation extends StatelessWidget {
   @override

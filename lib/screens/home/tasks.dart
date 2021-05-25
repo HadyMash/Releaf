@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:releaf/shared/assets/navigation_bar.dart';
+import 'package:releaf/shared/assets/home/navigation_bar.dart';
 
 class Tasks extends StatefulWidget {
   final bool animate;
