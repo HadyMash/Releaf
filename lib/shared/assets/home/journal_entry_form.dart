@@ -51,7 +51,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                             lastDate: DateTime(2023))
                         .then((date) {
                       setState(() {
-                        _currentDate = date!;
+                        _currentDate = date ?? DateTime.now();
                       });
                     });
                   },
