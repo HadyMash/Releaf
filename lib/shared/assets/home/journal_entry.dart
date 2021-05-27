@@ -55,22 +55,22 @@ class _JournalEntryState extends State<JournalEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: 'journal entry',
-      child: Material(
-        color: AppTheme.transparent,
-        // TODO wrap with hero
-        child: GestureDetector(
-          onTap: () {
-            AppTheme.homeNavkey.currentState!.push(
-              HeroDialogRoute(
-                  builder: (context) =>
-                      JournalEntryExpanded(widget.date, widget.entryText)),
-            );
-          },
-          onTapDown: (_) => _tapDown(),
-          onTapUp: (_) => _tapUp(),
-          onTapCancel: () => _tapUp(),
+    return Material(
+      color: AppTheme.transparent,
+      // TODO wrap with hero
+      child: GestureDetector(
+        onTap: () {
+          AppTheme.homeNavkey.currentState!.push(
+            HeroDialogRoute(
+                builder: (context) =>
+                    JournalEntryExpanded(widget.date, widget.entryText)),
+          );
+        },
+        onTapDown: (_) => _tapDown(),
+        onTapUp: (_) => _tapUp(),
+        onTapCancel: () => _tapUp(),
+        child: Hero(
+          tag: 'journal entry',
           child: AnimatedContainer(
             duration: Duration(milliseconds: 220),
             margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -121,13 +121,12 @@ class JournalEntryExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO add hero
     return Hero(
       tag: 'journal entry',
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            date,
+            "Journal",
             style: Theme.of(context).textTheme.headline3,
           ),
           automaticallyImplyLeading: false,
@@ -143,12 +142,26 @@ class JournalEntryExpanded extends StatelessWidget {
         ),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: EdgeInsets.only(
+              right: 20,
+              left: 20,
+              top: 15,
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  date,
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        fontSize:
+                            Theme.of(context).textTheme.subtitle2!.fontSize! +
+                                6,
+                      ),
+                ),
+                SizedBox(height: 15),
                 // TODO add caresoul of pictures
                 Placeholder(fallbackHeight: 200),
                 SizedBox(height: 20),
@@ -165,8 +178,19 @@ class JournalEntryExpanded extends StatelessWidget {
                 ),
                 SizedBox(height: 25),
                 // TODO add feeling display
-                Placeholder(
-                  fallbackHeight: 100,
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Feeling:',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    Placeholder(
+                      fallbackHeight: 100,
+                      fallbackWidth: 180,
+                    ),
+                  ],
                 ),
                 SizedBox(height: 15),
               ],

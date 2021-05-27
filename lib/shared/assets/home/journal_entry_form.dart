@@ -45,11 +45,11 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                   label: 'change date',
                   onPressed: () {
                     showDatePicker(
-                            context: context,
-                            initialDate: _currentDate,
-                            firstDate: DateTime(2001),
-                            lastDate: DateTime(2023))
-                        .then((date) {
+                      context: context,
+                      initialDate: _currentDate,
+                      firstDate: DateTime(2001),
+                      lastDate: DateTime(2023),
+                    ).then((date) {
                       setState(() {
                         _currentDate = date ?? DateTime.now();
                       });
@@ -63,12 +63,12 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: TextField(
                 textAlignVertical: TextAlignVertical.top,
                 expands: true,
                 decoration: InputDecoration(
-                  fillColor: Colors.grey[350],
+                  fillColor: Colors.grey[300],
                   filled: true,
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 15),
