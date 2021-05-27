@@ -77,31 +77,6 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
             ),
             automaticallyImplyLeading: false,
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 20)),
-          SliverToBoxAdapter(
-            child: JournalEntry(
-                date: 'Jan 18, 2021',
-                entryText:
-                    'Amet ea aute reprehenderit occaecat incididunt excepteur anim id reprehenderit ad voluptate.'),
-          ),
-          // SliverToBoxAdapter(
-          //   child: JournalEntry(
-          //       date: 'Jan 18, 2021',
-          //       entryText:
-          //           'Amet ea aute reprehenderit occaecat incididunt excepteur anim id reprehenderit ad voluptate.'),
-          // ),
-          // SliverToBoxAdapter(
-          //   child: JournalEntry(
-          //       date: 'Jan 18, 2021',
-          //       entryText:
-          //           'Amet ea aute reprehenderit occaecat incididunt excepteur anim id reprehenderit ad voluptate.'),
-          // ),
-          // SliverToBoxAdapter(
-          //   child: JournalEntry(
-          //       date: 'Jan 18, 2021',
-          //       entryText:
-          //           'Amet ea aute reprehenderit occaecat incididunt excepteur anim id reprehenderit ad voluptate.'),
-          // ),
         ],
       ),
       floatingActionButton: Hero(
