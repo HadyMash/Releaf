@@ -12,7 +12,7 @@ class DatabaseService {
   // * Journal
   late DocumentReference<Object?> journal;
 
-  // TODO add new entry
+  // add new entry
   Future addNewJournalEntry(String date, String entryText, int feeling) async {
     try {
       await journal.set({
@@ -30,14 +30,13 @@ class DatabaseService {
 
   // TODO edit an entry
 
-  // TODO get entries
+  // get entries
   Future<List<JournalEntryData>> getJournalEntries() async {
     List<JournalEntryData> entries = [];
 
     await journal.get().then((document) {
       Map data = (document.data() as Map);
       data.forEach((key, value) {
-        print('adding entry');
         entries.add(JournalEntryData(
           date: key,
           entryText: value['entryText'],
