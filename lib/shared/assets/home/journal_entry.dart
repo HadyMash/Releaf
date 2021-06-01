@@ -93,6 +93,7 @@ class _JournalEntryState extends State<JournalEntry> {
               children: <Widget>[
                 // * Heading
                 Text(
+                  // TODO make a function to get month, year, and day from utc time.
                   widget.date,
                   style: Theme.of(context).textTheme.subtitle2,
                 ),

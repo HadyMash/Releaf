@@ -13,6 +13,7 @@ class DatabaseService {
   late DocumentReference<Object?> journal;
 
   // add new entry
+  // TODO make hash date identifier combination
   Future addNewJournalEntry(String date, String entryText, int feeling) async {
     try {
       await journal.set({

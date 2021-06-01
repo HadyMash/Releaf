@@ -7,7 +7,6 @@ import 'package:releaf/screens/home/home.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class Wrapper extends StatelessWidget {
-  // TODO add fix external log out not taking effect.
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);

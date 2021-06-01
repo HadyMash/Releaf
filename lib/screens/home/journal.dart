@@ -1,12 +1,17 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:releaf/services/auth.dart';
+import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/const/hero_route.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/assets/home/journal_entry.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
+import 'package:releaf/shared/models/journal_entry_data.dart';
 
 class Journal extends StatefulWidget {
   final bool animate;
@@ -16,6 +21,8 @@ class Journal extends StatefulWidget {
 }
 
 class _JournalState extends State<Journal> with TickerProviderStateMixin {
+  final AuthService _auth = new AuthService();
+
   late final AnimationController controller;
   late final CurvedAnimation animation;
 
@@ -66,74 +73,100 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: SizedBox(height: 20)),
-          SliverAppBar(
-            title: Text(
-              'Journal',
-              style: Theme.of(context).textTheme.headline3,
-            ),
-            automaticallyImplyLeading: false,
-          ),
-        ],
-      ),
-      floatingActionButton: Hero(
-        tag: 'floatingActionButton',
-        child: Transform.translate(
-          offset: Offset(0, 0),
-          child: GestureDetector(
-            onTapDown: (_) => fabController.forward(),
-            onTapUp: (_) => fabController.reverse(),
-            onTapCancel: () => fabController.reverse(),
-            child: AnimatedBuilder(
-              animation: fabController,
-              builder: (context, child) {
-                return OpenContainer(
-                  transitionDuration: Duration(milliseconds: 500),
-                  transitionType: ContainerTransitionType.fade,
-                  closedElevation: fabElevationTween.value,
-                  closedShape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(56 / 2),
-                    ),
-                  ),
-                  closedColor: fabColorAnimation.value,
-                  closedBuilder:
-                      (BuildContext context, VoidCallback openContainer) {
-                    return SizedBox(
-                      height: 56,
-                      width: 56,
-                      child: Center(
-                        child: AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, child) {
-                            return Transform.rotate(
-                              angle: (pi * 2) - ((pi * animation.value) / 2),
-                              child: child,
-                            );
-                          },
-                          child: Icon(
-                            Icons.add_rounded,
-                            color: Theme.of(context).accentIconTheme.color,
-                            size: 40,
-                          ),
-                        ),
-                      ),
+    return FutureProvider<List<JournalEntryData>>(
+      initialData: [],
+      create: (_) =>
+          DatabaseService(uid: _auth.getUser()!.uid).getJournalEntries(),
+      catchError: (context, error) {
+        print(error.toString());
+        return [];
+      },
+      builder: (context, child) {
+        List<JournalEntryData> entries =
+            Provider.of<List<JournalEntryData>>(context);
+        // TODO make refresh functionality
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverAppBar(
+                title: Text(
+                  'Journal',
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                automaticallyImplyLeading: false,
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return JournalEntry(
+                      date: entries[index].date,
+                      entryText: entries[index].entryText,
                     );
                   },
-                  openBuilder: (BuildContext context, VoidCallback _) {
-                    return JournalEntryForm();
+                  childCount: entries.length,
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: Hero(
+            tag: 'floatingActionButton',
+            child: Transform.translate(
+              offset: Offset(0, 0),
+              child: GestureDetector(
+                onTapDown: (_) => fabController.forward(),
+                onTapUp: (_) => fabController.reverse(),
+                onTapCancel: () => fabController.reverse(),
+                child: AnimatedBuilder(
+                  animation: fabController,
+                  builder: (context, child) {
+                    return OpenContainer(
+                      transitionDuration: Duration(milliseconds: 500),
+                      transitionType: ContainerTransitionType.fade,
+                      closedElevation: fabElevationTween.value,
+                      closedShape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(56 / 2),
+                        ),
+                      ),
+                      closedColor: fabColorAnimation.value,
+                      closedBuilder:
+                          (BuildContext context, VoidCallback openContainer) {
+                        return SizedBox(
+                          height: 56,
+                          width: 56,
+                          child: Center(
+                            child: AnimatedBuilder(
+                              animation: animation,
+                              builder: (context, child) {
+                                return Transform.rotate(
+                                  angle:
+                                      (pi * 2) - ((pi * animation.value) / 2),
+                                  child: child,
+                                );
+                              },
+                              child: Icon(
+                                Icons.add_rounded,
+                                color: Theme.of(context).accentIconTheme.color,
+                                size: 40,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      openBuilder: (BuildContext context, VoidCallback _) {
+                        return JournalEntryForm();
+                      },
+                    );
                   },
-                );
-              },
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar:
-          ThemedNavigationBar(pageIndex: 3, animateFloatingActionButton: false),
+          bottomNavigationBar: ThemedNavigationBar(
+              pageIndex: 3, animateFloatingActionButton: false),
+        );
+      },
     );
   }
 }
