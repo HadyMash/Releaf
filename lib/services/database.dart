@@ -22,8 +22,11 @@ class DatabaseService {
           "feeling": feeling,
         },
       }, SetOptions(merge: true));
+      return JournalEntryData(
+          date: date, entryText: entryText, feeling: feeling);
     } catch (e) {
       print(e.toString());
+      return e.toString();
     }
   }
 

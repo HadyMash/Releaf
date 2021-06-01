@@ -1,4 +1,6 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/const/hero_route.dart';
 
@@ -6,8 +8,17 @@ class JournalEntry extends StatefulWidget {
   final String date;
   // final List pictures; // TODO add pictures list
   final String entryText;
+  late final int feeling;
 
-  JournalEntry({required this.date, required this.entryText});
+  JournalEntry(
+      {required this.date, required this.entryText, required feeling}) {
+    if (feeling < 1) {
+      feeling = 1;
+    } else if (feeling > 3) {
+      feeling = 3;
+    }
+    this.feeling = feeling;
+  }
 
   @override
   _JournalEntryState createState() => _JournalEntryState();
@@ -55,22 +66,24 @@ class _JournalEntryState extends State<JournalEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppTheme.transparent,
-      // TODO wrap with hero
-      child: GestureDetector(
-        onTap: () {
-          AppTheme.homeNavkey.currentState!.push(
-            HeroDialogRoute(
-                builder: (context) =>
-                    JournalEntryExpanded(widget.date, widget.entryText)),
-          );
-        },
-        onTapDown: (_) => _tapDown(),
-        onTapUp: (_) => _tapUp(),
-        onTapCancel: () => _tapUp(),
-        child: Hero(
-          tag: 'journal entry',
+    return Hero(
+      tag: widget.date,
+      child: Material(
+        color: AppTheme.transparent,
+        child: GestureDetector(
+          onTap: () {
+            AppTheme.homeNavkey.currentState!.push(
+              HeroDialogRoute(
+                  builder: (context) => JournalEntryExpanded(
+                        widget.date,
+                        widget.entryText,
+                        widget.feeling,
+                      )),
+            );
+          },
+          onTapDown: (_) => _tapDown(),
+          onTapUp: (_) => _tapUp(),
+          onTapCancel: () => _tapUp(),
           child: AnimatedContainer(
             duration: Duration(milliseconds: 220),
             margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -93,9 +106,10 @@ class _JournalEntryState extends State<JournalEntry> {
               children: <Widget>[
                 // * Heading
                 Text(
-                  // TODO make a function to get month, year, and day from utc time.
-                  widget.date,
+                  _formatedDate(widget.date),
                   style: Theme.of(context).textTheme.subtitle2,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 10),
                 Placeholder(fallbackHeight: 160),
@@ -103,6 +117,8 @@ class _JournalEntryState extends State<JournalEntry> {
                 Text(
                   widget.entryText,
                   style: Theme.of(context).textTheme.bodyText2,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -113,35 +129,75 @@ class _JournalEntryState extends State<JournalEntry> {
   }
 }
 
-class JournalEntryExpanded extends StatelessWidget {
+class JournalEntryExpanded extends StatefulWidget {
   final String date;
   final String entryText;
-  // final feeling; // TODO add feeling variable
+  final feeling;
 
-  JournalEntryExpanded(this.date, this.entryText);
+  JournalEntryExpanded(this.date, this.entryText, this.feeling);
+  @override
+  _JournalEntryExpandedState createState() => _JournalEntryExpandedState();
+}
+
+class _JournalEntryExpandedState extends State<JournalEntryExpanded>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController fabController;
+  late final Animation fabColorAnimation;
+  late final Animation<double> fabElevationTween;
+
+  bool initialised = false;
+
+  void initState() {
+    fabController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+
+    fabElevationTween = Tween<double>(begin: 6, end: 10)
+        .animate(CurvedAnimation(parent: fabController, curve: Curves.linear));
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    fabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (initialised == false) {
+      fabColorAnimation = ColorTween(
+              begin: Theme.of(context).primaryColor,
+              end: Theme.of(context).accentColor)
+          .animate(
+              CurvedAnimation(curve: Curves.linear, parent: fabController));
+      initialised = true;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: 'journal entry',
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Journal",
-            style: Theme.of(context).textTheme.headline3,
-          ),
-          automaticallyImplyLeading: false,
-          leadingWidth: 35,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: Theme.of(context).iconTheme.color,
-              size: Theme.of(context).iconTheme.size,
-            ),
-            onPressed: () => AppTheme.homeNavkey.currentState!.pop(),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Journal",
+          style: Theme.of(context).textTheme.headline3,
         ),
-        body: Center(
+        automaticallyImplyLeading: false,
+        leadingWidth: 35,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Theme.of(context).iconTheme.color,
+            size: Theme.of(context).iconTheme.size,
+          ),
+          onPressed: () => AppTheme.homeNavkey.currentState!.pop(),
+        ),
+      ),
+      body: Hero(
+        tag: widget.date,
+        child: Center(
           child: Padding(
             padding: EdgeInsets.only(
               right: 20,
@@ -155,7 +211,7 @@ class JournalEntryExpanded extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  date,
+                  _formatedDate(widget.date),
                   style: Theme.of(context).textTheme.subtitle2!.copyWith(
                         fontSize:
                             Theme.of(context).textTheme.subtitle2!.fontSize! +
@@ -170,9 +226,12 @@ class JournalEntryExpanded extends StatelessWidget {
                   child: Scrollbar(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
-                      child: Text(
-                        entryText,
-                        style: Theme.of(context).textTheme.bodyText1,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          widget.entryText,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ),
                   ),
@@ -199,6 +258,70 @@ class JournalEntryExpanded extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: Hero(
+        tag: 'floatingActionButton',
+        child: Transform.translate(
+          offset: Offset(0, 0),
+          child: GestureDetector(
+            onTapDown: (_) => fabController.forward(),
+            onTapUp: (_) => fabController.reverse(),
+            onTapCancel: () => fabController.reverse(),
+            child: AnimatedBuilder(
+              animation: fabController,
+              builder: (context, child) {
+                return OpenContainer(
+                  transitionDuration: Duration(milliseconds: 500),
+                  transitionType: ContainerTransitionType.fade,
+                  closedElevation: fabElevationTween.value,
+                  closedShape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(56 / 2),
+                    ),
+                  ),
+                  closedColor: fabColorAnimation.value,
+                  closedBuilder:
+                      (BuildContext context, VoidCallback openContainer) {
+                    return SizedBox(
+                      height: 56,
+                      width: 56,
+                      child: Center(
+                        child: Icon(
+                          Icons.edit_rounded,
+                          color: Theme.of(context).accentIconTheme.color,
+                          size: 32,
+                        ),
+                      ),
+                    );
+                  },
+                  openBuilder: (BuildContext context, VoidCallback _) {
+                    return JournalEntryForm(initialText: widget.entryText);
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
+}
+
+String _formatedDate(String date) {
+  DateTime dateTime = DateTime.parse(date);
+  Map<int, String> _monthNumToName = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+  };
+
+  return '${_monthNumToName[dateTime.month]} ${dateTime.day}, ${dateTime.year}';
 }
