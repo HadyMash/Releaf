@@ -1,13 +1,9 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
-import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/shared/const/hero_route.dart';
-import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/assets/home/journal_entry.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
@@ -22,7 +18,6 @@ class Journal extends StatefulWidget {
 
 class _JournalState extends State<Journal> with TickerProviderStateMixin {
   final AuthService _auth = new AuthService();
-
   late final AnimationController controller;
   late final CurvedAnimation animation;
 

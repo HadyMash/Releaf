@@ -46,19 +46,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
             ),
             automaticallyImplyLeading: false,
           ),
-          SliverToBoxAdapter(
-            child: Hero(
-              tag: 'pageText',
-              child: Material(
-                color: Colors.white.withOpacity(0),
-                child: Container(
-                  color: Colors.red,
-                  width: 100,
-                  height: 100,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

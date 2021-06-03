@@ -1,5 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:releaf/services/auth.dart';
+import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/const/hero_route.dart';
@@ -141,6 +143,8 @@ class JournalEntryExpanded extends StatefulWidget {
 
 class _JournalEntryExpandedState extends State<JournalEntryExpanded>
     with SingleTickerProviderStateMixin {
+  final AuthService _auth = AuthService();
+
   late final AnimationController fabController;
   late final Animation fabColorAnimation;
   late final Animation<double> fabElevationTween;
@@ -186,6 +190,42 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
         ),
         automaticallyImplyLeading: false,
         leadingWidth: 35,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 22),
+            child: IconButton(
+              onPressed: () async {
+                dynamic result =
+                    await DatabaseService(uid: _auth.getUser()!.uid)
+                        .deleteEntry(widget.date);
+                if (result == true) {
+                  Navigator.of(context).pop();
+                } else {
+                  print(result.toString());
+                  final snackBar = SnackBar(
+                    content: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child:
+                              Icon(Icons.error_rounded, color: Colors.red[700]),
+                        ),
+                        Expanded(child: Text(result.toString())),
+                      ],
+                    ),
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
+              icon: Icon(
+                Icons.delete_rounded,
+                size: 32,
+                color: Theme.of(context).iconTheme.color,
+              ),
+            ),
+          ),
+        ],
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
@@ -294,7 +334,11 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
                     );
                   },
                   openBuilder: (BuildContext context, VoidCallback _) {
-                    return JournalEntryForm(initialText: widget.entryText);
+                    return JournalEntryForm(
+                      date: widget.date,
+                      initialText: widget.entryText,
+                      feeling: widget.feeling,
+                    );
                   },
                 );
               },

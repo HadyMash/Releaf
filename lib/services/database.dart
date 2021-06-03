@@ -16,8 +16,20 @@ class DatabaseService {
   // TODO make hash date identifier combination
   Future addNewJournalEntry(String date, String entryText, int feeling) async {
     try {
+      DateTime currentDate = DateTime.now();
+      DateTime newDateTime = DateTime.parse(date);
+      DateTime hybridDate = DateTime(
+        newDateTime.year,
+        newDateTime.month,
+        newDateTime.day,
+        currentDate.hour,
+        currentDate.minute,
+        currentDate.second,
+        currentDate.millisecond,
+        currentDate.microsecond,
+      );
       await journal.set({
-        "$date": {
+        hybridDate.toString(): {
           "entryText": entryText,
           "feeling": feeling,
         },
@@ -30,9 +42,56 @@ class DatabaseService {
     }
   }
 
-  // TODO delete entry
+  // delete entry
+  Future deleteEntry(String date) async {
+    try {
+      await journal.set(
+        {date: FieldValue.delete()},
+        SetOptions(merge: true),
+      );
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
 
-  // TODO edit an entry
+  // edit an entry
+  Future editEntry(
+      String oldDate, String newDate, String? entryText, int feeling) async {
+    try {
+      if (oldDate == newDate) {
+        await journal.set(
+          {
+            "$oldDate": {
+              "entryText": entryText,
+              "feeling": feeling,
+            },
+          },
+          SetOptions(merge: true),
+        );
+      } else {
+        deleteEntry(oldDate);
+        DateTime oldDateTime = DateTime.parse(oldDate);
+        DateTime newDateTime = DateTime.parse(newDate);
+        DateTime hybridDate = DateTime(
+          newDateTime.year,
+          newDateTime.month,
+          newDateTime.day,
+          oldDateTime.hour,
+          oldDateTime.minute,
+          oldDateTime.second,
+          oldDateTime.millisecond,
+          oldDateTime.microsecond,
+        );
+
+        addNewJournalEntry(hybridDate.toString(), entryText ?? '', feeling);
+      }
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   // get entries
   Future<List<JournalEntryData>> getJournalEntries() async {

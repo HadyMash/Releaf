@@ -6,8 +6,10 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
 
 class JournalEntryForm extends StatefulWidget {
+  final String? date;
   final String? initialText;
-  JournalEntryForm({this.initialText});
+  final int? feeling;
+  JournalEntryForm({this.date, this.initialText, this.feeling});
 
   @override
   _JournalEntryFormState createState() => _JournalEntryFormState();
@@ -18,13 +20,16 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
   bool _textFieldFocused = false;
   late TextEditingController _controller;
 
-  DateTime currentDate = DateTime.now();
+  late DateTime currentDate;
   // List pictures;
   String? entryText;
-  int feeling = 3; // TODO add feeling functionality
+  late int feeling; // TODO add feeling functionality
 
   @override
   void initState() {
+    currentDate =
+        widget.date != null ? DateTime.parse(widget.date!) : DateTime.now();
+    feeling = widget.feeling ?? 3;
     entryText = widget.initialText;
     _controller = TextEditingController(text: widget.initialText);
     super.initState();
@@ -161,7 +166,7 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                     onPressed: _textFieldFocused
                         ? _unfocusTextField
                         : () async {
-                            if (widget.initialText == null) {
+                            if (widget.date == null) {
                               // TODO disable button until request is complete
 
                               dynamic result = await DatabaseService(
@@ -178,7 +183,19 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
 
                                 // TODO show error snackbar
                               }
-                            } else {}
+                            } else {
+                              dynamic result = await DatabaseService(
+                                      uid: _auth.getUser()!.uid)
+                                  .editEntry(
+                                widget.date!,
+                                currentDate.toString(),
+                                entryText,
+                                feeling,
+                              );
+                              if (result == true) {
+                                AppTheme.homeNavkey.currentState!.pop();
+                              }
+                            }
                           },
                     notAllCaps: true,
                     tapDownFeedback: true,
