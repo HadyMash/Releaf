@@ -28,12 +28,12 @@ class JournalEntry extends StatefulWidget {
 
 class _JournalEntryState extends State<JournalEntry> {
   late Color _shadowColor;
-  double _blurRadius = 20;
-  double _spreadRadius = 2;
+  double _blurRadius = 15;
+  double _spreadRadius = 0;
 
   late Color _pressedShadowColor;
-  double _pressedBlurRadius = 27;
-  double _pressedSpreadRadius = 3;
+  double _pressedBlurRadius = 25;
+  double _pressedSpreadRadius = 2;
 
   late Color _color;
   late double _blur;
@@ -42,7 +42,7 @@ class _JournalEntryState extends State<JournalEntry> {
   @override
   void didChangeDependencies() {
     _shadowColor = Theme.of(context).shadowColor.withOpacity(0.42);
-    _pressedShadowColor = Theme.of(context).shadowColor.withOpacity(0.63);
+    _pressedShadowColor = Theme.of(context).shadowColor.withOpacity(0.60);
 
     _color = _shadowColor;
     _blur = _blurRadius;
