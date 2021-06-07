@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
+import 'package:releaf/shared/models/todo_data.dart';
 
 class DatabaseService {
   final String uid;
   late final FirebaseFirestore firestore;
   DatabaseService({required this.uid}) {
     firestore = FirebaseFirestore.instance;
+
+    // * Journal
     journal = firestore.doc('journal/$uid');
+
+    // * Tasks
+    tasks = firestore.doc('tasks/$uid');
   }
 
   // * Journal
@@ -96,6 +102,7 @@ class DatabaseService {
   // get entries
   Future<List<JournalEntryData>> getJournalEntries() async {
     List<JournalEntryData> entries = [];
+    print('getting journal entries');
 
     await journal.get().then((document) {
       Map data = (document.data() as Map);
@@ -109,5 +116,68 @@ class DatabaseService {
     });
 
     return entries;
+  }
+
+  // * Tasks
+  late DocumentReference<Object?> tasks;
+
+  // Get list of years
+  Future<List<dynamic>> getTaskYears() async {
+    print('getting task years');
+    return tasks.get().then((value) => value.get('years'));
+  }
+
+  // Add a new year
+  Future? addTaskYear(int year) async {
+    try {
+      List years =
+          await tasks.collection(year.toString()).get().then((snapshot) {
+        return snapshot.docs;
+      });
+      await tasks.collection(year.toString()).add({
+        'index': years.length == 0 ? 0 : years.length,
+        'task': 'Celebrate New Year!',
+        'completed': false,
+      });
+      await tasks.update({
+        'years': FieldValue.arrayUnion([year])
+      });
+    } catch (e) {
+      print(e.toString());
+      return Future.value(e);
+    }
+  }
+
+  // TODO delete task year
+  Future? deleteTaskYear(int year) async {
+    try {
+      // delete reference in document
+      await tasks.update({
+        'years': FieldValue.arrayRemove([year]),
+      });
+
+      // delete collection
+      await tasks.collection(year.toString()).get().then((snapshot) async {
+        for (DocumentSnapshot doc in snapshot.docs) {
+          await doc.reference.delete();
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
+
+  // TODO get tasks stream for a given year
+  Stream<List<TodoData>?> getTodos(int year) {
+    return tasks.collection(year.toString()).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return TodoData(
+          task: doc.data()['task'],
+          completed: doc.data()['completed'],
+          index: doc.data()['index'],
+        );
+      }).toList();
+    });
   }
 }

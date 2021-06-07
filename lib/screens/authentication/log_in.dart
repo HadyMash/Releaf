@@ -258,7 +258,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                   autocorrect: false,
                                   onChanged: (val) => setState(() {
                                     widget.email = val;
-                                    print('value changed: $val');
                                   }),
                                   style: TextStyle(
                                     fontSize: 16 -

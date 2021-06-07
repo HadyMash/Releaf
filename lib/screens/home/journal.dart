@@ -74,10 +74,10 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
     return FutureBuilder<List<JournalEntryData>>(
       future: journalEntriesFuture,
       initialData: [],
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done ||
-            snapshot.connectionState == ConnectionState.active) {
-          List<JournalEntryData> entries = snapshot.data!;
+      builder: (context, future) {
+        if (future.connectionState == ConnectionState.done ||
+            future.connectionState == ConnectionState.active) {
+          List<JournalEntryData> entries = future.data!;
           entries.sort((firstEntry, secondEntry) {
             DateTime firstDate = DateTime.parse(firstEntry.date);
             DateTime secondDate = DateTime.parse(secondEntry.date);
