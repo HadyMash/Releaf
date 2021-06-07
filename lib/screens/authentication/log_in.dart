@@ -562,15 +562,17 @@ class _ResetPasswordState extends State<ResetPassword>
                               IconButton(
                                 icon: Icon(
                                   Icons.arrow_back_ios_rounded,
-                                  color:
-                                      Theme.of(context).accentIconTheme.color,
+                                  color: Theme.of(context)
+                                      .floatingActionButtonTheme
+                                      .foregroundColor,
                                   size: 28.0,
                                 ),
                                 onPressed: () => AppTheme
                                     .mainNavKey.currentState!
                                     .pop(context),
-                                splashColor:
-                                    Theme.of(context).accentIconTheme.color,
+                                splashColor: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .foregroundColor,
                               ),
                               Expanded(
                                 child: Text(

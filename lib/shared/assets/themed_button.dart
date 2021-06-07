@@ -91,9 +91,9 @@ class _ThemedButtonState extends State<ThemedButton> {
 
   // Animate When tapped down
   void _animateDown() {
-    _color = widget.pressedColor ?? Theme.of(context).accentColor;
+    _color = widget.pressedColor ?? Theme.of(context).colorScheme.secondary;
     _shadowColor = widget.pressedShadowColor ??
-        Theme.of(context).accentColor.withOpacity(0.7);
+        Theme.of(context).colorScheme.secondary.withOpacity(0.7);
     _shadowBlurRadius = widget.pressedShadowBlurRadius ?? 17.0;
     _shadowSpreadRadius = widget.pressedShadowSpreadRadius ?? 1.7;
     _shadowOffset = widget.pressedShadowOffset ?? Offset(0, 0);
@@ -237,7 +237,7 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton> {
 
   // Animate When tapped down
   void _animateDown() {
-    _color = widget.pressedColor ?? Theme.of(context).accentColor;
+    _color = widget.pressedColor ?? Theme.of(context).colorScheme.secondary;
   }
 
   // Animate When Tapped up

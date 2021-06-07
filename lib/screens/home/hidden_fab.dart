@@ -34,7 +34,7 @@ class _HiddenFABState extends State<HiddenFAB>
       child: FloatingActionButton(
         heroTag: 'floatingActionButton',
         backgroundColor: Theme.of(context).primaryColor,
-        splashColor: Theme.of(context).accentColor,
+        splashColor: Theme.of(context).colorScheme.secondary,
         child: AnimatedBuilder(
           animation: animation,
           builder: (context, child) {
@@ -45,7 +45,7 @@ class _HiddenFABState extends State<HiddenFAB>
           },
           child: Icon(
             Icons.add_rounded,
-            color: Theme.of(context).accentIconTheme.color,
+            color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
             size: 40,
           ),
         ),

@@ -100,7 +100,9 @@ class _VerifyState extends State<Verify> {
                             : _auth.sendVerificationEmail(context),
                         icon: Icon(
                           Icons.email,
-                          color: Theme.of(context).accentIconTheme.color,
+                          color: Theme.of(context)
+                              .floatingActionButtonTheme
+                              .foregroundColor,
                         ),
                         label: 'Resend Email',
                         tapDownFeedback: true,
@@ -109,7 +111,9 @@ class _VerifyState extends State<Verify> {
                       ThemedButton.icon(
                         label: 'Log out',
                         icon: Icon(Icons.logout_rounded,
-                            color: Theme.of(context).accentIconTheme.color),
+                            color: Theme.of(context)
+                                .floatingActionButtonTheme
+                                .foregroundColor),
                         onPressed: () => _auth.logOut(),
                         tapFeedback: true,
                       ),

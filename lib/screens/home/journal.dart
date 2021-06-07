@@ -61,7 +61,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
     if (initialised == false) {
       fabColorAnimation = ColorTween(
               begin: Theme.of(context).primaryColor,
-              end: Theme.of(context).accentColor)
+              end: Theme.of(context).colorScheme.secondary)
           .animate(
               CurvedAnimation(curve: Curves.linear, parent: fabController));
       initialised = true;
@@ -153,7 +153,9 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                               },
                               child: Icon(
                                 Icons.add_rounded,
-                                color: Theme.of(context).accentIconTheme.color,
+                                color: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .foregroundColor,
                                 size: 40,
                               ),
                             ),
@@ -236,7 +238,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
           //                       },
           //                       child: Icon(
           //                         Icons.add_rounded,
-          //                         color: Theme.of(context).accentIconTheme.color,
+          //                         color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
           //                         size: 40,
           //                       ),
           //                     ),
@@ -305,7 +307,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
           //                       },
           //                       child: Icon(
           //                         Icons.add_rounded,
-          //                         color: Theme.of(context).accentIconTheme.color,
+          //                         color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
           //                         size: 40,
           //                       ),
           //                     ),
@@ -376,7 +378,9 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                               },
                               child: Icon(
                                 Icons.add_rounded,
-                                color: Theme.of(context).accentIconTheme.color,
+                                color: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .foregroundColor,
                                 size: 40,
                               ),
                             ),

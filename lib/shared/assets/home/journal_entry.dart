@@ -172,7 +172,7 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
     if (initialised == false) {
       fabColorAnimation = ColorTween(
               begin: Theme.of(context).primaryColor,
-              end: Theme.of(context).accentColor)
+              end: Theme.of(context).colorScheme.secondary)
           .animate(
               CurvedAnimation(curve: Curves.linear, parent: fabController));
       initialised = true;
@@ -327,7 +327,9 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
                       child: Center(
                         child: Icon(
                           Icons.edit_rounded,
-                          color: Theme.of(context).accentIconTheme.color,
+                          color: Theme.of(context)
+                              .floatingActionButtonTheme
+                              .foregroundColor,
                           size: 32,
                         ),
                       ),

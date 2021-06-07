@@ -77,7 +77,9 @@ class Welcome extends StatelessWidget {
                               icon: Icon(
                                 Icons.email /* TODO Make Icon */,
                                 size: 28,
-                                color: Theme.of(context).accentIconTheme.color,
+                                color: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .foregroundColor,
                               ),
                               onPressed: () =>
                                   AppTheme.mainNavKey.currentState!.push(
@@ -120,7 +122,9 @@ class Welcome extends StatelessWidget {
                               icon: Icon(
                                 Icons.email, // TODO Make Icon
                                 size: 28,
-                                color: Theme.of(context).accentIconTheme.color,
+                                color: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .foregroundColor,
                               ),
                               onPressed: () => _auth.logInWithGoogle(),
                               tapDownFeedback: true,
