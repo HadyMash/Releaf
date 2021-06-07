@@ -158,16 +158,16 @@ class _RegisterState extends State<Register>
                                       icon: Icon(
                                         Icons.arrow_back_ios_rounded,
                                         color: Theme.of(context)
-                                            .accentIconTheme
-                                            .color,
+                                            .floatingActionButtonTheme
+                                            .foregroundColor,
                                         size: 28.0,
                                       ),
                                       onPressed: () => AppTheme
                                           .mainNavKey.currentState!
                                           .pop(context),
                                       splashColor: Theme.of(context)
-                                          .accentIconTheme
-                                          .color,
+                                          .floatingActionButtonTheme
+                                          .foregroundColor,
                                     ),
                                     Text(
                                       'Register',
@@ -182,8 +182,8 @@ class _RegisterState extends State<Register>
                                   child: TextButton.icon(
                                     icon: Icon(Icons.person,
                                         color: Theme.of(context)
-                                            .accentIconTheme
-                                            .color),
+                                            .floatingActionButtonTheme
+                                            .foregroundColor),
                                     label: Text(
                                       'Log In',
                                       style: Theme.of(context).textTheme.button,

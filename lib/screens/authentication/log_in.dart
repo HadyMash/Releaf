@@ -830,16 +830,16 @@ class _LogInMockState extends State<LogInMock>
                                       icon: Icon(
                                         Icons.arrow_back_ios_rounded,
                                         color: Theme.of(context)
-                                            .accentIconTheme
-                                            .color,
+                                            .floatingActionButtonTheme
+                                            .foregroundColor,
                                         size: 28.0,
                                       ),
                                       onPressed: () => AppTheme
                                           .mainNavKey.currentState!
                                           .pop(context),
                                       splashColor: Theme.of(context)
-                                          .accentIconTheme
-                                          .color,
+                                          .floatingActionButtonTheme
+                                          .foregroundColor,
                                     ),
                                     Text(
                                       'Log In',
@@ -852,10 +852,12 @@ class _LogInMockState extends State<LogInMock>
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   child: TextButton.icon(
-                                    icon: Icon(Icons.person,
-                                        color: Theme.of(context)
-                                            .accentIconTheme
-                                            .color),
+                                    icon: Icon(
+                                      Icons.person,
+                                      color: Theme.of(context)
+                                          .floatingActionButtonTheme
+                                          .foregroundColor,
+                                    ),
                                     label: Text(
                                       'Register',
                                       style: Theme.of(context).textTheme.button,

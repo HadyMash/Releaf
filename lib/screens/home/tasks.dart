@@ -1,13 +1,11 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/shared/const/custom_popup_route.dart';
 
 class Tasks extends StatefulWidget {
   final bool animate;
@@ -206,7 +204,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               builder: (_) => AlertDialog(
                                 title: Text('Confirm Delete'),
                                 content: Text(
-                                    'Are you sure you want to delete your ${selectedYear} goals?'),
+                                    'Are you sure you want to delete your $selectedYear goals?'),
                                 actions: [
                                   TextButton(
                                     child: Text('No'),

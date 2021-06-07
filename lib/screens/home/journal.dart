@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/journal_entry.dart';
