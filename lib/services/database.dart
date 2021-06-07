@@ -19,7 +19,6 @@ class DatabaseService {
   late DocumentReference<Object?> journal;
 
   // add new entry
-  // TODO make hash date identifier combination
   Future addNewJournalEntry(String date, String entryText, int feeling) async {
     try {
       DateTime currentDate = DateTime.now();
@@ -148,7 +147,6 @@ class DatabaseService {
     }
   }
 
-  // TODO delete task year
   Future? deleteTaskYear(int year) async {
     try {
       // delete reference in document
@@ -168,7 +166,6 @@ class DatabaseService {
     }
   }
 
-  // TODO get tasks stream for a given year
   Stream<List<TodoData>?> getTodos(int year) {
     return tasks.collection(year.toString()).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {

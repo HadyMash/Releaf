@@ -101,6 +101,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                   ? Placeholder()
                   : RefreshIndicator(
                       child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: entries.length,
                         itemBuilder: (context, index) => JournalEntry(
                           date: entries[index].date,

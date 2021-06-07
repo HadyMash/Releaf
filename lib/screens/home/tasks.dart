@@ -6,6 +6,7 @@ import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:releaf/shared/models/todo_data.dart';
 
 class Tasks extends StatefulWidget {
   final bool animate;
@@ -16,6 +17,7 @@ class Tasks extends StatefulWidget {
 
 class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
   final AuthService _auth = AuthService();
+  late final DatabaseService database;
   late Future<List> yearsFuture;
 
   late final AnimationController controller;
@@ -26,7 +28,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    yearsFuture = DatabaseService(uid: _auth.getUser()!.uid).getTaskYears();
+    database = DatabaseService(uid: _auth.getUser()!.uid);
+    yearsFuture = database.getTaskYears();
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
     super.initState();
@@ -50,7 +53,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
   int? addedYear;
 
   Future makeNewYear(int year) async {
-    DatabaseService database = DatabaseService(uid: _auth.getUser()!.uid);
     await database.addTaskYear(year);
     yearsFuture = database.getTaskYears();
     setState(() {});
@@ -66,8 +68,10 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
       builder: (context, future) {
         List? years = future.data;
         print(years);
-        if (years != null) {
-          years.sort((a, b) => (a as int).compareTo(b as int));
+        if (future.connectionState == ConnectionState.done) {
+          if (years != null) {
+            years.sort((a, b) => (a as int).compareTo(b as int));
+          }
         }
 
         if (yearChangedManually == false) {
@@ -167,18 +171,12 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                         label: 'Add Year',
                                         notAllCaps: true,
                                         onPressed: () async {
-                                          await DatabaseService(
-                                                  uid: _auth.getUser()!.uid)
-                                              .addTaskYear((addedYear ??
+                                          await database.addTaskYear(
+                                              (addedYear ??
                                                       (DateTime.now().year -
                                                           2000)) +
                                                   2000);
-                                          yearsFuture = DatabaseService(
-                                                  uid: _auth.getUser()!.uid)
-                                              .getTaskYears();
-                                          await DatabaseService(
-                                                  uid: _auth.getUser()!.uid)
-                                              .getTaskYears();
+                                          yearsFuture = database.getTaskYears();
                                           setState(
                                               () => selectedYear = addedYear!);
                                           Navigator.of(context).pop();
@@ -215,12 +213,9 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                   TextButton(
                                     child: Text('Yes'),
                                     onPressed: () async {
-                                      DatabaseService database =
-                                          DatabaseService(
-                                              uid: _auth.getUser()!.uid);
                                       List years =
                                           await database.getTaskYears();
-                                      if (years.length > 0) {
+                                      if (years.length > 1) {
                                         await database
                                             .deleteTaskYear(selectedYear);
                                       } else {
@@ -229,9 +224,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                         await database
                                             .addTaskYear(DateTime.now().year);
                                         yearsFuture = database.getTaskYears();
-                                        years.remove(selectedYear);
-                                        setState(() {});
                                       }
+                                      setState(() {});
                                       AppTheme.mainNavKey.currentState!.pop();
                                     },
                                   ),
@@ -248,8 +242,25 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
               ];
             },
             body: (future.connectionState == ConnectionState.done)
-                ? Center(child: CircularProgressIndicator())
-                : Center(child: CircularProgressIndicator()),
+                ? StreamBuilder(
+                    stream: database.getTodos(selectedYear),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active ||
+                          snapshot.connectionState == ConnectionState.done) {
+                        return ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Text(
+                                ((snapshot.data as List)[index] as TodoData)
+                                    .task);
+                          },
+                          itemCount: (snapshot.data as List).length,
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  )
+                : Center(),
           ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'floatingActionButton',

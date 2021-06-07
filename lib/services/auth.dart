@@ -73,10 +73,10 @@ class AuthService {
         // Make a sample journal entry
         firestore.collection('journal').doc(user.uid).set({
           DateTime.now().toString(): {
-            "entryText": '''
-          Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
-
-          You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
+            "entryText":
+                '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
+            
+You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
           ''',
             "feeling": 3,
           },
@@ -132,43 +132,40 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
-      UserCredential result =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential result = await _auth.signInWithCredential(credential);
 
-      if (result.user != null) {
-        var firestore = FirebaseFirestore.instance;
-        // Make a sample journal entry
-        firestore.collection('journal').doc(result.user!.uid).set({
-          DateTime.now().toString(): {
-            "entryText": '''
-          Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
+      // if (result.user != null) {
+      //   var firestore = FirebaseFirestore.instance;
+      //   // Make a sample journal entry
+      //   firestore.collection('journal').doc(result.user!.uid).set({
+      //     DateTime.now().toString(): {
+      //       "entryText": '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
 
-          You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
-          ''',
-            "feeling": 3,
-          },
-        }, SetOptions(merge: true));
+      //     You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
+      //     ''',
+      //       "feeling": 3,
+      //     },
+      //   }, SetOptions(merge: true));
 
-        // TODO Make a todo collection
-        var year = DateTime.now().year;
-        firestore
-            .collection('tasks')
-            .doc(result.user!.uid)
-            .collection(year.toString())
-              ..doc().set({
-                'index': 0,
-                'task': 'Download Releaf',
-                'completed': true,
-              })
-              ..doc().set({
-                'index': 1,
-                'task': 'Use Releaf',
-                'completed': false,
-              });
-        firestore.collection('tasks').doc(result.user!.uid).set({
-          'years': [year],
-        });
-      }
+      //   var year = DateTime.now().year;
+      //   firestore
+      //       .collection('tasks')
+      //       .doc(result.user!.uid)
+      //       .collection(year.toString())
+      //         ..doc().set({
+      //           'index': 0,
+      //           'task': 'Download Releaf',
+      //           'completed': true,
+      //         })
+      //         ..doc().set({
+      //           'index': 1,
+      //           'task': 'Use Releaf',
+      //           'completed': false,
+      //         });
+      //   firestore.collection('tasks').doc(result.user!.uid).set({
+      //     'years': [year],
+      //   });
+      // }
 
       return result.user;
     } catch (e) {
