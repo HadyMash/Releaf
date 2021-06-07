@@ -249,6 +249,16 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                           snapshot.connectionState == ConnectionState.done) {
                         return ListView.builder(
                           itemBuilder: (context, index) {
+                            // * For yahia
+                            /*
+                            to get the data you have to do:
+                            ((snapshot.data as List)[index] as TodoData).
+                            and put the name of the thing after the dot
+                            it will be either:
+                              * .task
+                              * .completed
+                              * .index
+                            */
                             return Text(
                                 ((snapshot.data as List)[index] as TodoData)
                                     .task);
