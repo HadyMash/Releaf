@@ -73,23 +73,13 @@ class _JournalEntryState extends State<JournalEntry> {
       child: Material(
         color: AppTheme.transparent,
         child: GestureDetector(
-          onTap: () {
-            AppTheme.homeNavkey.currentState!.push(
-              HeroDialogRoute(
-                  builder: (context) => JournalEntryExpanded(
-                        widget.date,
-                        widget.entryText,
-                        widget.feeling,
-                      )),
-            );
-          },
           onTapDown: (_) => _tapDown(),
           onTapUp: (_) => _tapUp(),
           onTapCancel: () => _tapUp(),
           child: AnimatedContainer(
+            clipBehavior: Clip.hardEdge,
             duration: Duration(milliseconds: 220),
             margin: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            padding: EdgeInsets.fromLTRB(20, 15, 20, 18),
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.circular(20),
@@ -101,28 +91,50 @@ class _JournalEntryState extends State<JournalEntry> {
                 ),
               ],
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                // * Heading
-                Text(
-                  _formatedDate(widget.date),
-                  style: Theme.of(context).textTheme.subtitle2,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
+            child: OpenContainer(
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
                 ),
-                SizedBox(height: 10),
-                Placeholder(fallbackHeight: 160),
-                SizedBox(height: 10),
-                Text(
+              ),
+              closedElevation: 0,
+              closedColor: Theme.of(context).backgroundColor,
+              openColor: Theme.of(context).scaffoldBackgroundColor,
+              closedBuilder: (context, _) {
+                return Padding(
+                  padding: EdgeInsets.fromLTRB(20, 15, 20, 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // * Heading
+                      Text(
+                        _formatedDate(widget.date),
+                        style: Theme.of(context).textTheme.subtitle2,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 10),
+                      Placeholder(fallbackHeight: 160),
+                      SizedBox(height: 10),
+                      Text(
+                        widget.entryText,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                );
+              },
+              openBuilder: (context, _) {
+                return JournalEntryExpanded(
+                  widget.date,
                   widget.entryText,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                  widget.feeling,
+                );
+              },
             ),
           ),
         ),
@@ -235,66 +247,62 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
           onPressed: () => AppTheme.homeNavkey.currentState!.pop(),
         ),
       ),
-      body: Hero(
-        tag: widget.date,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(
-              right: 20,
-              left: 20,
-              top: 15,
-              bottom: MediaQuery.of(context).padding.bottom,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _formatedDate(widget.date),
-                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                        fontSize:
-                            Theme.of(context).textTheme.subtitle2!.fontSize! +
-                                6,
-                      ),
-                ),
-                SizedBox(height: 15),
-                // TODO add caresoul of pictures
-                Placeholder(fallbackHeight: 200),
-                SizedBox(height: 20),
-                Expanded(
-                  child: Scrollbar(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          widget.entryText,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            right: 20,
+            left: 20,
+            top: 15,
+            bottom: MediaQuery.of(context).padding.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _formatedDate(widget.date),
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      fontSize:
+                          Theme.of(context).textTheme.subtitle2!.fontSize! + 6,
+                    ),
+              ),
+              SizedBox(height: 15),
+              // TODO add caresoul of pictures
+              Placeholder(fallbackHeight: 200),
+              SizedBox(height: 20),
+              Expanded(
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        widget.entryText,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
-                // TODO add feeling display
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Feeling:',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    Placeholder(
-                      fallbackHeight: 100,
-                      fallbackWidth: 180,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 15),
-              ],
-            ),
+              ),
+              SizedBox(height: 25),
+              // TODO add feeling display
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Feeling:',
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  Placeholder(
+                    fallbackHeight: 100,
+                    fallbackWidth: 180,
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+            ],
           ),
         ),
       ),
