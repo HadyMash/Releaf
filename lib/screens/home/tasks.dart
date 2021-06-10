@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
+import 'package:releaf/shared/assets/home/todo.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/models/todo_data.dart';
@@ -67,7 +68,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
       future: yearsFuture,
       builder: (context, future) {
         List? years = future.data;
-        print(years);
+
         if (future.connectionState == ConnectionState.done) {
           if (years != null) {
             years.sort((a, b) => (a as int).compareTo(b as int));
@@ -91,6 +92,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
 
         // TODO wrap with stream provider
         return Scaffold(
+          extendBody: true,
           body: NestedScrollView(
             headerSliverBuilder: (context, _) {
               return <Widget>[
@@ -248,6 +250,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                       if (snapshot.connectionState == ConnectionState.active ||
                           snapshot.connectionState == ConnectionState.done) {
                         return ListView.builder(
+                          padding: EdgeInsets.only(top: 10),
+                          itemCount: (snapshot.data as List).length,
                           itemBuilder: (context, index) {
                             // * For yahia
                             /*
@@ -259,11 +263,14 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               * .completed
                               * .index
                             */
-                            return Text(
-                                ((snapshot.data as List)[index] as TodoData)
-                                    .task);
+                            return Todo(
+                              completed:
+                                  ((snapshot.data as List)[index] as TodoData)
+                                      .completed,
+                              task: ((snapshot.data as List)[index] as TodoData)
+                                  .task,
+                            );
                           },
-                          itemCount: (snapshot.data as List).length,
                         );
                       } else {
                         return Center(child: CircularProgressIndicator());

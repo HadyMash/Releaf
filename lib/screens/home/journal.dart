@@ -84,6 +84,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
           });
 
           return Scaffold(
+            extendBody: true,
             body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
@@ -101,7 +102,9 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                   ? Placeholder()
                   : RefreshIndicator(
                       child: ListView.builder(
-                        padding: EdgeInsets.zero,
+                        padding: EdgeInsets.only(
+                            top: 10,
+                            bottom: 75 + MediaQuery.of(context).padding.bottom),
                         itemCount: entries.length,
                         itemBuilder: (context, index) => JournalEntry(
                           date: entries[index].date,
