@@ -269,6 +269,9 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                       .completed,
                               task: ((snapshot.data as List)[index] as TodoData)
                                   .task,
+                              docID:
+                                  ((snapshot.data as List)[index] as TodoData)
+                                      .docID,
                             );
                           },
                         );

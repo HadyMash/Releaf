@@ -173,8 +173,17 @@ class DatabaseService {
           task: doc.data()['task'],
           completed: doc.data()['completed'],
           index: doc.data()['index'],
+          docID: doc.id,
         );
       }).toList();
     });
   }
 }
+
+Future addTodo(String task, int index) async {}
+
+Future deleteTodo(String docID) async {}
+
+Future completeTodo(String docID) async {}
+
+Future uncompleteTodo(String docID) async {}

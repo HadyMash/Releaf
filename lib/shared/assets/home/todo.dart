@@ -6,8 +6,9 @@ import 'package:releaf/shared/const/app_theme.dart';
 class Todo extends StatefulWidget {
   bool completed;
   String task;
+  String docID;
 
-  Todo({required this.completed, required this.task});
+  Todo({required this.completed, required this.task, required this.docID});
 
   @override
   _TodoState createState() => _TodoState();
