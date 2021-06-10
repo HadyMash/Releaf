@@ -93,6 +93,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
         // TODO wrap with stream provider
         return Scaffold(
           extendBody: true,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: NestedScrollView(
             headerSliverBuilder: (context, _) {
               return <Widget>[

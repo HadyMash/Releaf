@@ -276,13 +276,13 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
-  Color? _shadowColor = Colors.black.withOpacity(0.35);
+  late Color _shadowColor = Colors.black.withOpacity(0.35);
   double _blurRadius = 20.0;
   double _spreadRadius = 0.0;
 
   void _animateDown() {
-    _shadowColor = Theme.of(context).shadowColor.withOpacity(0.5);
-    _blurRadius = 30.0;
+    _shadowColor = Theme.of(context).shadowColor.withOpacity(0.45);
+    _blurRadius = 25.0;
     _spreadRadius = 5.0;
   }
 
@@ -294,6 +294,7 @@ class _SettingState extends State<Setting> {
 
   @override
   void didChangeDependencies() {
+    _shadowColor = Theme.of(context).shadowColor.withOpacity(0.35);
     _animateUp();
     super.didChangeDependencies();
   }
@@ -322,7 +323,7 @@ class _SettingState extends State<Setting> {
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
-                      color: _shadowColor!,
+                      color: _shadowColor,
                       blurRadius: _blurRadius,
                       spreadRadius: _spreadRadius,
                     ),
@@ -371,7 +372,7 @@ class _SettingState extends State<Setting> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: _shadowColor!,
+                        color: _shadowColor,
                         blurRadius: _blurRadius,
                         spreadRadius: _spreadRadius,
                       ),

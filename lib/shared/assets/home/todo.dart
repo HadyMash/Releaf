@@ -21,13 +21,13 @@ class _TodoState extends State<Todo> {
   double _enabledSpreadRadius = 0;
 
   late Color _pressedShadowColor;
-  double _pressedBlurRadius = 25;
+  double _pressedBlurRadius = 20;
   double _pressedSpreadRadius = 2;
 
   late Color _disabledBackgroundColor;
   late Color _disabledShadowColor;
-  double _disabledBlurRadius = 25;
-  double _disabledSpreadRadius = 2;
+  double _disabledBlurRadius = 0;
+  double _disabledSpreadRadius = 0;
 
   late Color _color;
   late Color _shadowColor;
@@ -37,11 +37,13 @@ class _TodoState extends State<Todo> {
   @override
   void didChangeDependencies() {
     _enabledBackgroundColor = Theme.of(context).backgroundColor;
-    _enabledShadowColor = Theme.of(context).shadowColor.withOpacity(0.4);
-    _pressedShadowColor = Theme.of(context).shadowColor.withOpacity(0.6);
-    int red = Theme.of(context).scaffoldBackgroundColor.red - 50;
-    int green = Theme.of(context).scaffoldBackgroundColor.green - 50;
-    int blue = Theme.of(context).scaffoldBackgroundColor.blue - 50;
+    _enabledShadowColor = Theme.of(context).shadowColor.withOpacity(0.2);
+    _pressedShadowColor = Theme.of(context).shadowColor.withOpacity(0.35);
+    int alphaDifference = 12;
+    int red = Theme.of(context).scaffoldBackgroundColor.red - alphaDifference;
+    int green =
+        Theme.of(context).scaffoldBackgroundColor.green - alphaDifference;
+    int blue = Theme.of(context).scaffoldBackgroundColor.blue - alphaDifference;
     if (red < 0) {
       red = 0;
     }
@@ -127,17 +129,25 @@ class _TodoState extends State<Todo> {
             ],
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Spacer(),
               Flexible(
-                flex: 3,
-                child: Center(child: Placeholder(fallbackHeight: 70)),
+                flex: 4,
+                child: Center(child: Placeholder(fallbackHeight: 50)),
               ),
               Spacer(),
               Flexible(
-                flex: 12,
-                child: Text(widget.task),
+                flex: 24,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 25),
+                  child: Text(
+                    widget.task,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
               ),
             ],
           ),

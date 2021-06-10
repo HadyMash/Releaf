@@ -38,7 +38,7 @@ void main() async {
                 secondaryVariant: Colors.greenAccent[700]!,
                 error: Colors.red[300]!,
               ),
-              scaffoldBackgroundColor: Colors.grey[200],
+              scaffoldBackgroundColor: Colors.grey[50],
               backgroundColor: Colors.white,
               primaryColor: Colors.green,
               // accentColor: Colors.greenAccent[400],
@@ -80,6 +80,12 @@ void main() async {
                   fontSize: 30,
                   color: Colors.grey[800],
                   fontWeight: FontWeight.w700,
+                ),
+                headline5: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 24,
+                  color: Colors.black,
                 ),
                 subtitle1: TextStyle(
                   // TextFields
@@ -164,6 +170,8 @@ class _ThemedAppState extends State<ThemedApp> {
                   TextStyle(fontSize: 14 - ((926 * 0.002) - (height * 0.002))),
             );
 
+            double fontModifier = ((926 * 0.01) - (height * 0.01));
+
             theme.light = ThemeData(
               brightness: Brightness.light,
               colorScheme: ColorScheme(
@@ -181,7 +189,7 @@ class _ThemedAppState extends State<ThemedApp> {
                 secondaryVariant: Colors.greenAccent[700]!,
                 error: Colors.red[300]!,
               ),
-              scaffoldBackgroundColor: Colors.grey[200],
+              scaffoldBackgroundColor: Colors.grey[50],
               backgroundColor: Colors.white,
               primaryColor: Colors.green,
               // accentColor: Colors.greenAccent[400],
@@ -199,31 +207,34 @@ class _ThemedAppState extends State<ThemedApp> {
               ),
               textTheme: theme.light.textTheme.copyWith(
                 headline1: theme.light.textTheme.headline1!.copyWith(
-                  fontSize: 32 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 32 - fontModifier,
                 ),
                 headline2: theme.light.textTheme.headline2!.copyWith(
-                  fontSize: 28 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 28 - fontModifier,
                 ),
                 headline3: theme.light.textTheme.headline3!.copyWith(
-                  fontSize: 40 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 40 - fontModifier,
                 ),
                 headline4: theme.light.textTheme.headline4!.copyWith(
-                  fontSize: 30 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 30 - fontModifier,
+                ),
+                headline5: theme.light.textTheme.headline5!.copyWith(
+                  fontSize: 24 - fontModifier,
                 ),
                 subtitle2: theme.light.textTheme.subtitle2!.copyWith(
-                  fontSize: 26 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 26 - fontModifier,
                 ),
                 bodyText1: theme.light.textTheme.bodyText1!.copyWith(
-                  fontSize: 16 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 16 - fontModifier,
                 ),
                 bodyText2: theme.light.textTheme.bodyText2!.copyWith(
-                  fontSize: 16 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 16 - fontModifier,
                 ),
                 caption: theme.light.textTheme.caption!.copyWith(
-                  fontSize: 18 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 18 - fontModifier,
                 ),
                 button: theme.light.textTheme.button!.copyWith(
-                  fontSize: 18 - ((926 * 0.01) - (height * 0.01)),
+                  fontSize: 18 - fontModifier,
                 ),
               ),
               iconTheme: IconThemeData(color: Colors.black, size: 34),
