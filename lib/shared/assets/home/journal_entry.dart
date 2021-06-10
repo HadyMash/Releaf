@@ -71,7 +71,7 @@ class _JournalEntryState extends State<JournalEntry> {
     return Hero(
       tag: widget.date,
       child: Material(
-        color: AppTheme.transparent,
+        color: Colors.transparent,
         child: GestureDetector(
           onTapDown: (_) => _tapDown(),
           onTapUp: (_) => _tapUp(),

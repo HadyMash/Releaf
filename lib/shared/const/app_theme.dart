@@ -11,8 +11,6 @@ class AppTheme with ChangeNotifier {
   late bool haptics;
   double bottomNavigationBarBorderRadius = 25;
 
-  static final Color transparent = Colors.white.withAlpha(0);
-
   static final GlobalKey<NavigatorState> mainNavKey =
       GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> homeNavkey =

@@ -47,7 +47,7 @@ void main() async {
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
-                backgroundColor: AppTheme.transparent,
+                backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
                 titleSpacing: 28,
@@ -189,7 +189,7 @@ class _ThemedAppState extends State<ThemedApp> {
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.light,
-                backgroundColor: AppTheme.transparent,
+                backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
                 titleSpacing: 28,
