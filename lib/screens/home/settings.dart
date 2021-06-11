@@ -58,187 +58,190 @@ class Settings extends StatelessWidget {
 
     return Scaffold(
       // TODO make body custom scroll view.
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: SizedBox(height: 20),
-          ),
-          SliverAppBar(
-            title: Text(
-              'Settings',
-              style: Theme.of(context).textTheme.headline3,
+      body: Scrollbar(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: SizedBox(height: 20),
             ),
-            automaticallyImplyLeading: false,
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15, right: 30, left: 30),
-                    child: Text('Account',
-                        style: Theme.of(context).textTheme.headline4),
+            SliverAppBar(
+              title: Text(
+                'Settings',
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              automaticallyImplyLeading: false,
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 15, right: 30, left: 30),
+                      child: Text('Account',
+                          style: Theme.of(context).textTheme.headline4),
+                    ),
                   ),
-                ),
-                Setting(
-                  label: 'Name',
-                  preferencePadding: 10,
-                  preference: SizedBox(
-                    width: 150,
-                    child: TextField(
-                      autocorrect: false,
-                      controller: _nameController,
-                      onSubmitted: (val) {
-                        if (val != _auth.getUser()!.displayName) {
-                          _auth.changeUsername(newName: val, context: context);
-                        }
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
+                  Setting(
+                    label: 'Name',
+                    preferencePadding: 10,
+                    preference: SizedBox(
+                      width: 150,
+                      child: TextField(
+                        autocorrect: false,
+                        controller: _nameController,
+                        onSubmitted: (val) {
+                          if (val != _auth.getUser()!.displayName) {
+                            _auth.changeUsername(
+                                newName: val, context: context);
+                          }
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey[300],
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Setting(
-                  label: 'Theme',
-                  preference: DropdownButton<ThemeMode>(
-                      underline: Container(),
-                      value: _theme.themeMode,
-                      items: themes,
-                      onChanged: (newTheme) {
-                        _theme.setTheme(newTheme!);
-                      }),
-                ),
-                Setting(
-                  label: 'Haptics',
-                  preference: ThemedToggle(
-                    onChanged: (state) => _theme.setHaptics(state),
-                    defaultState: _theme.haptics,
-                    icon: Center(child: Icon(Icons.clear_rounded, size: 24)),
-                    enabledIcon:
-                        Center(child: Icon(Icons.check_rounded, size: 24)),
-                    tapFeedback: true,
+                  Setting(
+                    label: 'Theme',
+                    preference: DropdownButton<ThemeMode>(
+                        underline: Container(),
+                        value: _theme.themeMode,
+                        items: themes,
+                        onChanged: (newTheme) {
+                          _theme.setTheme(newTheme!);
+                        }),
                   ),
-                ),
-                Setting.clickable(
-                  label: 'Info',
-                  preference: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                    size: 40,
+                  Setting(
+                    label: 'Haptics',
+                    preference: ThemedToggle(
+                      onChanged: (state) => _theme.setHaptics(state),
+                      defaultState: _theme.haptics,
+                      icon: Center(child: Icon(Icons.clear_rounded, size: 24)),
+                      enabledIcon:
+                          Center(child: Icon(Icons.check_rounded, size: 24)),
+                      tapFeedback: true,
+                    ),
                   ),
-                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
-                    CustomPopupRoute(builder: (context) => Info()),
+                  Setting.clickable(
+                    label: 'Info',
+                    preference: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                      size: 40,
+                    ),
+                    onPressed: () => AppTheme.mainNavKey.currentState!.push(
+                      CustomPopupRoute(builder: (context) => Info()),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20, right: 30, left: 30),
-                    child: Text('Security',
-                        style: Theme.of(context).textTheme.headline4),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20, right: 30, left: 30),
+                      child: Text('Security',
+                          style: Theme.of(context).textTheme.headline4),
+                    ),
                   ),
-                ),
-                Setting.clickable(
-                  label: 'Change Email',
-                  preference: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                    size: 40,
+                  Setting.clickable(
+                    label: 'Change Email',
+                    preference: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                      size: 40,
+                    ),
+                    onPressed: () => AppTheme.mainNavKey.currentState!.push(
+                      CustomPopupRoute(builder: (context) => ChangeEmail()),
+                    ),
                   ),
-                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
-                    CustomPopupRoute(builder: (context) => ChangeEmail()),
+                  Setting.clickable(
+                    label: 'Change Password',
+                    preference: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                      size: 40,
+                    ),
+                    onPressed: () => AppTheme.mainNavKey.currentState!.push(
+                      CustomPopupRoute(builder: (context) => ChangePassword()),
+                    ),
                   ),
-                ),
-                Setting.clickable(
-                  label: 'Change Password',
-                  preference: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                    size: 40,
+                  Setting(
+                    label: 'Log Out',
+                    preferencePadding: 10,
+                    preference: ThemedFlatButton(
+                      label: 'Log out',
+                      onPressed: () => _auth.logOut(),
+                      tapDownFeedback: true,
+                      tapFeedback: true,
+                    ),
                   ),
-                  onPressed: () => AppTheme.mainNavKey.currentState!.push(
-                    CustomPopupRoute(builder: (context) => ChangePassword()),
+                  Setting(
+                    label: 'Delete Account',
+                    preference: ElevatedButton(
+                      child: Text('test'),
+                      onPressed: () {},
+                    ),
                   ),
-                ),
-                Setting(
-                  label: 'Log Out',
-                  preferencePadding: 10,
-                  preference: ThemedFlatButton(
-                    label: 'Log out',
-                    onPressed: () => _auth.logOut(),
-                    tapDownFeedback: true,
-                    tapFeedback: true,
-                  ),
-                ),
-                Setting(
-                  label: 'Delete Account',
-                  preference: ElevatedButton(
-                    child: Text('test'),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20, right: 30, left: 30),
-                    child: Text('Extra',
-                        style: Theme.of(context).textTheme.headline4),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20, right: 30, left: 30),
+                      child: Text('Extra',
+                          style: Theme.of(context).textTheme.headline4),
+                    ),
                   ),
-                ),
-                Setting.clickable(
-                  label: 'About',
-                  preference: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                    size: 40,
+                  Setting.clickable(
+                    label: 'About',
+                    preference: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                      size: 40,
+                    ),
+                    onPressed: () => showAboutDialog(
+                      context: context,
+                      applicationName: 'Releaf',
+                      applicationVersion: '0.1 Alpha',
+                    ),
                   ),
-                  onPressed: () => showAboutDialog(
-                    context: context,
-                    applicationName: 'Releaf',
-                    applicationVersion: '0.1 Alpha',
+                  Setting.clickable(
+                    label: 'Contact Us',
+                    preference: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                      size: 40,
+                    ),
+                    onPressed: () => showAboutDialog(
+                      context: context,
+                      applicationName: 'Releaf',
+                      applicationVersion: '0.1 Alpha',
+                    ),
                   ),
-                ),
-                Setting.clickable(
-                  label: 'Contact Us',
-                  preference: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                    size: 40,
-                  ),
-                  onPressed: () => showAboutDialog(
-                    context: context,
-                    applicationName: 'Releaf',
-                    applicationVersion: '0.1 Alpha',
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: 20),
-          ),
-        ],
+            SliverToBoxAdapter(
+              child: SizedBox(height: 20),
+            ),
+          ],
+        ),
       ),
 
       floatingActionButton: HiddenFAB(),

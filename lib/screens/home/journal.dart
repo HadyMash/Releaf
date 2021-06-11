@@ -101,15 +101,18 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
               body: entries.isEmpty
                   ? Placeholder()
                   : RefreshIndicator(
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(
-                            top: 10,
-                            bottom: 75 + MediaQuery.of(context).padding.bottom),
-                        itemCount: entries.length,
-                        itemBuilder: (context, index) => JournalEntry(
-                          date: entries[index].date,
-                          entryText: entries[index].entryText,
-                          feeling: entries[index].feeling,
+                      child: Scrollbar(
+                        child: ListView.builder(
+                          padding: EdgeInsets.only(
+                              top: 10,
+                              bottom:
+                                  75 + MediaQuery.of(context).padding.bottom),
+                          itemCount: entries.length,
+                          itemBuilder: (context, index) => JournalEntry(
+                            date: entries[index].date,
+                            entryText: entries[index].entryText,
+                            feeling: entries[index].feeling,
+                          ),
                         ),
                       ),
                       onRefresh: () {

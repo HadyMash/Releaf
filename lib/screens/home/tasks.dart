@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
@@ -52,6 +53,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
   bool yearChangedManually = false;
   int selectedYear = DateTime.now().year;
   int? addedYear;
+  double progress = 0;
+  bool progressUpdated = false;
 
   Future makeNewYear(int year) async {
     await database.addTaskYear(year);
@@ -148,6 +151,12 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               yearList.add(2000 + i);
                             }
                             showModalBottomSheet(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
                               context: context,
                               builder: (context) {
                                 return Column(
@@ -242,6 +251,56 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                     ),
                   ],
                 ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                      height: 30,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(200),
+                        color: Color.fromRGBO(
+                          Theme.of(context).scaffoldBackgroundColor.red - 20,
+                          Theme.of(context).scaffoldBackgroundColor.green - 20,
+                          Theme.of(context).scaffoldBackgroundColor.blue - 20,
+                          1,
+                        ),
+                      ),
+                      // clipBehavior: Clip.hardEdge,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: AnimatedContainer(
+                          curve: Curves.easeInOut,
+                          duration: Duration(milliseconds: 800),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(200),
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).colorScheme.secondary,
+                              ],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondary
+                                    .withOpacity(0.5),
+                                blurRadius: 20,
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          height: 30,
+                          width: (MediaQuery.of(context).size.width - 50) *
+                              progress,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ];
             },
             body: (future.connectionState == ConnectionState.done)
@@ -250,6 +309,24 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.active ||
                           snapshot.connectionState == ConnectionState.done) {
+                        List<TodoData> data = snapshot.data as List<TodoData>;
+                        int totalTodos = 0;
+                        int completedTodos = 0;
+                        data.forEach((todo) {
+                          if (todo.completed == true) {
+                            totalTodos += 1;
+                            completedTodos += 1;
+                          } else {
+                            totalTodos += 1;
+                          }
+                        });
+                        double oldProgress = progress;
+                        progress = completedTodos / totalTodos;
+                        print(progress);
+                        if (oldProgress != progress) {
+                          progressUpdated = true;
+                        }
+
                         return ListView.builder(
                           padding: EdgeInsets.only(top: 10),
                           itemCount: (snapshot.data as List).length,
