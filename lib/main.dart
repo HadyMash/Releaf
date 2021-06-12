@@ -90,6 +90,9 @@ void main() async {
                 subtitle1: TextStyle(
                   // TextFields
                   fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                 ),
                 subtitle2: TextStyle(
                   fontFamily: 'Poppins',
@@ -220,6 +223,9 @@ class _ThemedAppState extends State<ThemedApp> {
                 ),
                 headline5: theme.light.textTheme.headline5!.copyWith(
                   fontSize: 24 - fontModifier,
+                ),
+                subtitle1: theme.light.textTheme.subtitle1!.copyWith(
+                  fontSize: 18 - fontModifier,
                 ),
                 subtitle2: theme.light.textTheme.subtitle2!.copyWith(
                   fontSize: 26 - fontModifier,

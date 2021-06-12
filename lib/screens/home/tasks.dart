@@ -54,7 +54,20 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
   int selectedYear = DateTime.now().year;
   int? addedYear;
   double progress = 0;
-  bool progressUpdated = false;
+  // TODO add animating percentage value like in XD prototype.
+  List<Widget?> progressPercentages = [
+    Text('0%'),
+    Text('10%'),
+    Text('20%'),
+    Text('30%'),
+    Text('40%'),
+    Text('50%'),
+    Text('60%'),
+    Text('70%'),
+    Text('80%'),
+    Text('90%'),
+    Text('100%'),
+  ];
 
   Future makeNewYear(int year) async {
     await database.addTaskYear(year);
@@ -112,12 +125,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                       totalTodos += 1;
                     }
                   });
-                  double oldProgress = progress;
                   progress = completedTodos / totalTodos;
                   print(progress);
-                  if (oldProgress != progress) {
-                    progressUpdated = true;
-                  }
                 }
               }
               return Scaffold(
@@ -286,60 +295,83 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Container(
-                              height: 30,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(200),
-                                color: Color.fromRGBO(
-                                  Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .red -
-                                      20,
-                                  Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .green -
-                                      20,
-                                  Theme.of(context)
-                                          .scaffoldBackgroundColor
-                                          .blue -
-                                      20,
-                                  1,
-                                ),
-                              ),
-                              // clipBehavior: Clip.hardEdge,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: AnimatedContainer(
-                                  curve: Curves.easeInOut,
-                                  duration: Duration(milliseconds: 800),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 30,
+                                  width: double.infinity,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(200),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [
-                                        Theme.of(context).primaryColor,
-                                        Theme.of(context).colorScheme.secondary,
-                                      ],
+                                    color: Color.fromRGBO(
+                                      Theme.of(context)
+                                              .scaffoldBackgroundColor
+                                              .red -
+                                          20,
+                                      Theme.of(context)
+                                              .scaffoldBackgroundColor
+                                              .green -
+                                          20,
+                                      Theme.of(context)
+                                              .scaffoldBackgroundColor
+                                              .blue -
+                                          20,
+                                      1,
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary
-                                            .withOpacity(0.5),
-                                        blurRadius: 20,
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
                                   ),
-                                  height: 30,
-                                  width:
-                                      (MediaQuery.of(context).size.width - 50) *
-                                          progress,
+                                  // clipBehavior: Clip.hardEdge,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: AnimatedContainer(
+                                      curve: Curves.easeInOut,
+                                      duration: Duration(milliseconds: 800),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Theme.of(context).primaryColor,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ],
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                                .withOpacity(0.5),
+                                            blurRadius: 20,
+                                            spreadRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                      height: 30,
+                                      width:
+                                          (MediaQuery.of(context).size.width -
+                                                  50) *
+                                              progress,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Text(
+                                        '${(progress * 100).round()}%',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
