@@ -126,7 +126,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                     }
                   });
                   progress = completedTodos / totalTodos;
-                  print(progress);
                 }
               }
               return Scaffold(
@@ -385,8 +384,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                 padding: EdgeInsets.only(top: 10),
                                 itemCount: (snapshot.data as List).length,
                                 itemBuilder: (context, index) {
-                                  print(
-                                      '$index: ${((snapshot.data as List)[index] as TodoData).completed}');
                                   return Todo(
                                     completed: ((snapshot.data as List)[index]
                                             as TodoData)
@@ -397,6 +394,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                     docID: ((snapshot.data as List)[index]
                                             as TodoData)
                                         .docID,
+                                    year: selectedYear,
                                   );
                                 },
                               )

@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:releaf/services/auth.dart';
+import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class Todo extends StatefulWidget {
   bool completed;
   String task;
   String docID;
+  int year;
 
-  Todo({required this.completed, required this.task, required this.docID});
+  Todo({
+    required this.completed,
+    required this.task,
+    required this.docID,
+    required this.year,
+  });
 
   @override
   _TodoState createState() => _TodoState();
 }
 
 class _TodoState extends State<Todo> {
+  AuthService _auth = AuthService();
   Duration duration = Duration(milliseconds: 220);
 
   late Color _enabledBackgroundColor;
@@ -108,15 +117,19 @@ class _TodoState extends State<Todo> {
       });
     }
 
-    void _enable() {
-      if (theme.haptics == true) {
-        HapticFeedback.mediumImpact();
-      }
-    }
-
-    void _disable() {
-      if (theme.haptics == true) {
-        HapticFeedback.heavyImpact();
+    void _toggle() {
+      if (widget.completed == false) {
+        if (theme.haptics == true) {
+          HapticFeedback.mediumImpact();
+        }
+        DatabaseService(uid: _auth.getUser()!.uid)
+            .completeTodo(widget.year, widget.docID);
+      } else {
+        if (theme.haptics == true) {
+          HapticFeedback.heavyImpact();
+        }
+        DatabaseService(uid: _auth.getUser()!.uid)
+            .uncompleteTodo(widget.year, widget.docID);
       }
     }
 
@@ -133,11 +146,11 @@ class _TodoState extends State<Todo> {
         _spread = _disabledSpreadRadius;
       }
     }
-    print(animating);
 
     return Material(
       color: Colors.transparent,
       child: GestureDetector(
+        onTap: _toggle,
         onTapDown: (_) {
           animating = true;
           setState(() => _tapDown());

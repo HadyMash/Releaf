@@ -178,12 +178,32 @@ class DatabaseService {
       }).toList();
     });
   }
+
+  Future addTodo(String task, int index) async {}
+
+  Future deleteTodo(String docID) async {}
+
+// TODO add index functinality
+  Future completeTodo(int year, String docID) async {
+    try {
+      await tasks.collection(year.toString()).doc(docID).update({
+        'completed': true,
+      });
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
+
+// TODO add index functionality
+  Future uncompleteTodo(int year, String docID) async {
+    try {
+      await tasks.collection(year.toString()).doc(docID).update({
+        'completed': false,
+      });
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
 }
-
-Future addTodo(String task, int index) async {}
-
-Future deleteTodo(String docID) async {}
-
-Future completeTodo(String docID) async {}
-
-Future uncompleteTodo(String docID) async {}
