@@ -93,246 +93,268 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
           }
         }
 
-        // TODO wrap with stream provider
-        return Scaffold(
-          extendBody: true,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          body: NestedScrollView(
-            headerSliverBuilder: (context, _) {
-              return <Widget>[
-                SliverToBoxAdapter(child: SizedBox(height: 20)),
-                SliverAppBar(
-                  title: Text(
-                    'Tasks',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  automaticallyImplyLeading: false,
-                  actions: [
-                    Row(
-                      children: [
-                        future.connectionState == ConnectionState.done
-                            ? (DropdownButton<int>(
-                                underline: Container(),
-                                value: selectedYear,
-                                items: years!
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        child: Text(
-                                          e.toString(),
-                                          style: TextStyle(
-                                            fontSize: 20 -
-                                                ((926 * 0.01) -
-                                                    (height * 0.01)),
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1!
-                                                .color,
-                                          ),
-                                        ),
-                                        value: e as int,
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (year) {
-                                  yearChangedManually = true;
-                                  setState(() => selectedYear = year!);
-                                },
-                              ))
-                            : Container(),
-                        IconButton(
-                          icon: Icon(
-                            CupertinoIcons.add,
-                            size: 32,
-                            color: Theme.of(context).iconTheme.color,
+        return StreamBuilder(
+            stream: future.connectionState == ConnectionState.done
+                ? database.getTodos(selectedYear)
+                : null,
+            builder: (context, snapshot) {
+              if (future.connectionState == ConnectionState.done) {
+                if (snapshot.connectionState == ConnectionState.active ||
+                    snapshot.connectionState == ConnectionState.done) {
+                  List<TodoData> data = snapshot.data as List<TodoData>;
+                  int totalTodos = 0;
+                  int completedTodos = 0;
+                  data.forEach((todo) {
+                    if (todo.completed == true) {
+                      totalTodos += 1;
+                      completedTodos += 1;
+                    } else {
+                      totalTodos += 1;
+                    }
+                  });
+                  double oldProgress = progress;
+                  progress = completedTodos / totalTodos;
+                  print(progress);
+                  if (oldProgress != progress) {
+                    progressUpdated = true;
+                  }
+                }
+              }
+              return Scaffold(
+                extendBody: true,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                body: NestedScrollView(
+                    headerSliverBuilder: (context, _) {
+                      return <Widget>[
+                        SliverToBoxAdapter(child: SizedBox(height: 20)),
+                        SliverAppBar(
+                          title: Text(
+                            'Tasks',
+                            style: Theme.of(context).textTheme.headline3,
                           ),
-                          onPressed: () {
-                            List yearList = [];
-                            for (int i = 0; i < 51; i++) {
-                              yearList.add(2000 + i);
-                            }
-                            showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: CupertinoPicker(
-                                        scrollController:
-                                            yearPickerScrollController,
-                                        itemExtent: 40,
-                                        onSelectedItemChanged: (year) {
-                                          addedYear = year;
-                                        },
-                                        children: yearList
-                                            .map((e) => Center(
-                                                child: Text(e.toString())))
+                          automaticallyImplyLeading: false,
+                          actions: [
+                            Row(
+                              children: [
+                                future.connectionState == ConnectionState.done
+                                    ? (DropdownButton<int>(
+                                        underline: Container(),
+                                        value: selectedYear,
+                                        items: years!
+                                            .map(
+                                              (e) => DropdownMenuItem(
+                                                child: Text(
+                                                  e.toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 20 -
+                                                        ((926 * 0.01) -
+                                                            (height * 0.01)),
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color,
+                                                  ),
+                                                ),
+                                                value: e as int,
+                                              ),
+                                            )
                                             .toList(),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      flex: 1,
-                                      child: ThemedButton(
-                                        label: 'Add Year',
-                                        notAllCaps: true,
-                                        onPressed: () async {
-                                          await database.addTaskYear(
-                                              (addedYear ??
-                                                      (DateTime.now().year -
-                                                          2000)) +
-                                                  2000);
-                                          yearsFuture = database.getTaskYears();
-                                          setState(
-                                              () => selectedYear = addedYear!);
-                                          Navigator.of(context).pop();
+                                        onChanged: (year) {
+                                          yearChangedManually = true;
+                                          setState(() => selectedYear = year!);
                                         },
+                                      ))
+                                    : Container(),
+                                IconButton(
+                                  icon: Icon(
+                                    CupertinoIcons.add,
+                                    size: 32,
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
+                                  onPressed: () {
+                                    List yearList = [];
+                                    for (int i = 0; i < 51; i++) {
+                                      yearList.add(2000 + i);
+                                    }
+                                    showModalBottomSheet(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                        ),
                                       ),
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete_rounded,
-                            size: 32,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (_) => AlertDialog(
-                                title: Text('Confirm Delete'),
-                                content: Text(
-                                    'Are you sure you want to delete your $selectedYear goals?'),
-                                actions: [
-                                  TextButton(
-                                    child: Text('No'),
-                                    onPressed: () {
-                                      AppTheme.mainNavKey.currentState!.pop();
-                                    },
+                                      context: context,
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Expanded(
+                                              flex: 5,
+                                              child: CupertinoPicker(
+                                                scrollController:
+                                                    yearPickerScrollController,
+                                                itemExtent: 40,
+                                                onSelectedItemChanged: (year) {
+                                                  addedYear = year;
+                                                },
+                                                children: yearList
+                                                    .map((e) => Center(
+                                                        child:
+                                                            Text(e.toString())))
+                                                    .toList(),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              flex: 1,
+                                              child: ThemedButton(
+                                                label: 'Add Year',
+                                                notAllCaps: true,
+                                                onPressed: () async {
+                                                  await database.addTaskYear(
+                                                      (addedYear ??
+                                                              (DateTime.now()
+                                                                      .year -
+                                                                  2000)) +
+                                                          2000);
+                                                  yearsFuture =
+                                                      database.getTaskYears();
+                                                  setState(() => selectedYear =
+                                                      addedYear!);
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.delete_rounded,
+                                    size: 32,
+                                    color: Theme.of(context).iconTheme.color,
                                   ),
-                                  TextButton(
-                                    child: Text('Yes'),
-                                    onPressed: () async {
-                                      List years =
-                                          await database.getTaskYears();
-                                      if (years.length > 1) {
-                                        await database
-                                            .deleteTaskYear(selectedYear);
-                                      } else {
-                                        await database
-                                            .deleteTaskYear(selectedYear);
-                                        await database
-                                            .addTaskYear(DateTime.now().year);
-                                        yearsFuture = database.getTaskYears();
-                                      }
-                                      setState(() {});
-                                      AppTheme.mainNavKey.currentState!.pop();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: 10),
-                      ],
-                    ),
-                  ],
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      height: 30,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(200),
-                        color: Color.fromRGBO(
-                          Theme.of(context).scaffoldBackgroundColor.red - 20,
-                          Theme.of(context).scaffoldBackgroundColor.green - 20,
-                          Theme.of(context).scaffoldBackgroundColor.blue - 20,
-                          1,
-                        ),
-                      ),
-                      // clipBehavior: Clip.hardEdge,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: AnimatedContainer(
-                          curve: Curves.easeInOut,
-                          duration: Duration(milliseconds: 800),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(200),
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                Theme.of(context).primaryColor,
-                                Theme.of(context).colorScheme.secondary,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (_) => AlertDialog(
+                                        title: Text('Confirm Delete'),
+                                        content: Text(
+                                            'Are you sure you want to delete your $selectedYear goals?'),
+                                        actions: [
+                                          TextButton(
+                                            child: Text('No'),
+                                            onPressed: () {
+                                              AppTheme.mainNavKey.currentState!
+                                                  .pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Yes'),
+                                            onPressed: () async {
+                                              List years =
+                                                  await database.getTaskYears();
+                                              if (years.length > 1) {
+                                                await database.deleteTaskYear(
+                                                    selectedYear);
+                                              } else {
+                                                await database.deleteTaskYear(
+                                                    selectedYear);
+                                                await database.addTaskYear(
+                                                    DateTime.now().year);
+                                                yearsFuture =
+                                                    database.getTaskYears();
+                                              }
+                                              setState(() {});
+                                              AppTheme.mainNavKey.currentState!
+                                                  .pop();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                SizedBox(width: 10),
                               ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondary
-                                    .withOpacity(0.5),
-                                blurRadius: 20,
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          height: 30,
-                          width: (MediaQuery.of(context).size.width - 50) *
-                              progress,
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-              ];
-            },
-            body: (future.connectionState == ConnectionState.done)
-                ? StreamBuilder(
-                    stream: database.getTodos(selectedYear),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active ||
-                          snapshot.connectionState == ConnectionState.done) {
-                        List<TodoData> data = snapshot.data as List<TodoData>;
-                        int totalTodos = 0;
-                        int completedTodos = 0;
-                        data.forEach((todo) {
-                          if (todo.completed == true) {
-                            totalTodos += 1;
-                            completedTodos += 1;
-                          } else {
-                            totalTodos += 1;
-                          }
-                        });
-                        double oldProgress = progress;
-                        progress = completedTodos / totalTodos;
-                        print(progress);
-                        if (oldProgress != progress) {
-                          progressUpdated = true;
-                        }
-
-                        return ListView.builder(
-                          padding: EdgeInsets.only(top: 10),
-                          itemCount: (snapshot.data as List).length,
-                          itemBuilder: (context, index) {
-                            // * For yahia
-                            /*
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 25),
+                            child: Container(
+                              height: 30,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(200),
+                                color: Color.fromRGBO(
+                                  Theme.of(context)
+                                          .scaffoldBackgroundColor
+                                          .red -
+                                      20,
+                                  Theme.of(context)
+                                          .scaffoldBackgroundColor
+                                          .green -
+                                      20,
+                                  Theme.of(context)
+                                          .scaffoldBackgroundColor
+                                          .blue -
+                                      20,
+                                  1,
+                                ),
+                              ),
+                              // clipBehavior: Clip.hardEdge,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: AnimatedContainer(
+                                  curve: Curves.easeInOut,
+                                  duration: Duration(milliseconds: 800),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(200),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Theme.of(context).primaryColor,
+                                        Theme.of(context).colorScheme.secondary,
+                                      ],
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withOpacity(0.5),
+                                        blurRadius: 20,
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  height: 30,
+                                  width:
+                                      (MediaQuery.of(context).size.width - 50) *
+                                          progress,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ];
+                    },
+                    body: (future.connectionState == ConnectionState.done)
+                        ? ((snapshot.connectionState == ConnectionState.done ||
+                                snapshot.connectionState ==
+                                    ConnectionState.active)
+                            ? ListView.builder(
+                                padding: EdgeInsets.only(top: 10),
+                                itemCount: (snapshot.data as List).length,
+                                itemBuilder: (context, index) {
+                                  // * For yahia
+                                  /*
                             to get the data you have to do:
                             ((snapshot.data as List)[index] as TodoData).
                             and put the name of the thing after the dot
@@ -341,49 +363,47 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               * .completed
                               * .index
                             */
-                            return Todo(
-                              completed:
-                                  ((snapshot.data as List)[index] as TodoData)
-                                      .completed,
-                              task: ((snapshot.data as List)[index] as TodoData)
-                                  .task,
-                              docID:
-                                  ((snapshot.data as List)[index] as TodoData)
-                                      .docID,
-                            );
-                          },
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
+                                  return Todo(
+                                    completed: ((snapshot.data as List)[index]
+                                            as TodoData)
+                                        .completed,
+                                    task: ((snapshot.data as List)[index]
+                                            as TodoData)
+                                        .task,
+                                    docID: ((snapshot.data as List)[index]
+                                            as TodoData)
+                                        .docID,
+                                  );
+                                },
+                              )
+                            : Center(child: CircularProgressIndicator()))
+                        : Center(child: CircularProgressIndicator())),
+                floatingActionButton: FloatingActionButton(
+                  heroTag: 'floatingActionButton',
+                  backgroundColor: Theme.of(context).primaryColor,
+                  splashColor: Theme.of(context).colorScheme.secondary,
+                  child: AnimatedBuilder(
+                    animation: animation,
+                    builder: (context, child) {
+                      return Transform.rotate(
+                        angle: (pi * 2) - ((pi * animation.value) / 2),
+                        child: child,
+                      );
                     },
-                  )
-                : Center(),
-          ),
-          floatingActionButton: FloatingActionButton(
-            heroTag: 'floatingActionButton',
-            backgroundColor: Theme.of(context).primaryColor,
-            splashColor: Theme.of(context).colorScheme.secondary,
-            child: AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) {
-                return Transform.rotate(
-                  angle: (pi * 2) - ((pi * animation.value) / 2),
-                  child: child,
-                );
-              },
-              child: Icon(
-                Icons.add_rounded,
-                color:
-                    Theme.of(context).floatingActionButtonTheme.foregroundColor,
-                size: 40,
-              ),
-            ),
-            onPressed: () {},
-          ),
-          bottomNavigationBar: ThemedNavigationBar(
-              pageIndex: 1, animateFloatingActionButton: false),
-        );
+                    child: Icon(
+                      Icons.add_rounded,
+                      color: Theme.of(context)
+                          .floatingActionButtonTheme
+                          .foregroundColor,
+                      size: 40,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+                bottomNavigationBar: ThemedNavigationBar(
+                    pageIndex: 1, animateFloatingActionButton: false),
+              );
+            });
       },
     );
   }
