@@ -179,7 +179,23 @@ class DatabaseService {
     });
   }
 
-  Future addTodo(String task, int index) async {}
+  // TODO add index functionality
+  Future addTodo(
+      {required String task, required int index, required int year}) async {
+    try {
+      await tasks.collection(year.toString()).add({
+        'index': index,
+        'task': task,
+        'completed': false,
+      });
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
+
+  Future editTodo(
+      {required String task, required int year, required String docID}) async {}
 
   Future deleteTodo(String docID) async {}
 
