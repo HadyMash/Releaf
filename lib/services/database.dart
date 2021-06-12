@@ -195,7 +195,16 @@ class DatabaseService {
   }
 
   Future editTodo(
-      {required String task, required int year, required String docID}) async {}
+      {required String task, required int year, required String docID}) async {
+    try {
+      await tasks.collection(year.toString()).doc(docID).update({
+        'task': task,
+      });
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
 
   Future deleteTodo(String docID) async {}
 

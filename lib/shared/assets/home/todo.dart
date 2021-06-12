@@ -25,6 +25,7 @@ class Todo extends StatefulWidget {
 class _TodoState extends State<Todo> {
   AuthService _auth = AuthService();
   Duration duration = Duration(milliseconds: 220);
+  late TextEditingController controller;
 
   late Color _enabledBackgroundColor;
   late Color _enabledShadowColor;
@@ -46,6 +47,12 @@ class _TodoState extends State<Todo> {
   late double _spread;
 
   bool initalised = false;
+
+  @override
+  void initState() {
+    controller = TextEditingController(text: widget.task);
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -191,10 +198,23 @@ class _TodoState extends State<Todo> {
               Flexible(
                 flex: 24,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 25),
-                  child: Text(
-                    widget.task,
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  // child: Text(
+                  //   widget.task,
+                  //   style: Theme.of(context).textTheme.headline5,
+                  // ),
+                  child: TextFormField(
+                    scrollPadding: EdgeInsets.zero,
+                    controller: controller,
+                    onFieldSubmitted: (val) {
+                      DatabaseService(uid: _auth.getUser()!.uid).editTodo(
+                          task: val, year: widget.year, docID: widget.docID);
+                    },
                     style: Theme.of(context).textTheme.headline5,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
