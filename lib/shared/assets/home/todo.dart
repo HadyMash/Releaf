@@ -15,6 +15,8 @@ class Todo extends StatefulWidget {
 }
 
 class _TodoState extends State<Todo> {
+  Duration duration = Duration(milliseconds: 220);
+
   late Color _enabledBackgroundColor;
   late Color _enabledShadowColor;
   double _enabledBlurRadius = 15;
@@ -34,42 +36,49 @@ class _TodoState extends State<Todo> {
   late double _blur;
   late double _spread;
 
+  bool initalised = false;
+
   @override
   void didChangeDependencies() {
-    _enabledBackgroundColor = Theme.of(context).backgroundColor;
-    _enabledShadowColor = Theme.of(context).shadowColor.withOpacity(0.2);
-    _pressedShadowColor = Theme.of(context).shadowColor.withOpacity(0.35);
-    int alphaDifference = 12;
-    int red = Theme.of(context).scaffoldBackgroundColor.red - alphaDifference;
-    int green =
-        Theme.of(context).scaffoldBackgroundColor.green - alphaDifference;
-    int blue = Theme.of(context).scaffoldBackgroundColor.blue - alphaDifference;
-    if (red < 0) {
-      red = 0;
-    }
-    if (green < 0) {
-      green = 0;
-    }
-    if (blue < 0) {
-      blue = 0;
-    }
-    _disabledBackgroundColor = Color.fromRGBO(red, green, blue, 1);
-    _disabledShadowColor = Colors.transparent;
+    if (initalised == false) {
+      _enabledBackgroundColor = Theme.of(context).backgroundColor;
+      _enabledShadowColor = Theme.of(context).shadowColor.withOpacity(0.2);
+      _pressedShadowColor = Theme.of(context).shadowColor.withOpacity(0.35);
+      int alphaDifference = 12;
+      int red = Theme.of(context).scaffoldBackgroundColor.red - alphaDifference;
+      int green =
+          Theme.of(context).scaffoldBackgroundColor.green - alphaDifference;
+      int blue =
+          Theme.of(context).scaffoldBackgroundColor.blue - alphaDifference;
+      if (red < 0) {
+        red = 0;
+      }
+      if (green < 0) {
+        green = 0;
+      }
+      if (blue < 0) {
+        blue = 0;
+      }
+      _disabledBackgroundColor = Color.fromRGBO(red, green, blue, 1);
+      _disabledShadowColor = Colors.transparent;
 
-    if (widget.completed == false) {
-      _color = _enabledBackgroundColor;
-      _shadowColor = _enabledShadowColor;
-      _blur = _enabledBlurRadius;
-      _spread = _enabledSpreadRadius;
-    } else {
-      _color = _disabledBackgroundColor;
-      _shadowColor = _disabledShadowColor;
-      _blur = _disabledBlurRadius;
-      _spread = _disabledSpreadRadius;
+      if (widget.completed == false) {
+        _color = _enabledBackgroundColor;
+        _shadowColor = _enabledShadowColor;
+        _blur = _enabledBlurRadius;
+        _spread = _enabledSpreadRadius;
+      } else {
+        _color = _disabledBackgroundColor;
+        _shadowColor = _disabledShadowColor;
+        _blur = _disabledBlurRadius;
+        _spread = _disabledSpreadRadius;
+      }
+      initalised = true;
     }
-
     super.didChangeDependencies();
   }
+
+  bool animating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +103,9 @@ class _TodoState extends State<Todo> {
         _blur = _disabledBlurRadius;
         _spread = _disabledSpreadRadius;
       }
+      Future.delayed(duration).then((value) {
+        setState(() => animating = false);
+      });
     }
 
     void _enable() {
@@ -108,14 +120,38 @@ class _TodoState extends State<Todo> {
       }
     }
 
+    if (animating == false) {
+      if (widget.completed == false) {
+        _color = _enabledBackgroundColor;
+        _shadowColor = _enabledShadowColor;
+        _blur = _enabledBlurRadius;
+        _spread = _enabledSpreadRadius;
+      } else {
+        _color = _disabledBackgroundColor;
+        _shadowColor = _disabledShadowColor;
+        _blur = _disabledBlurRadius;
+        _spread = _disabledSpreadRadius;
+      }
+    }
+    print(animating);
+
     return Material(
       color: Colors.transparent,
       child: GestureDetector(
-        onTapDown: (_) => setState(() => _tapDown()),
-        onTapUp: (_) => setState(() => _tapUp()),
-        onTapCancel: () => setState(() => _tapUp()),
+        onTapDown: (_) {
+          animating = true;
+          setState(() => _tapDown());
+        },
+        onTapUp: (_) {
+          animating = true;
+          setState(() => _tapUp());
+        },
+        onTapCancel: () {
+          animating = true;
+          setState(() => _tapUp());
+        },
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 220),
+          duration: duration,
           margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           decoration: BoxDecoration(
             color: _color,
