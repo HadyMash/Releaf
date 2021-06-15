@@ -269,7 +269,7 @@ class _TodoState extends State<Todo> {
                   Flexible(
                     flex: 24,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 25),
+                      padding: EdgeInsets.only(top: 25, bottom: 25, right: 10),
                       child: Text(
                         widget.task,
                         style: Theme.of(context).textTheme.headline5,
