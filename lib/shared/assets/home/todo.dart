@@ -198,24 +198,24 @@ class _TodoState extends State<Todo> {
               Flexible(
                 flex: 24,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  // child: Text(
-                  //   widget.task,
-                  //   style: Theme.of(context).textTheme.headline5,
-                  // ),
-                  child: TextFormField(
-                    scrollPadding: EdgeInsets.zero,
-                    controller: controller,
-                    onFieldSubmitted: (val) {
-                      DatabaseService(uid: _auth.getUser()!.uid).editTodo(
-                          task: val, year: widget.year, docID: widget.docID);
-                    },
+                  padding: EdgeInsets.symmetric(vertical: 25),
+                  child: Text(
+                    widget.task,
                     style: Theme.of(context).textTheme.headline5,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      border: InputBorder.none,
-                    ),
                   ),
+                  // child: TextFormField(
+                  //   scrollPadding: EdgeInsets.zero,
+                  //   controller: controller,
+                  //   onFieldSubmitted: (val) {
+                  //     DatabaseService(uid: _auth.getUser()!.uid).editTodo(
+                  //         task: val, year: widget.year, docID: widget.docID);
+                  //   },
+                  //   style: Theme.of(context).textTheme.headline5,
+                  //   decoration: InputDecoration(
+                  //     contentPadding: EdgeInsets.zero,
+                  //     border: InputBorder.none,
+                  //   ),
+                  // ),
                 ),
               ),
             ],
