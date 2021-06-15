@@ -97,14 +97,16 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
 
         if (yearChangedManually == false) {
           if (future.connectionState == ConnectionState.done) {
-            if (years!.contains(DateTime.now().year)) {
+            if ((years ?? []).contains(DateTime.now().year)) {
               selectedYear = DateTime.now().year;
             } else {
-              if (years[years.length - 1] < DateTime.now().year) {
+              if ((years ?? [])[(years ?? []).length - 1] <
+                  DateTime.now().year) {
                 // TODO add check to see if they made the year before and deleted it
                 makeNewYear(DateTime.now().year);
               } else {
-                selectedYear = findClosestYear(years, DateTime.now().year);
+                selectedYear =
+                    findClosestYear(years ?? [], DateTime.now().year);
               }
             }
           }
@@ -131,6 +133,10 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                 });
                 progress = completedTodos / totalTodos;
 
+                if (progress.isNaN) {
+                  progress = 0;
+                }
+
                 data.sort((a, b) {
                   int aNum = a.completed ? 1 : 0;
                   int bNum = b.completed ? 1 : 0;
@@ -139,10 +145,12 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                 });
               }
             }
+
             return Scaffold(
               extendBody: true,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: NestedScrollView(
+                  physics: NeverScrollableScrollPhysics(),
                   headerSliverBuilder: (context, _) {
                     return <Widget>[
                       SliverToBoxAdapter(child: SizedBox(height: 20)),
@@ -159,7 +167,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                   ? (DropdownButton<int>(
                                       underline: Container(),
                                       value: selectedYear,
-                                      items: years!
+                                      items: (years ?? [])
                                           .map(
                                             (e) => DropdownMenuItem(
                                               child: Text(
@@ -371,7 +379,11 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 10),
                                     child: Text(
-                                      '${(progress * 100).round()}%',
+                                      ((snapshot.data ?? []) as List).isEmpty
+                                          ? ''
+                                          : (progress.isNaN
+                                              ? ''
+                                              : '${(progress * 100).round()}%'),
                                       style:
                                           Theme.of(context).textTheme.subtitle1,
                                     ),
@@ -388,28 +400,35 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                       ? ((snapshot.connectionState == ConnectionState.done ||
                               snapshot.connectionState ==
                                   ConnectionState.active)
-                          ? ListView.builder(
-                              padding: EdgeInsets.only(
-                                top: 10,
-                                bottom:
-                                    70 + MediaQuery.of(context).padding.bottom,
-                              ),
-                              itemCount: (snapshot.data as List).length,
-                              itemBuilder: (context, index) {
-                                return Todo(
-                                  completed: ((snapshot.data as List)[index]
-                                          as TodoData)
-                                      .completed,
-                                  task: ((snapshot.data as List)[index]
-                                          as TodoData)
-                                      .task,
-                                  docID: ((snapshot.data as List)[index]
-                                          as TodoData)
-                                      .docID,
-                                  year: selectedYear,
-                                );
-                              },
-                            )
+                          ? (((snapshot.data ?? []) as List).isEmpty
+                              ? Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Placeholder(),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  padding: EdgeInsets.only(
+                                    top: 10,
+                                    bottom: 70 +
+                                        MediaQuery.of(context).padding.bottom,
+                                  ),
+                                  itemCount: (snapshot.data as List).length,
+                                  itemBuilder: (context, index) {
+                                    return Todo(
+                                      completed: ((snapshot.data as List)[index]
+                                              as TodoData)
+                                          .completed,
+                                      task: ((snapshot.data as List)[index]
+                                              as TodoData)
+                                          .task,
+                                      docID: ((snapshot.data as List)[index]
+                                              as TodoData)
+                                          .docID,
+                                      year: selectedYear,
+                                    );
+                                  },
+                                ))
                           : Center(child: CircularProgressIndicator()))
                       : Center(child: CircularProgressIndicator())),
               floatingActionButton: FloatingActionButton(
@@ -597,6 +616,9 @@ class _AddTodoState extends State<AddTodo> {
 int findClosestYear(List years, int target) {
   int length = years.length;
 
+  if (years.isEmpty) {
+    return DateTime.now().year;
+  }
   // Corner Cases
   if (target <= years[0]) {
     return years[0];
