@@ -270,9 +270,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                       } else if (oldPassResult == true) {
                         setState(() => _oldPasswordError = null);
                         dynamic newPassResult = await _auth.updatePassword(
+                          context,
                           oldPassword: _oldPassword,
                           newPassword: _newPassword,
-                          context: context,
                         );
                         if (newPassResult == true) {
                           FocusScopeNode currentFocus = FocusScope.of(context);

@@ -122,8 +122,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                         currentFocus.unfocus();
                       }
 
-                      dynamic result = await _auth.updateEmail(
-                          newEmail: _email, context: context);
+                      dynamic result =
+                          await _auth.updateEmail(context, newEmail: _email);
 
                       if (result == null) {
                         // TODO send verification email if email isn't verified before popping.

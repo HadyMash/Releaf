@@ -213,7 +213,7 @@ You can write whatever you want here as all the data is encrypted. Only you can 
   }
 
   // Transfer Account to a new email
-  Future updateEmail({required String newEmail, required context}) async {
+  Future updateEmail(context, {required String newEmail}) async {
     // TODO use verifyBeforeUpdateEmail
     try {
       if (_auth.currentUser != null) {
@@ -286,10 +286,10 @@ You can write whatever you want here as all the data is encrypted. Only you can 
     }
   }
 
-  Future updatePassword({
+  Future updatePassword(
+    context, {
     required String oldPassword,
     required String newPassword,
-    required BuildContext context,
   }) async {
     // TODO add verification code logic
     try {
