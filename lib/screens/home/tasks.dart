@@ -429,7 +429,11 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 onPressed: () => AppTheme.mainNavKey.currentState!.push(
-                  CustomPopupRoute(builder: (context) => AddTodo(selectedYear)),
+                  CustomPopupRoute(
+                      builder: (context) => AddTodo(
+                            selectedYear,
+                            edit: false,
+                          )),
                 ),
               ),
               bottomNavigationBar: ThemedNavigationBar(
@@ -444,7 +448,12 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
 
 class AddTodo extends StatefulWidget {
   final int year;
-  const AddTodo(this.year, {Key? key}) : super(key: key);
+  final String? task;
+  final String? docID;
+  final bool edit;
+  const AddTodo(this.year,
+      {Key? key, this.task, this.docID, required this.edit})
+      : super(key: key);
 
   @override
   _AddTodoState createState() => _AddTodoState();
@@ -455,11 +464,12 @@ class _AddTodoState extends State<AddTodo> {
 
   final formkey = new GlobalKey<FormState>();
   FocusNode focusNode = new FocusNode();
-  TextEditingController controller = TextEditingController(text: '');
+  late TextEditingController controller;
   String? _error;
 
   @override
   void initState() {
+    controller = TextEditingController(text: widget.edit ? widget.task : '');
     focusNode.addListener(() {
       setState(() {});
     });
@@ -535,25 +545,39 @@ class _AddTodoState extends State<AddTodo> {
                   label: 'Add Todo',
                   notAllCaps: true,
                   onPressed: () async {
-                    FocusScopeNode currentFocus = FocusScope.of(context);
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
-                    }
+                    if (widget.edit == false) {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
 
-                    // TODO implement index functionality
-                    dynamic result =
-                        await DatabaseService(uid: _auth.getUser()!.uid)
-                            .addTodo(
-                      task: controller.text,
-                      index: 0,
-                      year: widget.year,
-                    );
+                      // TODO implement index functionality
+                      dynamic result =
+                          await DatabaseService(uid: _auth.getUser()!.uid)
+                              .addTodo(
+                        task: controller.text,
+                        index: 0,
+                        year: widget.year,
+                      );
 
-                    if (result == null) {
-                      AppTheme.mainNavKey.currentState!.pop(context);
-                      print('no errors, email changed');
+                      if (result == null) {
+                        AppTheme.mainNavKey.currentState!.pop(context);
+                      } else {
+                        setState(() => _error = result);
+                      }
                     } else {
-                      setState(() => _error = result);
+                      dynamic result =
+                          await DatabaseService(uid: _auth.getUser()!.uid)
+                              .editTodo(
+                        task: controller.text,
+                        year: widget.year,
+                        docID: widget.docID!,
+                      );
+                      if (result == null) {
+                        AppTheme.mainNavKey.currentState!.pop(context);
+                      } else {
+                        setState(() => _error = result);
+                      }
                     }
                   },
                 ),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/const/app_theme.dart';
+import 'package:releaf/shared/const/custom_popup_route.dart';
 
 class Todo extends StatefulWidget {
   bool completed;
@@ -25,7 +28,8 @@ class Todo extends StatefulWidget {
 class _TodoState extends State<Todo> {
   AuthService _auth = AuthService();
   Duration duration = Duration(milliseconds: 220);
-  late TextEditingController controller;
+  late SlidableController slidableController;
+  // late TextEditingController controller;
 
   late Color _enabledBackgroundColor;
   late Color _enabledShadowColor;
@@ -47,11 +51,24 @@ class _TodoState extends State<Todo> {
   late double _spread;
 
   bool initalised = false;
+  bool slid = false;
 
   @override
   void initState() {
-    controller = TextEditingController(text: widget.task);
+    // controller = TextEditingController(text: widget.task);
+    slidableController = SlidableController(
+      onSlideAnimationChanged: (anim) {},
+      onSlideIsOpenChanged: (isSlid) {
+        slid = isSlid ?? false;
+      },
+    );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // controller.dipose();
+    super.dispose();
   }
 
   @override
@@ -101,12 +118,14 @@ class _TodoState extends State<Todo> {
     AppTheme theme = Provider.of<AppTheme>(context);
 
     void _tapDown() {
-      if (theme.haptics == true) {
-        HapticFeedback.lightImpact();
+      if (!slid) {
+        if (theme.haptics == true) {
+          HapticFeedback.lightImpact();
+        }
+        _shadowColor = _pressedShadowColor;
+        _blur = _pressedBlurRadius;
+        _spread = _pressedSpreadRadius;
       }
-      _shadowColor = _pressedShadowColor;
-      _blur = _pressedBlurRadius;
-      _spread = _pressedSpreadRadius;
     }
 
     void _tapUp() {
@@ -125,18 +144,20 @@ class _TodoState extends State<Todo> {
     }
 
     void _toggle() {
-      if (widget.completed == false) {
-        if (theme.haptics == true) {
-          HapticFeedback.mediumImpact();
+      if (!slid) {
+        if (widget.completed == false) {
+          if (theme.haptics == true) {
+            HapticFeedback.mediumImpact();
+          }
+          DatabaseService(uid: _auth.getUser()!.uid)
+              .completeTodo(widget.year, widget.docID);
+        } else {
+          if (theme.haptics == true) {
+            HapticFeedback.heavyImpact();
+          }
+          DatabaseService(uid: _auth.getUser()!.uid)
+              .uncompleteTodo(widget.year, widget.docID);
         }
-        DatabaseService(uid: _auth.getUser()!.uid)
-            .completeTodo(widget.year, widget.docID);
-      } else {
-        if (theme.haptics == true) {
-          HapticFeedback.heavyImpact();
-        }
-        DatabaseService(uid: _auth.getUser()!.uid)
-            .uncompleteTodo(widget.year, widget.docID);
       }
     }
 
@@ -162,6 +183,14 @@ class _TodoState extends State<Todo> {
           animating = true;
           setState(() => _tapDown());
         },
+        onLongPress: () =>
+            AppTheme.mainNavKey.currentState!.push(CustomPopupRoute(
+                builder: (context) => AddTodo(
+                      widget.year,
+                      task: widget.task,
+                      docID: widget.docID,
+                      edit: true,
+                    ))),
         onTapUp: (_) {
           animating = true;
           setState(() => _tapUp());
@@ -184,41 +213,85 @@ class _TodoState extends State<Todo> {
               )
             ],
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Spacer(),
-              Flexible(
-                flex: 4,
-                child: Center(child: Placeholder(fallbackHeight: 50)),
-              ),
-              Spacer(),
-              Flexible(
-                flex: 24,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 25),
-                  child: Text(
-                    widget.task,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  // child: TextFormField(
-                  //   scrollPadding: EdgeInsets.zero,
-                  //   controller: controller,
-                  //   onFieldSubmitted: (val) {
-                  //     DatabaseService(uid: _auth.getUser()!.uid).editTodo(
-                  //         task: val, year: widget.year, docID: widget.docID);
-                  //   },
-                  //   style: Theme.of(context).textTheme.headline5,
-                  //   decoration: InputDecoration(
-                  //     contentPadding: EdgeInsets.zero,
-                  //     border: InputBorder.none,
-                  //   ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Slidable(
+              controller: slidableController,
+              actionPane: SlidableDrawerActionPane(),
+              secondaryActions: [
+                ClipRRect(
+                  // borderRadius: BorderRadius.only(
+                  //   topLeft: Radius.circular(15),
+                  //   bottomLeft: Radius.circular(15),
                   // ),
+                  child: IconSlideAction(
+                    icon: Icons.edit_rounded,
+                    caption: 'Edit',
+                    color: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context)
+                        .floatingActionButtonTheme
+                        .foregroundColor,
+                    onTap: () =>
+                        AppTheme.mainNavKey.currentState!.push(CustomPopupRoute(
+                            builder: (context) => AddTodo(
+                                  widget.year,
+                                  task: widget.task,
+                                  docID: widget.docID,
+                                  edit: true,
+                                ))),
+                  ),
                 ),
+                IconSlideAction(
+                  icon: Icons.delete_rounded,
+                  caption: 'Delete',
+                  color: Theme.of(context).errorColor,
+                  foregroundColor: Theme.of(context)
+                      .floatingActionButtonTheme
+                      .foregroundColor,
+                  onTap: () {
+                    DatabaseService(uid: _auth.getUser()!.uid)
+                        .deleteTodo(year: widget.year, docID: widget.docID);
+                  },
+                ),
+              ],
+              actionExtentRatio: 1 / 5,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Spacer(),
+                  Flexible(
+                    flex: 4,
+                    child: Center(child: Placeholder(fallbackHeight: 50)),
+                  ),
+                  Spacer(),
+                  Flexible(
+                    flex: 24,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 25),
+                      child: Text(
+                        widget.task,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      // child: TextFormField(
+                      //   scrollPadding: EdgeInsets.zero,
+                      //   controller: controller,
+                      //   onFieldSubmitted: (val) {
+                      //     DatabaseService(uid: _auth.getUser()!.uid).editTodo(
+                      //         task: val, year: widget.year, docID: widget.docID);
+                      //   },
+                      //   style: Theme.of(context).textTheme.headline5,
+                      //   decoration: InputDecoration(
+                      //     contentPadding: EdgeInsets.zero,
+                      //     border: InputBorder.none,
+                      //   ),
+                      // ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

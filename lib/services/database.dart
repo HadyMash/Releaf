@@ -206,7 +206,14 @@ class DatabaseService {
     }
   }
 
-  Future deleteTodo(String docID) async {}
+  Future deleteTodo({required int year, required String docID}) async {
+    try {
+      await tasks.collection(year.toString()).doc(docID).delete();
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
 
 // TODO add index functinality
   Future completeTodo(int year, String docID) async {
