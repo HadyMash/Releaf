@@ -130,6 +130,13 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                   }
                 });
                 progress = completedTodos / totalTodos;
+
+                data.sort((a, b) {
+                  int aNum = a.completed ? 1 : 0;
+                  int bNum = b.completed ? 1 : 0;
+
+                  return aNum.compareTo(bNum);
+                });
               }
             }
             return Scaffold(
