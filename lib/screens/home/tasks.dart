@@ -389,7 +389,11 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               snapshot.connectionState ==
                                   ConnectionState.active)
                           ? ListView.builder(
-                              padding: EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.only(
+                                top: 10,
+                                bottom:
+                                    70 + MediaQuery.of(context).padding.bottom,
+                              ),
                               itemCount: (snapshot.data as List).length,
                               itemBuilder: (context, index) {
                                 return Todo(
