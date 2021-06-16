@@ -177,91 +177,92 @@ class _TodoState extends State<Todo> {
 
     return Material(
       color: Colors.transparent,
-      child: AnimatedContainer(
-        duration: duration,
-        margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-        decoration: BoxDecoration(
-          color: _color,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: _shadowColor,
-              blurRadius: _blur,
-              spreadRadius: _spread,
-            )
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Slidable(
-            key: UniqueKey(),
-            dismissal: SlidableDismissal(
-              child: SlidableDrawerDismissal(),
-              onDismissed: (_) {
-                DatabaseService(uid: _auth.getUser()!.uid)
-                    .deleteTodo(year: widget.year, docID: widget.docID);
-              },
-            ),
-            controller: slidableController,
-            actionPane: SlidableDrawerActionPane(),
-            secondaryActions: [
-              ClipRRect(
-                // borderRadius: BorderRadius.only(
-                //   topLeft: Radius.circular(15),
-                //   bottomLeft: Radius.circular(15),
-                // ),
-                child: IconSlideAction(
-                  icon: Icons.edit_rounded,
-                  caption: 'Edit',
-                  color: Theme.of(context).primaryColor,
-                  foregroundColor: Theme.of(context)
-                      .floatingActionButtonTheme
-                      .foregroundColor,
-                  onTap: () =>
-                      AppTheme.mainNavKey.currentState!.push(CustomPopupRoute(
-                          builder: (context) => AddTodo(
-                                widget.year,
-                                task: widget.task,
-                                docID: widget.docID,
-                                edit: true,
-                              ))),
-                ),
-              ),
-              IconSlideAction(
-                icon: Icons.delete_rounded,
-                caption: 'Delete',
-                color: Theme.of(context).errorColor,
-                foregroundColor:
-                    Theme.of(context).floatingActionButtonTheme.foregroundColor,
-                onTap: () {
+      child: GestureDetector(
+        onTap: _toggle,
+        onTapDown: (_) {
+          animating = true;
+          setState(() => _tapDown());
+        },
+        // onLongPress: () =>
+        //     AppTheme.mainNavKey.currentState!.push(CustomPopupRoute(
+        //         builder: (context) => AddTodo(
+        //               widget.year,
+        //               task: widget.task,
+        //               docID: widget.docID,
+        //               edit: true,
+        //             ))),
+        onTapUp: (_) {
+          animating = true;
+          setState(() => _tapUp());
+        },
+        onTapCancel: () {
+          animating = true;
+          setState(() => _tapUp());
+        },
+        child: AnimatedContainer(
+          duration: duration,
+          margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+          decoration: BoxDecoration(
+            color: _color,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: _shadowColor,
+                blurRadius: _blur,
+                spreadRadius: _spread,
+              )
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Slidable(
+              key: UniqueKey(),
+              dismissal: SlidableDismissal(
+                child: SlidableDrawerDismissal(),
+                onDismissed: (_) {
                   DatabaseService(uid: _auth.getUser()!.uid)
                       .deleteTodo(year: widget.year, docID: widget.docID);
                 },
               ),
-            ],
-            actionExtentRatio: 1 / 5,
-            child: GestureDetector(
-              onTap: _toggle,
-              onTapDown: (_) {
-                animating = true;
-                setState(() => _tapDown());
-              },
-              onLongPress: () =>
-                  AppTheme.mainNavKey.currentState!.push(CustomPopupRoute(
-                      builder: (context) => AddTodo(
-                            widget.year,
-                            task: widget.task,
-                            docID: widget.docID,
-                            edit: true,
-                          ))),
-              onTapUp: (_) {
-                animating = true;
-                setState(() => _tapUp());
-              },
-              onTapCancel: () {
-                animating = true;
-                setState(() => _tapUp());
-              },
+              controller: slidableController,
+              actionPane: SlidableDrawerActionPane(),
+              secondaryActions: [
+                ClipRRect(
+                  // borderRadius: BorderRadius.only(
+                  //   topLeft: Radius.circular(15),
+                  //   bottomLeft: Radius.circular(15),
+                  // ),
+                  child: IconSlideAction(
+                    icon: Icons.edit_rounded,
+                    caption: 'Edit',
+                    color: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context)
+                        .floatingActionButtonTheme
+                        .foregroundColor,
+                    onTap: () =>
+                        AppTheme.mainNavKey.currentState!.push(CustomPopupRoute(
+                            builder: (context) => AddTodo(
+                                  widget.year,
+                                  task: widget.task,
+                                  docID: widget.docID,
+                                  edit: true,
+                                ))),
+                  ),
+                ),
+                IconSlideAction(
+                  icon: Icons.delete_rounded,
+                  caption: 'Delete',
+                  color: Theme.of(context).errorColor,
+                  foregroundColor: Theme.of(context)
+                      .floatingActionButtonTheme
+                      .foregroundColor,
+                  onTap: () {
+                    DatabaseService(uid: _auth.getUser()!.uid)
+                        .deleteTodo(year: widget.year, docID: widget.docID);
+                  },
+                ),
+              ],
+              actionExtentRatio: 1 / 5,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
