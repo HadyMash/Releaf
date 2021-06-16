@@ -194,6 +194,14 @@ class _TodoState extends State<Todo> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Slidable(
+            key: UniqueKey(),
+            dismissal: SlidableDismissal(
+              child: SlidableDrawerDismissal(),
+              onDismissed: (_) {
+                DatabaseService(uid: _auth.getUser()!.uid)
+                    .deleteTodo(year: widget.year, docID: widget.docID);
+              },
+            ),
             controller: slidableController,
             actionPane: SlidableDrawerActionPane(),
             secondaryActions: [
