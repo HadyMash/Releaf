@@ -161,6 +161,17 @@ class _ThemedToggleState extends State<ThemedToggle>
           HapticFeedback.lightImpact();
         }
       },
+      onHorizontalDragUpdate: (details) {
+        if ((details.primaryDelta ?? 0) > 0) {
+          if (_state != true) {
+            setState(() => _toggleOn());
+          }
+        } else if ((details.primaryDelta ?? 0) < 0) {
+          if (_state != false) {
+            setState(() => _toggleOff());
+          }
+        }
+      },
       onTapUp: (details) => _animateUp(),
       onTapCancel: () => _animateUp(),
       // TODO Make toggle work with drag right and left
