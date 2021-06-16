@@ -79,13 +79,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                   controller: _oldPasswordController,
                   obscureText: true,
                   validator: (val) {
-                    // TODO make old password validation show error in old password form field.
                     if (val == null || val.isEmpty) {
                       return 'Please enter a password';
                     } else if (val.length < 8) {
                       return 'Password needs to be at least 8 characters';
                     }
-                    // TODO check if it matches old password
                   },
                   autocorrect: false,
                   onChanged: (val) {
@@ -159,7 +157,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     } else if (val.length < 8) {
                       return 'Password needs to be at least 8 characters';
                     }
-                    // TODO Check it is not equal to the old password
                   },
                   autocorrect: false,
                   onChanged: (val) {
