@@ -174,7 +174,6 @@ class _ThemedToggleState extends State<ThemedToggle>
       },
       onTapUp: (details) => _animateUp(),
       onTapCancel: () => _animateUp(),
-      // TODO Make toggle work with drag right and left
       child: AnimatedContainer(
         duration: _duration,
         margin: widget.margin,
