@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
-// TODO add icon support
 class ThemedToggle extends StatefulWidget {
   // * Variables
   final ValueChanged<bool> onChanged;

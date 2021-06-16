@@ -20,10 +20,7 @@ class SettingPopup extends StatelessWidget {
                 currentFocus.unfocus();
               }
             },
-            // TODO make glowy container behind that animates in a pie chart
-            /*
-            Clip rectangle through some sort of pie chart clip or something similar to achieve a border with a trim path effect.
-            */
+            // TODO make custom painter that rotates around the container
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),

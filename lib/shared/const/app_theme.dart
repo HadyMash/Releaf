@@ -6,8 +6,7 @@ import 'package:releaf/shared/assets/custom_widget_border.dart';
 class AppTheme with ChangeNotifier {
   ThemeData light;
   ThemeData dark;
-  ThemeMode themeMode = ThemeMode
-      .system; // TODO make loading screen so that this can be late and have it initialised.
+  ThemeMode themeMode = ThemeMode.system;
   late bool haptics;
   double bottomNavigationBarBorderRadius = 25;
 

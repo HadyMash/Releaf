@@ -263,15 +263,3 @@ class _ThemedAppState extends State<ThemedApp> {
     );
   }
 }
-
-// TODO Implement Loading widget to preload data.
-class Loading extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Loading'),
-      ),
-    );
-  }
-}
