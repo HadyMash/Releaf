@@ -8,7 +8,6 @@ import 'package:releaf/screens/home/settings.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
-// TODO add glow under icon that is being pressed
 class ThemedNavigationBar extends StatefulWidget {
   final int pageIndex;
   final bool animateFloatingActionButton;

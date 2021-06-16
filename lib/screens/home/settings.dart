@@ -57,7 +57,6 @@ class Settings extends StatelessWidget {
     ];
 
     return Scaffold(
-      // TODO make body custom scroll view.
       body: Scrollbar(
         child: CustomScrollView(
           slivers: [
@@ -243,7 +242,6 @@ class Settings extends StatelessWidget {
           ],
         ),
       ),
-
       floatingActionButton: HiddenFAB(),
       bottomNavigationBar:
           ThemedNavigationBar(pageIndex: 4, animateFloatingActionButton: true),
@@ -251,7 +249,6 @@ class Settings extends StatelessWidget {
   }
 }
 
-// TODO make shadow color change on theme change.
 class Setting extends StatefulWidget {
   final String label;
   final Widget? preference;

@@ -82,7 +82,7 @@ You can write whatever you want here as all the data is encrypted. Only you can 
           },
         }, SetOptions(merge: true));
 
-        // TODO Make a todo collection
+        // Make a todo collection
         var year = DateTime.now().year;
         firestore.collection('tasks').doc(user.uid).collection(year.toString())
           ..add({
@@ -173,7 +173,7 @@ You can write whatever you want here as all the data is encrypted. Only you can 
     }
   }
 
-  // Forgot password // TODO make reset password field
+  // Forgot password
   Future resetPassword(String email, context) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);

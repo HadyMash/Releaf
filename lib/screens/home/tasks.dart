@@ -102,7 +102,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
             } else {
               if ((years ?? [])[(years ?? []).length - 1] <
                   DateTime.now().year) {
-                // TODO add check to see if they made the year before and deleted it
                 makeNewYear(DateTime.now().year);
               } else {
                 selectedYear =
@@ -404,6 +403,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               ? Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 15),
+                                    // TODO make no todos SVG
                                     child: Placeholder(),
                                   ),
                                 )

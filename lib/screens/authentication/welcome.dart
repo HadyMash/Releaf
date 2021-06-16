@@ -65,17 +65,15 @@ class Welcome extends StatelessWidget {
                           children: [
                             ThemedButton.icon(
                               label: 'Email & Password',
-                              style: TextStyle(
-                                fontFamily:
-                                    'Poppins', // TODO find font similar to Rift for buttons
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                fontSize:
-                                    23 - ((926 * 0.01) - (_height * 0.01)),
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline2!
+                                  .copyWith(
+                                      fontSize: 23 -
+                                          ((926 * 0.01) - (_height * 0.01))),
                               notAllCaps: true,
                               icon: Icon(
-                                Icons.email /* TODO Make Icon */,
+                                Icons.email, // TODO Make Email Icon
                                 size: 28,
                                 color: Theme.of(context)
                                     .floatingActionButtonTheme
@@ -110,21 +108,18 @@ class Welcome extends StatelessWidget {
                             SizedBox(height: 30),
                             ThemedButton.icon(
                               label: 'Google',
-                              style: TextStyle(
-                                fontFamily:
-                                    'Poppins', // TODO find font similar to Rift for buttons
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                fontSize:
-                                    23 - ((926 * 0.01) - (_height * 0.01)),
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline2!
+                                  .copyWith(
+                                      fontSize: 23 -
+                                          ((926 * 0.01) - (_height * 0.01))),
                               notAllCaps: true,
-                              icon: Icon(
-                                Icons.email, // TODO Make Icon
-                                size: 28,
-                                color: Theme.of(context)
-                                    .floatingActionButtonTheme
-                                    .foregroundColor,
+                              icon: Image(
+                                height: 30,
+                                width: 30,
+                                image:
+                                    AssetImage('assets/images/google_logo.png'),
                               ),
                               onPressed: () => _auth.logInWithGoogle(),
                               tapDownFeedback: true,
