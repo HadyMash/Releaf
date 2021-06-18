@@ -529,7 +529,6 @@ class _AddTodoState extends State<AddTodo> {
                   focusNode: focusNode,
                   controller: controller,
                   onTap: () => setState(() {}),
-                  keyboardType: TextInputType.emailAddress,
                   decoration: _theme.inputDecoration.copyWith(
                     labelText: 'New Todo',
                     labelStyle: TextStyle(
