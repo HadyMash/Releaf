@@ -7,6 +7,7 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
+import 'package:rive/rive.dart';
 
 class Todo extends StatefulWidget {
   bool completed;
