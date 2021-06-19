@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/services/auth.dart';
@@ -55,7 +56,6 @@ class _TodoState extends State<Todo> {
 
   @override
   void initState() {
-    // controller = TextEditingController(text: widget.task);
     slidableController = SlidableController(
       onSlideAnimationChanged: (anim) {},
       onSlideIsOpenChanged: (isSlid) {
@@ -161,17 +161,25 @@ class _TodoState extends State<Todo> {
       }
     }
 
+    Check check = Check(widget.completed);
+
     if (animating == false) {
       if (widget.completed == false) {
         _color = _enabledBackgroundColor;
         _shadowColor = _enabledShadowColor;
         _blur = _enabledBlurRadius;
         _spread = _enabledSpreadRadius;
+        if (check.forward != null) {
+          check.forward!();
+        }
       } else {
         _color = _disabledBackgroundColor;
         _shadowColor = _disabledShadowColor;
         _blur = _disabledBlurRadius;
         _spread = _disabledSpreadRadius;
+        if (check.reverse != null) {
+          check.reverse!();
+        }
       }
     }
 
@@ -271,7 +279,7 @@ class _TodoState extends State<Todo> {
                   Spacer(),
                   Flexible(
                     flex: 4,
-                    child: Center(child: Placeholder(fallbackHeight: 50)),
+                    child: Center(child: check),
                   ),
                   Spacer(),
                   Flexible(
@@ -303,6 +311,61 @@ class _TodoState extends State<Todo> {
           ),
         ),
       ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class Check extends StatefulWidget {
+  bool completed;
+  Function()? forward;
+  Function()? reverse;
+
+  Check(this.completed, {Key? key}) : super(key: key);
+
+  @override
+  _CheckState createState() => _CheckState();
+}
+
+class _CheckState extends State<Check> with SingleTickerProviderStateMixin {
+  late final AnimationController controller;
+
+  @override
+  void initState() {
+    controller = AnimationController(vsync: this);
+    widget.forward = () {
+      controller.reverse();
+    };
+    widget.reverse = () {
+      controller.forward();
+    };
+
+    if (widget.completed == true) {
+      controller.value = 1;
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Lottie.asset(
+      'assets/lottie/check.json',
+      controller: controller,
+      onLoaded: (composition) {
+        controller.duration = composition.duration;
+        if (widget.completed == true) {
+          controller.forward();
+        } else {
+          controller.reverse();
+        }
+      },
     );
   }
 }
