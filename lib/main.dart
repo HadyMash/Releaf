@@ -41,7 +41,6 @@ void main() async {
               scaffoldBackgroundColor: Colors.grey[50],
               backgroundColor: Colors.white,
               primaryColor: Colors.green,
-              // accentColor: Colors.greenAccent[400],
               shadowColor: Colors.black,
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
@@ -128,7 +127,111 @@ void main() async {
               ),
             ),
             // * Dark Theme
-            dark: ThemeData.dark(),
+            dark: ThemeData(
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme(
+                primary: Colors.green,
+                secondary: Colors.greenAccent[400]!,
+                onBackground: Colors.white,
+                brightness: Brightness.dark,
+                surface: Colors.grey[800]!,
+                onSurface: Colors.white,
+                primaryVariant: Colors.green[700]!,
+                onError: Colors.white,
+                onSecondary: Colors.white,
+                background: Colors.grey[900]!,
+                onPrimary: Colors.white,
+                secondaryVariant: Colors.greenAccent[700]!,
+                error: Colors.red[300]!,
+              ),
+              scaffoldBackgroundColor: Colors.grey[800],
+              backgroundColor: Colors.grey[900],
+              primaryColor: Colors.green,
+              shadowColor: Colors.white.withOpacity(0.4),
+              errorColor: Colors.red[300],
+              disabledColor: Colors.grey,
+              appBarTheme: AppBarTheme(
+                brightness: Brightness.dark,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                centerTitle: false,
+                titleSpacing: 28,
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              textTheme: TextTheme(
+                headline1: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                ),
+                headline2: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 28,
+                ),
+                headline3: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
+                  height: 1,
+                ),
+                headline4: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 30,
+                  color: Colors.grey[400],
+                  fontWeight: FontWeight.w700,
+                ),
+                headline5: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 24,
+                  color: Colors.white,
+                ),
+                subtitle1: TextStyle(
+                  // TextFields
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                subtitle2: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                bodyText1: TextStyle(fontSize: 16, color: Colors.white),
+                bodyText2: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                ),
+                caption: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
+                button: TextStyle(
+                  fontFamily:
+                      'Poppins', // TODO find font similar to Rift for buttons
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              iconTheme: IconThemeData(color: Colors.white, size: 34),
+              // accentIconTheme: IconThemeData(color: Colors.white),
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
+            ),
           ),
           lazy: false,
         ),
@@ -244,6 +347,82 @@ class _ThemedAppState extends State<ThemedApp> {
                 ),
               ),
               iconTheme: IconThemeData(color: Colors.black, size: 34),
+              // accentIconTheme: IconThemeData(color: Colors.white),
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
+            );
+
+            theme.dark = ThemeData(
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme(
+                primary: Colors.green,
+                secondary: Colors.greenAccent[400]!,
+                onBackground: Colors.white,
+                brightness: Brightness.dark,
+                surface: Colors.grey[800]!,
+                onSurface: Colors.white,
+                primaryVariant: Colors.green[700]!,
+                onError: Colors.white,
+                onSecondary: Colors.white,
+                background: Colors.grey[900]!,
+                onPrimary: Colors.white,
+                secondaryVariant: Colors.greenAccent[700]!,
+                error: Colors.red[300]!,
+              ),
+              scaffoldBackgroundColor: Colors.grey[800],
+              backgroundColor: Colors.grey[900],
+              primaryColor: Colors.green,
+              shadowColor: Colors.white.withOpacity(0.4),
+              errorColor: Colors.red[300],
+              disabledColor: Colors.grey,
+              appBarTheme: AppBarTheme(
+                brightness: Brightness.dark,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                centerTitle: false,
+                titleSpacing: 28,
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              textTheme: theme.dark.textTheme.copyWith(
+                headline1: theme.dark.textTheme.headline1!.copyWith(
+                  fontSize: 32 - fontModifier,
+                ),
+                headline2: theme.dark.textTheme.headline2!.copyWith(
+                  fontSize: 28 - fontModifier,
+                ),
+                headline3: theme.dark.textTheme.headline3!.copyWith(
+                  fontSize: 40 - fontModifier,
+                ),
+                headline4: theme.dark.textTheme.headline4!.copyWith(
+                  fontSize: 30 - fontModifier,
+                ),
+                headline5: theme.dark.textTheme.headline5!.copyWith(
+                  fontSize: 24 - fontModifier,
+                ),
+                subtitle1: theme.dark.textTheme.subtitle1!.copyWith(
+                  fontSize: 18 - fontModifier,
+                ),
+                subtitle2: theme.dark.textTheme.subtitle2!.copyWith(
+                  fontSize: 26 - fontModifier,
+                ),
+                bodyText1: theme.dark.textTheme.bodyText1!.copyWith(
+                  fontSize: 16 - fontModifier,
+                ),
+                bodyText2: theme.dark.textTheme.bodyText2!.copyWith(
+                  fontSize: 16 - fontModifier,
+                ),
+                caption: theme.dark.textTheme.caption!.copyWith(
+                  fontSize: 18 - fontModifier,
+                ),
+                button: theme.dark.textTheme.button!.copyWith(
+                  fontSize: 18 - fontModifier,
+                ),
+              ),
+              iconTheme: IconThemeData(color: Colors.white, size: 34),
               // accentIconTheme: IconThemeData(color: Colors.white),
               floatingActionButtonTheme: FloatingActionButtonThemeData(
                 backgroundColor: Colors.green,

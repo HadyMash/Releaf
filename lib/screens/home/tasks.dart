@@ -225,8 +225,11 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                               },
                                               children: yearList
                                                   .map((e) => Center(
-                                                      child:
-                                                          Text(e.toString())))
+                                                      child: Text(e.toString(),
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyText1)))
                                                   .toList(),
                                             ),
                                           ),
