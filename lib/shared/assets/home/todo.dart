@@ -26,9 +26,10 @@ class Todo extends StatefulWidget {
   _TodoState createState() => _TodoState();
 }
 
-class _TodoState extends State<Todo> {
+class _TodoState extends State<Todo> with SingleTickerProviderStateMixin {
   AuthService _auth = AuthService();
   Duration duration = Duration(milliseconds: 220);
+  late AnimationController lottieController;
   late SlidableController slidableController;
   // late TextEditingController controller;
 
@@ -51,7 +52,10 @@ class _TodoState extends State<Todo> {
   late double _blur;
   late double _spread;
 
+  final GlobalKey lottieKey = GlobalKey();
+
   bool initalised = false;
+  bool lottieControllerInitialised = false;
   bool slid = false;
 
   @override
@@ -62,6 +66,13 @@ class _TodoState extends State<Todo> {
         slid = isSlid ?? false;
       },
     );
+
+    late Duration duration;
+
+    lottieController = AnimationController(vsync: this);
+    if (widget.completed == true) {
+      lottieController.value = 1;
+    }
     super.initState();
   }
 
@@ -161,25 +172,23 @@ class _TodoState extends State<Todo> {
       }
     }
 
-    Check check = Check(widget.completed);
-
     if (animating == false) {
       if (widget.completed == false) {
+        if (lottieControllerInitialised == true) {
+          lottieController.reverse();
+        }
         _color = _enabledBackgroundColor;
         _shadowColor = _enabledShadowColor;
         _blur = _enabledBlurRadius;
         _spread = _enabledSpreadRadius;
-        if (check.forward != null) {
-          check.forward!();
-        }
       } else {
+        if (lottieControllerInitialised == true) {
+          lottieController.forward();
+        }
         _color = _disabledBackgroundColor;
         _shadowColor = _disabledShadowColor;
         _blur = _disabledBlurRadius;
         _spread = _disabledSpreadRadius;
-        if (check.reverse != null) {
-          check.reverse!();
-        }
       }
     }
 
@@ -279,7 +288,18 @@ class _TodoState extends State<Todo> {
                   Spacer(),
                   Flexible(
                     flex: 4,
-                    child: Center(child: check),
+                    child: Center(
+                      child: Lottie.asset(
+                        'assets/lottie/check.json',
+                        controller: lottieController,
+                        key: lottieKey,
+                        frameRate: FrameRate.max,
+                        onLoaded: (composition) {
+                          lottieController.duration = composition.duration;
+                          lottieControllerInitialised = true;
+                        },
+                      ),
+                    ),
                   ),
                   Spacer(),
                   Flexible(
@@ -315,57 +335,56 @@ class _TodoState extends State<Todo> {
   }
 }
 
-// ignore: must_be_immutable
-class Check extends StatefulWidget {
-  bool completed;
-  Function()? forward;
-  Function()? reverse;
+// class Check extends StatefulWidget {
+//   bool completed;
+//   Function()? forward;
+//   Function()? reverse;
 
-  Check(this.completed, {Key? key}) : super(key: key);
+//   Check(this.completed, {Key? key}) : super(key: key);
 
-  @override
-  _CheckState createState() => _CheckState();
-}
+//   @override
+//   _CheckState createState() => _CheckState();
+// }
 
-class _CheckState extends State<Check> with SingleTickerProviderStateMixin {
-  late final AnimationController controller;
+// class _CheckState extends State<Check> with SingleTickerProviderStateMixin {
+//   late final AnimationController controller;
 
-  @override
-  void initState() {
-    controller = AnimationController(vsync: this);
-    widget.forward = () {
-      controller.reverse();
-    };
-    widget.reverse = () {
-      controller.forward();
-    };
+//   @override
+//   void initState() {
+//     controller = AnimationController(vsync: this);
+//     widget.forward = () {
+//       controller.reverse();
+//     };
+//     widget.reverse = () {
+//       controller.forward();
+//     };
 
-    if (widget.completed == true) {
-      controller.value = 1;
-    }
+//     if (widget.completed == true) {
+//       controller.value = 1;
+//     }
 
-    super.initState();
-  }
+//     super.initState();
+//   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     controller.dispose();
+//     super.dispose();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Lottie.asset(
-      'assets/lottie/check.json',
-      controller: controller,
-      onLoaded: (composition) {
-        controller.duration = composition.duration;
-        if (widget.completed == true) {
-          controller.forward();
-        } else {
-          controller.reverse();
-        }
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Lottie.asset(
+//       'assets/lottie/check.json',
+//       controller: controller,
+//       onLoaded: (composition) {
+//         controller.duration = composition.duration;
+//         if (widget.completed == true) {
+//           controller.forward();
+//         } else {
+//           controller.reverse();
+//         }
+//       },
+//     );
+//   }
+// }
