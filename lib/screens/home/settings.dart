@@ -96,7 +96,10 @@ class Settings extends StatelessWidget {
                           }
                         },
                         decoration: InputDecoration(
-                          fillColor: Colors.grey[300],
+                          fillColor:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.grey[300]
+                                  : Colors.grey[800],
                           filled: true,
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),

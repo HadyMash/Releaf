@@ -132,7 +132,10 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                     textAlignVertical: TextAlignVertical.top,
                     expands: true,
                     decoration: InputDecoration(
-                      fillColor: Colors.grey[300],
+                      fillColor:
+                          Theme.of(context).brightness == Brightness.light
+                              ? Colors.grey[300]
+                              : Colors.grey[900],
                       filled: true,
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 15),
