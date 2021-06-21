@@ -28,7 +28,6 @@ class _HiddenFABState extends State<HiddenFAB>
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
     return Transform.translate(
       offset: Offset(MediaQuery.of(context).size.width / 3, 0),
       child: FloatingActionButton(

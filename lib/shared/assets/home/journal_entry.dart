@@ -4,7 +4,6 @@ import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/const/app_theme.dart';
-import 'package:releaf/shared/const/hero_route.dart';
 
 class JournalEntry extends StatefulWidget {
   final String date;

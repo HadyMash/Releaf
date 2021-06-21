@@ -476,6 +476,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
   }
 }
 
+// ignore: must_be_immutable
 class ResetPassword extends StatefulWidget {
   String? email;
 

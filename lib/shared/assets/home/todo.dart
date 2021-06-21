@@ -9,6 +9,7 @@ import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
 
+// ignore: must_be_immutable
 class Todo extends StatefulWidget {
   bool completed;
   String task;
@@ -66,8 +67,6 @@ class _TodoState extends State<Todo> with SingleTickerProviderStateMixin {
         slid = isSlid ?? false;
       },
     );
-
-    late Duration duration;
 
     lottieController = AnimationController(vsync: this);
     if (widget.completed == true) {
