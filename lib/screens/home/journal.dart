@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/journal_entry.dart';
@@ -24,6 +25,8 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
   late final AnimationController fabController;
   late final Animation fabColorAnimation;
   late final Animation<double> fabElevationTween;
+
+  final GlobalKey lottieKey = GlobalKey();
 
   bool initialised = false;
 
@@ -99,7 +102,16 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                 ];
               },
               body: entries.isEmpty
-                  ? Placeholder()
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 0),
+                        child: Lottie.asset(
+                          'assets/lottie/empty_list.json',
+                          key: lottieKey,
+                          frameRate: FrameRate.max,
+                        ),
+                      ),
+                    )
                   : RefreshIndicator(
                       child: Scrollbar(
                         child: ListView.builder(
@@ -179,158 +191,6 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
             bottomNavigationBar: ThemedNavigationBar(
                 pageIndex: 3, animateFloatingActionButton: false),
           );
-
-          //   return Scaffold(
-          //     body: CustomScrollView(
-          //       slivers: [
-          //         SliverToBoxAdapter(child: SizedBox(height: 20)),
-          //         SliverAppBar(
-          //           title: Text(
-          //             'Journal',
-          //             style: Theme.of(context).textTheme.headline3,
-          //           ),
-          //           automaticallyImplyLeading: false,
-          //         ),
-          //         (entries.isEmpty)
-          //             ? SliverToBoxAdapter(
-          //                 child: Placeholder()) // TODO add empty list svg
-          //             : SliverList(
-          //                 delegate: SliverChildBuilderDelegate(
-          //                   (BuildContext context, int index) {
-          //                     return JournalEntry(
-          //                       date: entries[index].date,
-          //                       entryText: entries[index].entryText,
-          //                       feeling: entries[index].feeling,
-          //                     );
-          //                   },
-          //                   childCount: entries.length,
-          //                 ),
-          //               ),
-          //       ],
-          //     ),
-          //     floatingActionButton: Hero(
-          //       tag: 'floatingActionButton',
-          //       child: GestureDetector(
-          //         onTapDown: (_) => fabController.forward(),
-          //         onTapUp: (_) => fabController.reverse(),
-          //         onTapCancel: () => fabController.reverse(),
-          //         child: AnimatedBuilder(
-          //           animation: fabController,
-          //           builder: (context, child) {
-          //             return OpenContainer(
-          //               transitionDuration: Duration(milliseconds: 500),
-          //               transitionType: ContainerTransitionType.fade,
-          //               closedElevation: fabElevationTween.value,
-          //               closedShape: const RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.all(
-          //                   Radius.circular(56 / 2),
-          //                 ),
-          //               ),
-          //               closedColor: fabColorAnimation.value,
-          //               closedBuilder:
-          //                   (BuildContext context, VoidCallback openContainer) {
-          //                 return SizedBox(
-          //                   height: 56,
-          //                   width: 56,
-          //                   child: Center(
-          //                     child: AnimatedBuilder(
-          //                       animation: animation,
-          //                       builder: (context, child) {
-          //                         return Transform.rotate(
-          //                           angle:
-          //                               (pi * 2) - ((pi * animation.value) / 2),
-          //                           child: child,
-          //                         );
-          //                       },
-          //                       child: Icon(
-          //                         Icons.add_rounded,
-          //                         color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
-          //                         size: 40,
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 );
-          //               },
-          //               openBuilder: (BuildContext context, VoidCallback _) {
-          //                 return JournalEntryForm();
-          //               },
-          //             );
-          //           },
-          //         ),
-          //       ),
-          //     ),
-          //     bottomNavigationBar: ThemedNavigationBar(
-          //         pageIndex: 3, animateFloatingActionButton: false),
-          //   );
-          // } else {
-          //   return Scaffold(
-          //     body: CustomScrollView(
-          //       slivers: [
-          //         SliverToBoxAdapter(child: SizedBox(height: 20)),
-          //         SliverAppBar(
-          //           title: Text(
-          //             'Journal',
-          //             style: Theme.of(context).textTheme.headline3,
-          //           ),
-          //           automaticallyImplyLeading: false,
-          //         ),
-          //         SliverToBoxAdapter(child: CircularProgressIndicator()),
-          //       ],
-          //     ),
-          //     floatingActionButton: Hero(
-          //       tag: 'floatingActionButton',
-          //       child: GestureDetector(
-          //         onTapDown: (_) => fabController.forward(),
-          //         onTapUp: (_) => fabController.reverse(),
-          //         onTapCancel: () => fabController.reverse(),
-          //         child: AnimatedBuilder(
-          //           animation: fabController,
-          //           builder: (context, child) {
-          //             return OpenContainer(
-          //               transitionDuration: Duration(milliseconds: 500),
-          //               transitionType: ContainerTransitionType.fade,
-          //               closedElevation: fabElevationTween.value,
-          //               closedShape: const RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.all(
-          //                   Radius.circular(56 / 2),
-          //                 ),
-          //               ),
-          //               closedColor: fabColorAnimation.value,
-          //               closedBuilder:
-          //                   (BuildContext context, VoidCallback openContainer) {
-          //                 return SizedBox(
-          //                   height: 56,
-          //                   width: 56,
-          //                   child: Center(
-          //                     child: AnimatedBuilder(
-          //                       animation: animation,
-          //                       builder: (context, child) {
-          //                         return Transform.rotate(
-          //                           angle:
-          //                               (pi * 2) - ((pi * animation.value) / 2),
-          //                           child: child,
-          //                         );
-          //                       },
-          //                       child: Icon(
-          //                         Icons.add_rounded,
-          //                         color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
-          //                         size: 40,
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 );
-          //               },
-          //               openBuilder: (BuildContext context, VoidCallback _) {
-          //                 return JournalEntryForm();
-          //               },
-          //             );
-          //           },
-          //         ),
-          //       ),
-          //     ),
-          //     bottomNavigationBar: ThemedNavigationBar(
-          //         pageIndex: 3, animateFloatingActionButton: false),
-          //   );
         } else {
           return Scaffold(
             body: NestedScrollView(

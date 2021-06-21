@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
@@ -31,6 +32,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
 
   final FixedExtentScrollController yearPickerScrollController =
       FixedExtentScrollController(initialItem: DateTime.now().year - 2000);
+
+  final GlobalKey lottieKey = GlobalKey();
 
   @override
   void initState() {
@@ -406,8 +409,12 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                               ? Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 15),
-                                    // TODO make no todos SVG
-                                    child: Placeholder(),
+                                    child: Lottie.asset(
+                                      'assets/lottie/empty_list.json',
+                                      key: lottieKey,
+                                      frameRate: FrameRate.max,
+                                      repeat: true,
+                                    ),
                                   ),
                                 )
                               : ListView.builder(
