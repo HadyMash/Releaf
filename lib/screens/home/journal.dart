@@ -87,7 +87,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
           });
 
           return Scaffold(
-            extendBody: true,
+            extendBody: entries.isEmpty ? false : true,
             body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
@@ -102,15 +102,26 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                 ];
               },
               body: entries.isEmpty
-                  ? Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 0),
-                        child: Lottie.asset(
-                          'assets/lottie/empty_list.json',
-                          key: lottieKey,
-                          frameRate: FrameRate.max,
+                  ? RefreshIndicator(
+                      child: Center(
+                        child: SingleChildScrollView(
+                          clipBehavior: Clip.none,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Lottie.asset(
+                              'assets/lottie/empty_list.json',
+                              key: lottieKey,
+                              frameRate: FrameRate.max,
+                            ),
+                          ),
                         ),
                       ),
+                      onRefresh: () {
+                        setState(() {});
+                        return journalEntriesFuture =
+                            DatabaseService(uid: _auth.getUser()!.uid)
+                                .getJournalEntries();
+                      },
                     )
                   : RefreshIndicator(
                       child: Scrollbar(

@@ -149,7 +149,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
             }
 
             return Scaffold(
-              extendBody: true,
+              extendBody:
+                  ((snapshot.data ?? []) as List).isEmpty ? false : true,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: NestedScrollView(
                   physics: NeverScrollableScrollPhysics(),
@@ -408,7 +409,8 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                           ? (((snapshot.data ?? []) as List).isEmpty
                               ? Center(
                                   child: Padding(
-                                    padding: EdgeInsets.only(top: 15),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15),
                                     child: Lottie.asset(
                                       'assets/lottie/empty_list.json',
                                       key: lottieKey,
