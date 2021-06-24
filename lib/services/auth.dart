@@ -137,39 +137,50 @@ You can write whatever you want here as all the data is encrypted. Only you can 
 
       UserCredential result = await _auth.signInWithCredential(credential);
 
-      // TODO add check to add task year and journal entries if they don't already exist.
-      // if (result.user != null) {
-      //   var firestore = FirebaseFirestore.instance;
-      //   // Make a sample journal entry
-      //   firestore.collection('journal').doc(result.user!.uid).set({
-      //     DateTime.now().toString(): {
-      //       "entryText": '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
+      if (result.user != null) {
+        var firestore = FirebaseFirestore.instance;
+        EncryptService encryptService = EncryptService(_auth.currentUser!.uid);
 
-      //     You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
-      //     ''',
-      //       "feeling": 3,
-      //     },
-      //   }, SetOptions(merge: true));
+        // Make a sample journal entry
+        firestore.collection('journal').doc(result.user!.uid).get().then((doc) {
+          if (doc.exists == false) {
+            firestore.collection('journal').doc(result.user!.uid).set({
+              DateTime.now().toString(): {
+                "entryText": encryptService.encrypt(
+                    '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
+            
+You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
+          '''),
+                "feeling": 3,
+              },
+            }, SetOptions(merge: true));
+          }
+        });
 
-      //   var year = DateTime.now().year;
-      //   firestore
-      //       .collection('tasks')
-      //       .doc(result.user!.uid)
-      //       .collection(year.toString())
-      //         ..doc().set({
-      //           'index': 0,
-      //           'task': 'Download Releaf',
-      //           'completed': true,
-      //         })
-      //         ..doc().set({
-      //           'index': 1,
-      //           'task': 'Use Releaf',
-      //           'completed': false,
-      //         });
-      //   firestore.collection('tasks').doc(result.user!.uid).set({
-      //     'years': [year],
-      //   });
-      // }
+        // Make a todo collection
+        firestore.collection('tasks').doc(result.user!.uid).get().then((doc) {
+          if (doc.exists == false) {
+            var year = DateTime.now().year;
+            firestore
+                .collection('tasks')
+                .doc(result.user!.uid)
+                .collection(year.toString())
+                  ..add({
+                    'index': 0,
+                    'task': encryptService.encrypt('Download Releaf'),
+                    'completed': true,
+                  })
+                  ..add({
+                    'index': 1,
+                    'task': encryptService.encrypt('Use Releaf'),
+                    'completed': false,
+                  });
+            firestore.collection('tasks').doc(result.user!.uid).set({
+              'years': [year],
+            });
+          }
+        });
+      }
 
       return result.user;
     } catch (e) {
