@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
@@ -11,13 +14,13 @@ class Verify extends StatefulWidget {
 
 class _VerifyState extends State<Verify> {
   final _auth = new AuthService();
+  final GlobalKey lottieKey = GlobalKey();
   late Timer timer;
   late Timer countdownUpdate;
   bool checkingVerification = false;
   int timerCountdown = 30;
 
   Future checkVerified() async {
-    // TODO try using a provider.of<User?>(context) instead of reload user.
     await _auth.reloadUser();
     if (_auth.getUser()!.emailVerified) {
       timer.cancel();
@@ -126,7 +129,14 @@ class _VerifyState extends State<Verify> {
           ),
           Flexible(
             flex: 4,
-            child: Placeholder(), // TODO Make rive animation for loading
+            child: Center(
+              child: Lottie.asset(
+                'assets/lottie/verify_animation.json',
+                frameRate: FrameRate.max,
+                key: lottieKey,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
           ),
         ],
       ),
