@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
 import 'package:releaf/shared/models/todo_data.dart';
 
@@ -33,14 +34,16 @@ class DatabaseService {
         currentDate.millisecond,
         currentDate.microsecond,
       );
+      String encryptedText = EncryptService(uid).encrypt(entryText);
+
       await journal.set({
         hybridDate.toString(): {
-          "entryText": entryText,
+          "entryText": encryptedText,
           "feeling": feeling,
         },
       }, SetOptions(merge: true));
       return JournalEntryData(
-          date: date, entryText: entryText, feeling: feeling);
+          date: date, entryText: encryptedText, feeling: feeling);
     } catch (e) {
       print(e.toString());
       return e.toString();
@@ -65,11 +68,12 @@ class DatabaseService {
   Future editEntry(
       String oldDate, String newDate, String? entryText, int feeling) async {
     try {
+      String encryptedText = EncryptService(uid).encrypt(entryText ?? '');
       if (oldDate == newDate) {
         await journal.set(
           {
             "$oldDate": {
-              "entryText": entryText,
+              "entryText": encryptedText,
               "feeling": feeling,
             },
           },
@@ -90,7 +94,7 @@ class DatabaseService {
           oldDateTime.microsecond,
         );
 
-        addNewJournalEntry(hybridDate.toString(), entryText ?? '', feeling);
+        addNewJournalEntry(hybridDate.toString(), encryptedText, feeling);
       }
       return true;
     } catch (e) {
@@ -103,12 +107,14 @@ class DatabaseService {
     List<JournalEntryData> entries = [];
     print('getting journal entries');
 
+    EncryptService encryptService = EncryptService(uid);
+
     await journal.get().then((document) {
       Map data = (document.data() as Map);
       data.forEach((key, value) {
         entries.add(JournalEntryData(
           date: key,
-          entryText: value['entryText'],
+          entryText: encryptService.decrypt(value['entryText']),
           feeling: value['feeling'],
         ));
       });
@@ -129,13 +135,14 @@ class DatabaseService {
   // Add a new year
   Future? addTaskYear(int year) async {
     try {
+      EncryptService encryptService = EncryptService(uid);
       List years =
           await tasks.collection(year.toString()).get().then((snapshot) {
         return snapshot.docs;
       });
       await tasks.collection(year.toString()).add({
         'index': years.length == 0 ? 0 : years.length,
-        'task': 'Celebrate New Year!',
+        'task': encryptService.encrypt('Celebrate New Year!'),
         'completed': false,
       });
       await tasks.update({
@@ -167,10 +174,12 @@ class DatabaseService {
   }
 
   Stream<List<TodoData>?> getTodos(int year) {
+    EncryptService encryptService = EncryptService(uid);
+
     return tasks.collection(year.toString()).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return TodoData(
-          task: doc.data()['task'],
+          task: encryptService.decrypt(doc.data()['task']),
           completed: doc.data()['completed'],
           index: doc.data()['index'],
           docID: doc.id,
@@ -183,9 +192,10 @@ class DatabaseService {
   Future addTodo(
       {required String task, required int index, required int year}) async {
     try {
+      EncryptService encryptService = EncryptService(uid);
       await tasks.collection(year.toString()).add({
         'index': index,
-        'task': task,
+        'task': encryptService.encrypt(task),
         'completed': false,
       });
     } catch (e) {
@@ -197,8 +207,9 @@ class DatabaseService {
   Future editTodo(
       {required String task, required int year, required String docID}) async {
     try {
+      EncryptService encryptService = EncryptService(uid);
       await tasks.collection(year.toString()).doc(docID).update({
-        'task': task,
+        'task': encryptService.encrypt(task),
       });
     } catch (e) {
       print(e.toString());

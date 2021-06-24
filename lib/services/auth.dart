@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:releaf/services/encrypt.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -70,14 +71,15 @@ class AuthService {
       User? user = result.user;
       if (user != null) {
         var firestore = FirebaseFirestore.instance;
+        EncryptService encryptService = EncryptService(_auth.currentUser!.uid);
         // Make a sample journal entry
         firestore.collection('journal').doc(user.uid).set({
           DateTime.now().toString(): {
-            "entryText":
+            "entryText": encryptService.encrypt(
                 '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
             
 You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
-          ''',
+          '''),
             "feeling": 3,
           },
         }, SetOptions(merge: true));
@@ -87,12 +89,12 @@ You can write whatever you want here as all the data is encrypted. Only you can 
         firestore.collection('tasks').doc(user.uid).collection(year.toString())
           ..add({
             'index': 0,
-            'task': 'Download Releaf',
+            'task': encryptService.encrypt('Download Releaf'),
             'completed': true,
           })
           ..add({
             'index': 1,
-            'task': 'Use Releaf',
+            'task': encryptService.encrypt('Use Releaf'),
             'completed': false,
           });
         firestore.collection('tasks').doc(user.uid).set({
