@@ -2,7 +2,7 @@
     package="com.chads.releaf">
     <uses-permission android:name="android.permission.VIBRATE"/>
    <application
-        android:label="releaf"
+        android:label="Releaf"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
