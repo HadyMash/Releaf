@@ -26,6 +26,7 @@ class ThemedButton extends StatefulWidget {
   final Offset? pressedShadowOffset;
   final bool? tapDownFeedback;
   final bool? tapFeedback;
+  final BoxBorder? border;
 
   // * Constructors
   final bool iconButton;
@@ -47,6 +48,7 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowSpreadRadius,
     this.shadowOffset,
     this.pressedShadowOffset,
+    this.border,
     this.tapDownFeedback,
     this.tapFeedback,
   })  : icon = Container(height: 0, width: 0),
@@ -73,6 +75,7 @@ class ThemedButton extends StatefulWidget {
     this.pressedShadowBlurRadius,
     this.pressedShadowSpreadRadius,
     this.pressedShadowOffset,
+    this.border,
     this.tapDownFeedback,
     this.tapFeedback,
   }) : iconButton = true;
@@ -108,6 +111,9 @@ class _ThemedButtonState extends State<ThemedButton> {
     _shadowSpreadRadius = widget.shadowSpreadRadius ?? 0;
     _shadowOffset = widget.shadowOffset ?? Offset(0, 0);
   }
+
+  //toggle button enabled/disabled
+  void _toggleDisable() {}
 
   @override
   void didChangeDependencies() {
@@ -146,6 +152,7 @@ class _ThemedButtonState extends State<ThemedButton> {
         decoration: BoxDecoration(
           color: _color,
           borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
+          border: widget.border,
           boxShadow: [
             BoxShadow(
               blurRadius: _shadowBlurRadius,
@@ -192,6 +199,7 @@ class ThemedFlatButton extends StatefulWidget {
   final double? borderRadius;
   final bool? tapDownFeedback;
   final bool? tapFeedback;
+  final BoxBorder? border;
 
   // * Constructors
   final bool iconButton;
@@ -205,6 +213,7 @@ class ThemedFlatButton extends StatefulWidget {
     this.color,
     this.pressedColor,
     this.borderRadius,
+    this.border,
     this.tapDownFeedback,
     this.tapFeedback,
   })  : icon = Container(height: 0, width: 0),
@@ -223,6 +232,7 @@ class ThemedFlatButton extends StatefulWidget {
     this.color,
     this.borderRadius,
     this.pressedColor,
+    this.border,
     this.tapDownFeedback,
     this.tapFeedback,
   }) : iconButton = true;
@@ -244,6 +254,9 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton> {
   void _animateUp() {
     _color = widget.color ?? Theme.of(context).primaryColor;
   }
+
+  //toggle button enabled/disabled
+  void _toggleDisable() {}
 
   @override
   void didChangeDependencies() {
@@ -282,6 +295,7 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton> {
         decoration: BoxDecoration(
           color: _color,
           borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
+          border: widget.border,
         ),
         // Text
         // * Text
