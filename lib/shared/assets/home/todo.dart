@@ -78,6 +78,7 @@ class _TodoState extends State<Todo> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     // controller.dipose();
+    lottieController.dispose();
     super.dispose();
   }
 
@@ -157,13 +158,13 @@ class _TodoState extends State<Todo> with SingleTickerProviderStateMixin {
       if (!slid) {
         if (widget.completed == false) {
           if (theme.haptics == true) {
-            HapticFeedback.mediumImpact();
+            HapticFeedback.heavyImpact();
           }
           DatabaseService(uid: _auth.getUser()!.uid)
               .completeTodo(widget.year, widget.docID);
         } else {
           if (theme.haptics == true) {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.mediumImpact();
           }
           DatabaseService(uid: _auth.getUser()!.uid)
               .uncompleteTodo(widget.year, widget.docID);
