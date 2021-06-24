@@ -1,6 +1,5 @@
 import 'package:encrypt/encrypt.dart';
 
-// TODO add encryption and decryption functions
 class EncryptService {
   final String uid;
   final Key key;
