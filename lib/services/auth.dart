@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:releaf/services/database.dart';
 import 'package:releaf/services/encrypt.dart';
 
 class AuthService {
@@ -136,6 +137,7 @@ You can write whatever you want here as all the data is encrypted. Only you can 
 
       UserCredential result = await _auth.signInWithCredential(credential);
 
+      // TODO add check to add task year and journal entries if they don't already exist.
       // if (result.user != null) {
       //   var firestore = FirebaseFirestore.instance;
       //   // Make a sample journal entry
@@ -376,6 +378,30 @@ You can write whatever you want here as all the data is encrypted. Only you can 
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  // ! Dangerous
+  Future deleteUser(context) async {
+    try {
+      await DatabaseService(uid: _auth.currentUser!.uid).deleteUserData();
+      await _auth.currentUser!.delete();
+    } catch (e) {
+      print(e);
+      final snackBar = SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.error_rounded, color: Colors.red[700]),
+            ),
+            Expanded(child: Text(getError(e.toString()))),
+          ],
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return e;
     }
   }
 

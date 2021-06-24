@@ -191,9 +191,74 @@ class Settings extends StatelessWidget {
                   ),
                   Setting(
                     label: 'Delete Account',
-                    preference: ElevatedButton(
-                      child: Text('test'),
-                      onPressed: () {},
+                    preferencePadding: 10,
+                    preference: ThemedFlatButton(
+                      label: 'Delete',
+                      style: Theme.of(context).textTheme.button!.copyWith(
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.black
+                                  : Colors.white),
+                      color: Theme.of(context).errorColor.withOpacity(0.15),
+                      pressedColor:
+                          Theme.of(context).errorColor.withOpacity(0.4),
+                      border: Border.all(
+                        color: Theme.of(context).errorColor,
+                        width: 2,
+                      ),
+                      onPressed: () => showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => AlertDialog(
+                          title: Text('Confirm Delete'),
+                          content: Text(
+                              'Are you sure you want to delete your account?'),
+                          actions: [
+                            TextButton(
+                              child: Text('No'),
+                              onPressed: () {
+                                AppTheme.mainNavKey.currentState!.pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Yes'),
+                              onPressed: () {
+                                AppTheme.mainNavKey.currentState!.pop();
+                                // TODO make a widget and add a countdown to button to disable ability to click straight away without reading.
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => AlertDialog(
+                                    title: Text('Are You Absolutely Sure?'),
+                                    content: Text(
+                                        "This action is PERMANENT. Your account and ALL of it's data will be DELETED. This action CANNOT be undone!"),
+                                    actions: [
+                                      // TODO disable button one pressed
+                                      TextButton(
+                                        child: Text('Yes'),
+                                        onPressed: () async {
+                                          await _auth.deleteUser(context);
+                                          AppTheme.mainNavKey.currentState!
+                                              .pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('No'),
+                                        onPressed: () {
+                                          AppTheme.mainNavKey.currentState!
+                                              .pop();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      tapDownFeedback: true,
+                      tapFeedback: true,
                     ),
                   ),
                 ],

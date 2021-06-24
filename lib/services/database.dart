@@ -123,6 +123,16 @@ class DatabaseService {
     return entries;
   }
 
+  // ! Dangerous
+  Future _deleteAllEntries() async {
+    try {
+      await journal.delete();
+    } catch (e) {
+      print(e);
+      return e;
+    }
+  }
+
   // * Tasks
   late DocumentReference<Object?> tasks;
 
@@ -246,6 +256,33 @@ class DatabaseService {
       });
     } catch (e) {
       print(e.toString());
+      return e;
+    }
+  }
+
+  // ! Dangerous
+  Future deleteUserData() async {
+    try {
+      // delete journal entries.
+      await _deleteAllEntries();
+
+      // delete all tasks and task years
+      await _deleteAllTasks();
+    } catch (e) {
+      print(e);
+      return e;
+    }
+  }
+
+  Future _deleteAllTasks() async {
+    try {
+      List<dynamic> years = await getTaskYears();
+      years.forEach((year) async {
+        await deleteTaskYear(year as int);
+      });
+      await tasks.delete();
+    } catch (e) {
+      print(e);
       return e;
     }
   }
