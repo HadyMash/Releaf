@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
@@ -15,21 +16,34 @@ class JournalEntryForm extends StatefulWidget {
   _JournalEntryFormState createState() => _JournalEntryFormState();
 }
 
-class _JournalEntryFormState extends State<JournalEntryForm> {
+class _JournalEntryFormState extends State<JournalEntryForm>
+    with TickerProviderStateMixin {
   AuthService _auth = AuthService();
   bool _textFieldFocused = false;
   late TextEditingController _controller;
 
+  final GlobalKey happyKey = GlobalKey();
+  final GlobalKey mehKey = GlobalKey();
+  final GlobalKey sadKey = GlobalKey();
+
+  late AnimationController happyController;
+  late AnimationController mehController;
+  late AnimationController sadController;
+
   late DateTime currentDate;
   // List pictures;
   String? entryText;
-  late int feeling; // TODO add feeling functionality
+  int? feeling;
 
   @override
   void initState() {
+    happyController = AnimationController(vsync: this);
+    mehController = AnimationController(vsync: this);
+    sadController = AnimationController(vsync: this);
+
     currentDate =
         widget.date != null ? DateTime.parse(widget.date!) : DateTime.now();
-    feeling = widget.feeling ?? 3;
+    feeling = widget.feeling;
     entryText = widget.initialText;
     _controller = TextEditingController(text: widget.initialText);
     super.initState();
@@ -53,6 +67,8 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       // TODO fix title centering issue
       appBar: AppBar(
@@ -155,49 +171,128 @@ class _JournalEntryFormState extends State<JournalEntryForm> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // TODO add rive feeling selector
-                  Placeholder(
-                    fallbackHeight: 70,
-                    fallbackWidth: 150,
+                  GestureDetector(
+                    onTap: () {
+                      feeling = 1;
+                      sadController.forward();
+                      mehController.reverse();
+                      happyController.reverse();
+                    },
+                    child: Lottie.asset(
+                      'assets/lottie/faces/sad.json',
+                      key: sadKey,
+                      controller: sadController,
+                      width: width / 6,
+                      height: width / 6,
+                      onLoaded: (comp) {
+                        sadController.duration = comp.duration;
+                        if (feeling == 1) {
+                          sadController.value = 1;
+                        }
+                      },
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      feeling = 2;
+                      sadController.reverse();
+                      mehController.forward();
+                      happyController.reverse();
+                    },
+                    child: Lottie.asset(
+                      'assets/lottie/faces/meh.json',
+                      key: mehKey,
+                      controller: mehController,
+                      width: width / 6,
+                      height: width / 6,
+                      onLoaded: (comp) {
+                        mehController.duration = comp.duration;
+                        if (feeling == 2) {
+                          mehController.value = 1;
+                        }
+                      },
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      feeling = 3;
+                      sadController.reverse();
+                      mehController.reverse();
+                      happyController.forward();
+                    },
+                    child: Lottie.asset(
+                      'assets/lottie/faces/happy.json',
+                      key: happyKey,
+                      controller: happyController,
+                      height: width / 6,
+                      width: width / 6,
+                      onLoaded: (comp) {
+                        happyController.duration = comp.duration;
+                        if (feeling == 3) {
+                          happyController.value = 1;
+                        }
+                      },
+                    ),
                   ),
                   ThemedButton(
                     label: _textFieldFocused
                         ? 'Done'
                         : (widget.initialText == null
-                            ? 'Add Entry'
+                            ? 'Upload'
                             : 'Confirm Changes'),
                     onPressed: _textFieldFocused
                         ? _unfocusTextField
                         : () async {
-                            if (widget.date == null) {
-                              // TODO disable button until request is complete
+                            if (feeling != null) {
+                              if (widget.date == null) {
+                                // TODO disable button until request is complete
 
-                              dynamic result = await DatabaseService(
-                                      uid: _auth.getUser()!.uid)
-                                  .addNewJournalEntry(
-                                currentDate.toString(),
-                                entryText ?? '',
-                                feeling,
-                              );
-                              if (result is JournalEntryData) {
-                                AppTheme.homeNavkey.currentState!.pop();
+                                dynamic result = await DatabaseService(
+                                        uid: _auth.getUser()!.uid)
+                                    .addNewJournalEntry(
+                                  currentDate.toString(),
+                                  entryText ?? '',
+                                  feeling!,
+                                );
+                                if (result is JournalEntryData) {
+                                  AppTheme.homeNavkey.currentState!.pop();
+                                } else {
+                                  // TODO enable button
+
+                                  // TODO show error snackbar
+                                }
                               } else {
-                                // TODO enable button
-
-                                // TODO show error snackbar
+                                dynamic result = await DatabaseService(
+                                        uid: _auth.getUser()!.uid)
+                                    .editEntry(
+                                  widget.date!,
+                                  currentDate.toString(),
+                                  entryText,
+                                  feeling!,
+                                );
+                                if (result == true) {
+                                  AppTheme.homeNavkey.currentState!.pop();
+                                }
                               }
                             } else {
-                              dynamic result = await DatabaseService(
-                                      uid: _auth.getUser()!.uid)
-                                  .editEntry(
-                                widget.date!,
-                                currentDate.toString(),
-                                entryText,
-                                feeling,
+                              final SnackBar snackBar = SnackBar(
+                                content: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5),
+                                      child: Icon(Icons.warning_rounded,
+                                          color: Colors.amber),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                          'Please choose how you\'re feeling.'),
+                                    ),
+                                  ],
+                                ),
                               );
-                              if (result == true) {
-                                AppTheme.homeNavkey.currentState!.pop();
-                              }
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                             }
                           },
                     notAllCaps: true,

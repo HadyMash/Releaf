@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
@@ -155,6 +156,7 @@ class JournalEntryExpanded extends StatefulWidget {
 class _JournalEntryExpandedState extends State<JournalEntryExpanded>
     with SingleTickerProviderStateMixin {
   final AuthService _auth = AuthService();
+  final GlobalKey lottieKey = GlobalKey();
 
   late final AnimationController fabController;
   late final Animation fabColorAnimation;
@@ -193,6 +195,8 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -285,18 +289,25 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
                 ),
               ),
               SizedBox(height: 25),
-              // TODO add feeling display
               Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(width: 15),
                   Text(
                     'Feeling:',
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        fontSize:
+                            Theme.of(context).textTheme.subtitle2!.fontSize! +
+                                6),
                   ),
-                  Placeholder(
-                    fallbackHeight: 100,
-                    fallbackWidth: 180,
+                  SizedBox(width: 10),
+                  Lottie.asset(
+                    'assets/lottie/faces/${(widget.feeling == 1 ? 'sad' : (widget.feeling == 2 ? 'meh' : 'happy'))}.json',
+                    key: lottieKey,
+                    repeat: false,
+                    width: width / 7,
+                    height: width / 7,
                   ),
                 ],
               ),
