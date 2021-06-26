@@ -52,6 +52,10 @@ class _JournalEntryFormState extends State<JournalEntryForm>
   @override
   void dispose() {
     _controller.dispose();
+
+    happyController.dispose();
+    mehController.dispose();
+    sadController.dispose();
     super.dispose();
   }
 
