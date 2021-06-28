@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
@@ -34,6 +36,8 @@ class _JournalEntryFormState extends State<JournalEntryForm>
   // List pictures;
   String? entryText;
   int? feeling;
+
+  final imagePicker = ImagePicker();
 
   @override
   void initState() {
@@ -107,7 +111,33 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                   children: [
                     ThemedButton(
                       label: 'Pick Photo',
-                      onPressed: () async {},
+                      onPressed: () async {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => CupertinoActionSheet(
+                            actions: [
+                              CupertinoActionSheetAction(
+                                onPressed: () async {
+                                  imagePicker.getImage(
+                                      source: ImageSource.camera);
+                                },
+                                child: Text("Take Photo"),
+                              ),
+                              CupertinoActionSheetAction(
+                                onPressed: () async {
+                                  imagePicker.getImage(
+                                      source: ImageSource.gallery);
+                                },
+                                child: Text("Pick Photo"),
+                              ),
+                            ],
+                            cancelButton: CupertinoActionSheetAction(
+                              child: Text("Cancel"),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ),
+                        );
+                      },
                       notAllCaps: true,
                       tapDownFeedback: true,
                       tapFeedback: true,
