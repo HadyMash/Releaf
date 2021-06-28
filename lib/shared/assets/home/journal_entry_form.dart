@@ -56,6 +56,10 @@ class _JournalEntryFormState extends State<JournalEntryForm>
   @override
   void dispose() {
     _controller.dispose();
+
+    happyController.dispose();
+    mehController.dispose();
+    sadController.dispose();
     super.dispose();
   }
 
@@ -267,9 +271,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                   ThemedButton(
                     label: _textFieldFocused
                         ? 'Done'
-                        : (widget.initialText == null
-                            ? 'Upload'
-                            : 'Confirm Changes'),
+                        : (widget.initialText == null ? 'Upload' : 'Confirm'),
                     onPressed: _textFieldFocused
                         ? _unfocusTextField
                         : () async {
