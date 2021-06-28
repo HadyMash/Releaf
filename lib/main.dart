@@ -112,8 +112,7 @@ void main() async {
                   fontSize: 18,
                 ),
                 button: TextStyle(
-                  fontFamily:
-                      'Poppins', // TODO find font similar to Rift for buttons
+                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                   fontSize: 18,
@@ -218,8 +217,7 @@ void main() async {
                   fontSize: 18,
                 ),
                 button: TextStyle(
-                  fontFamily:
-                      'Poppins', // TODO find font similar to Rift for buttons
+                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                   fontSize: 18,
