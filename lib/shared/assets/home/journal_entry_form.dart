@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
@@ -42,6 +43,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
 
   late DateTime currentDate;
   List<Uint8List> pictures = [];
+  List<Uint8List> compressedPictures = [];
   String? entryText;
   int? feeling;
 
@@ -79,6 +81,68 @@ class _JournalEntryFormState extends State<JournalEntryForm>
       }
       _textFieldFocused = false;
     });
+  }
+
+  void _removePicPreview({
+    required int index,
+    required Uint8List compressedPicture,
+    required double width,
+  }) {
+    final picture = compressedPicture;
+    setState(
+      () => pictureListKey.currentState?.removeItem(
+        index,
+        (context, animation) {
+          CurvedAnimation curvedAnim =
+              CurvedAnimation(curve: Curves.easeOut, parent: animation);
+          return SizeTransition(
+            sizeFactor: curvedAnim,
+            axis: Axis.horizontal,
+            child: Stack(
+              children: [
+                Container(
+                  width: width / 5,
+                  height: width / 5,
+                  clipBehavior: Clip.hardEdge,
+                  margin: EdgeInsets.symmetric(horizontal: (10 * width) / 428),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    color: Colors.grey,
+                  ),
+                  child: Image.memory(
+                    picture,
+                    key: Key(picture.toString()),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: (-10 * width) / 428,
+                  child: Container(
+                    height: width / 15,
+                    width: width / 15,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey[300]!.withOpacity(0.7)
+                          : Colors.grey[700]!.withOpacity(0.8),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.close_rounded,
+                        size: 23,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        duration: Duration(milliseconds: 500),
+      ),
+    );
+    pictures.removeAt(index);
+    compressedPictures.removeAt(index);
   }
 
   @override
@@ -139,10 +203,30 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                   if (image != null) {
                                     final imageBytes =
                                         await image.readAsBytes();
-                                    final int length = pictures.length;
-                                    pictures.add(imageBytes);
+                                    pictures.insert(0, imageBytes);
+
+                                    ImageProperties properties =
+                                        await FlutterNativeImage
+                                            .getImageProperties(image.path);
+
+                                    File compressedFile =
+                                        await FlutterNativeImage.compressImage(
+                                      image.path,
+                                      quality: 50,
+                                      percentage: 50,
+                                      targetWidth:
+                                          (properties.width! * 0.5).round(),
+                                      targetHeight:
+                                          (properties.height! * 0.5).round(),
+                                    );
+
+                                    Uint8List compressedImage =
+                                        await compressedFile.readAsBytes();
+                                    compressedPictures.insert(
+                                        0, compressedImage);
+
                                     setState(() => pictureListKey.currentState
-                                        ?.insertItem(length,
+                                        ?.insertItem(0,
                                             duration:
                                                 Duration(milliseconds: 800)));
                                   }
@@ -154,19 +238,39 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                   Navigator.pop(context);
                                   List<PickedFile>? images =
                                       await imagePicker.getMultiImage();
+
                                   if (images != null) {
                                     images.forEach(
                                       (image) async {
-                                        print(image.path);
                                         final imageBytes =
                                             await image.readAsBytes();
-                                        final int length = pictures.length;
+                                        pictures.insert(0, imageBytes);
 
-                                        // TODO Add check to see if the image already exists.
-                                        pictures.add(imageBytes);
+                                        ImageProperties properties =
+                                            await FlutterNativeImage
+                                                .getImageProperties(image.path);
+
+                                        File compressedFile =
+                                            await FlutterNativeImage
+                                                .compressImage(
+                                          image.path,
+                                          quality: 50,
+                                          percentage: 50,
+                                          targetWidth:
+                                              (properties.width! * 0.5).round(),
+                                          targetHeight:
+                                              (properties.height! * 0.5)
+                                                  .round(),
+                                        );
+
+                                        Uint8List compressedImage =
+                                            await compressedFile.readAsBytes();
+                                        compressedPictures.insert(
+                                            0, compressedImage);
+
                                         setState(() => pictureListKey
                                             .currentState
-                                            ?.insertItem(length,
+                                            ?.insertItem(0,
                                                 duration: Duration(
                                                     milliseconds: 800)));
                                       },
@@ -226,132 +330,38 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                   itemBuilder: (context, index, animation) {
                     CurvedAnimation curvedAnim = CurvedAnimation(
                         curve: Curves.easeInOut, parent: animation);
-                    return AnimatedBuilder(
-                      animation: curvedAnim,
-                      builder: (context, child) {
-                        return Transform.translate(
-                          offset: Tween<Offset>(
-                                  begin: Offset(30, 0), end: Offset(0, 0))
-                              .animate(curvedAnim)
-                              .value,
-                          child: Opacity(
-                            opacity: curvedAnim.value,
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            width: width / 5,
-                            height: width / 5,
-                            clipBehavior: Clip.hardEdge,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: (10 * width) / 428),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              color: Colors.grey,
+
+                    if (pictures.length > 1) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                                begin: Offset(-1, 0), end: Offset(0, 0))
+                            .animate(curvedAnim),
+                        child: PicturePreview(compressedPictures[index],
+                            index: index,
+                            picsEmpty: pictures.isEmpty,
+                            removePreview: _removePicPreview),
+                      );
+                    } else {
+                      return AnimatedBuilder(
+                        animation: curvedAnim,
+                        builder: (context, child) {
+                          return Transform.translate(
+                            offset: Tween<Offset>(
+                                    begin: Offset(30, 0), end: Offset(0, 0))
+                                .animate(curvedAnim)
+                                .value,
+                            child: Opacity(
+                              opacity: curvedAnim.value,
+                              child: child,
                             ),
-                            child: pictures.isEmpty
-                                ? null
-                                : Image.memory(
-                                    pictures[index],
-                                    key: Key(pictures[index].toString()),
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
-                          Positioned(
-                            top: (-10 * width) / 428,
-                            child: GestureDetector(
-                              onTap: () {
-                                final picture = pictures[index];
-                                setState(
-                                  () => AnimatedList.of(context).removeItem(
-                                    index,
-                                    (context, animation) {
-                                      CurvedAnimation curvedAnim =
-                                          CurvedAnimation(
-                                              curve: Curves.easeOut,
-                                              parent: animation);
-                                      return SizeTransition(
-                                        sizeFactor: curvedAnim,
-                                        axis: Axis.horizontal,
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: width / 5,
-                                              height: width / 5,
-                                              clipBehavior: Clip.hardEdge,
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal:
-                                                      (10 * width) / 428),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5)),
-                                                color: Colors.grey,
-                                              ),
-                                              child: Image.memory(
-                                                picture,
-                                                key: Key(picture.toString()),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            Positioned(
-                                              top: (-10 * width) / 428,
-                                              child: Container(
-                                                height: width / 15,
-                                                width: width / 15,
-                                                decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.light
-                                                      ? Colors.grey[300]!
-                                                          .withOpacity(0.7)
-                                                      : Colors.grey[700]!
-                                                          .withOpacity(0.8),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons.close_rounded,
-                                                    size: 23,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    duration: Duration(milliseconds: 500),
-                                  ),
-                                );
-                                pictures.removeAt(index);
-                              },
-                              child: Container(
-                                height: width / 15,
-                                width: width / 15,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.grey[300]!.withOpacity(0.7)
-                                      : Colors.grey[700]!.withOpacity(0.8),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.close_rounded,
-                                    size: 23,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                          );
+                        },
+                        child: PicturePreview(compressedPictures[index],
+                            index: index,
+                            picsEmpty: pictures.isEmpty,
+                            removePreview: _removePicPreview),
+                      );
+                    }
                   },
                 ),
               ),
@@ -526,6 +536,75 @@ class _JournalEntryFormState extends State<JournalEntryForm>
           ),
         ),
       ),
+    );
+  }
+}
+
+class PicturePreview extends StatelessWidget {
+  PicturePreview(this.compressedPicture,
+      {Key? key,
+      required this.index,
+      required this.picsEmpty,
+      required this.removePreview})
+      : super(key: key);
+  int index;
+  Uint8List compressedPicture;
+  bool picsEmpty;
+  void Function(
+      {required int index,
+      required Uint8List compressedPicture,
+      required double width}) removePreview;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        // TODO add gesture detecor which then expands to show an image gallery where they can see their photos in detail
+        Container(
+          width: width / 5,
+          height: width / 5,
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.symmetric(horizontal: (10 * width) / 428),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Colors.grey,
+          ),
+          child: picsEmpty
+              ? null
+              : Image.memory(
+                  compressedPicture,
+                  key: Key(compressedPicture.toString()),
+                  fit: BoxFit.cover,
+                ),
+        ),
+        Positioned(
+          top: (-10 * width) / 428,
+          child: GestureDetector(
+            onTap: () => removePreview(
+                index: index,
+                compressedPicture: compressedPicture,
+                width: width),
+            child: Container(
+              height: width / 15,
+              width: width / 15,
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.grey[300]!.withOpacity(0.7)
+                    : Colors.grey[700]!.withOpacity(0.8),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.close_rounded,
+                  size: 23,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
