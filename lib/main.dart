@@ -121,7 +121,7 @@ void main() async {
               iconTheme: IconThemeData(color: Colors.black, size: 34),
               // accentIconTheme: IconThemeData(color: Colors.white),
               floatingActionButtonTheme: FloatingActionButtonThemeData(
-                backgroundColor: Colors.green,
+                backgroundColor: Color.fromRGBO(1, 165, 95, 1),
                 foregroundColor: Colors.white,
               ),
             ),
@@ -226,7 +226,7 @@ void main() async {
               iconTheme: IconThemeData(color: Colors.white, size: 34),
               // accentIconTheme: IconThemeData(color: Colors.white),
               floatingActionButtonTheme: FloatingActionButtonThemeData(
-                backgroundColor: Colors.green,
+                backgroundColor: Color.fromRGBO(1, 165, 95, 1),
                 foregroundColor: Colors.white,
               ),
             ),
@@ -347,7 +347,7 @@ class _ThemedAppState extends State<ThemedApp> {
               iconTheme: IconThemeData(color: Colors.black, size: 34),
               // accentIconTheme: IconThemeData(color: Colors.white),
               floatingActionButtonTheme: FloatingActionButtonThemeData(
-                backgroundColor: Colors.green,
+                backgroundColor: Color.fromRGBO(1, 165, 95, 1),
                 foregroundColor: Colors.white,
               ),
             );
@@ -423,7 +423,7 @@ class _ThemedAppState extends State<ThemedApp> {
               iconTheme: IconThemeData(color: Colors.white, size: 34),
               // accentIconTheme: IconThemeData(color: Colors.white),
               floatingActionButtonTheme: FloatingActionButtonThemeData(
-                backgroundColor: Colors.green,
+                backgroundColor: Color.fromRGBO(1, 165, 95, 1),
                 foregroundColor: Colors.white,
               ),
             );
