@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
@@ -28,12 +33,15 @@ class _JournalEntryFormState extends State<JournalEntryForm>
   final GlobalKey mehKey = GlobalKey();
   final GlobalKey sadKey = GlobalKey();
 
+  final GlobalKey<AnimatedListState> pictureListKey =
+      GlobalKey<AnimatedListState>();
+
   late AnimationController happyController;
   late AnimationController mehController;
   late AnimationController sadController;
 
   late DateTime currentDate;
-  // List pictures;
+  List<Uint8List> pictures = [];
   String? entryText;
   int? feeling;
 
@@ -114,25 +122,57 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ThemedButton(
-                      label: 'Pick Photo',
+                      label: 'Add Photos',
                       onPressed: () async {
                         showCupertinoModalPopup(
                           context: context,
                           builder: (context) => CupertinoActionSheet(
                             actions: [
                               CupertinoActionSheetAction(
-                                onPressed: () async {
-                                  imagePicker.getImage(
-                                      source: ImageSource.camera);
-                                },
                                 child: Text("Take Photo"),
+                                onPressed: () async {
+                                  Navigator.pop(context);
+
+                                  PickedFile? image = await imagePicker
+                                      .getImage(source: ImageSource.camera);
+
+                                  if (image != null) {
+                                    final imageBytes =
+                                        await image.readAsBytes();
+                                    final int length = pictures.length;
+                                    pictures.add(imageBytes);
+                                    setState(() => pictureListKey.currentState
+                                        ?.insertItem(length,
+                                            duration:
+                                                Duration(milliseconds: 800)));
+                                  }
+                                },
                               ),
                               CupertinoActionSheetAction(
+                                child: Text("Pick Photos"),
                                 onPressed: () async {
-                                  imagePicker.getImage(
-                                      source: ImageSource.gallery);
+                                  Navigator.pop(context);
+                                  List<PickedFile>? images =
+                                      await imagePicker.getMultiImage();
+                                  if (images != null) {
+                                    images.forEach(
+                                      (image) async {
+                                        print(image.path);
+                                        final imageBytes =
+                                            await image.readAsBytes();
+                                        final int length = pictures.length;
+
+                                        // TODO Add check to see if the image already exists.
+                                        pictures.add(imageBytes);
+                                        setState(() => pictureListKey
+                                            .currentState
+                                            ?.insertItem(length,
+                                                duration: Duration(
+                                                    milliseconds: 800)));
+                                      },
+                                    );
+                                  }
                                 },
-                                child: Text("Pick Photo"),
                               ),
                             ],
                             cancelButton: CupertinoActionSheetAction(
@@ -165,6 +205,154 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                       tapFeedback: true,
                     ),
                   ],
+                ),
+              ),
+              AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                margin: EdgeInsets.symmetric(
+                  vertical: pictures.isEmpty ? 0 : 10,
+                  horizontal: pictures.isEmpty ? 0 : (18 - (10 * width) / 428),
+                ),
+                height: pictures.isEmpty ? 0 : (width / 5),
+                width: pictures.isEmpty
+                    ? 0
+                    : MediaQuery.of(context).size.width - (10 * 2),
+                clipBehavior: Clip.none,
+                child: AnimatedList(
+                  key: pictureListKey,
+                  scrollDirection: Axis.horizontal,
+                  clipBehavior: Clip.none,
+                  itemBuilder: (context, index, animation) {
+                    CurvedAnimation curvedAnim = CurvedAnimation(
+                        curve: Curves.easeInOut, parent: animation);
+                    return AnimatedBuilder(
+                      animation: curvedAnim,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Tween<Offset>(
+                                  begin: Offset(30, 0), end: Offset(0, 0))
+                              .animate(curvedAnim)
+                              .value,
+                          child: Opacity(
+                            opacity: curvedAnim.value,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            width: width / 5,
+                            height: width / 5,
+                            clipBehavior: Clip.hardEdge,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: (10 * width) / 428),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              color: Colors.grey,
+                            ),
+                            child: pictures.isEmpty
+                                ? null
+                                : Image.memory(
+                                    pictures[index],
+                                    key: Key(pictures[index].toString()),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          Positioned(
+                            top: (-10 * width) / 428,
+                            child: GestureDetector(
+                              onTap: () {
+                                final picture = pictures[index];
+                                setState(
+                                  () => AnimatedList.of(context).removeItem(
+                                    index,
+                                    (context, animation) {
+                                      CurvedAnimation curvedAnim =
+                                          CurvedAnimation(
+                                              curve: Curves.easeOut,
+                                              parent: animation);
+                                      return SizeTransition(
+                                        sizeFactor: curvedAnim,
+                                        axis: Axis.horizontal,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              width: width / 5,
+                                              height: width / 5,
+                                              clipBehavior: Clip.hardEdge,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      (10 * width) / 428),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5)),
+                                                color: Colors.grey,
+                                              ),
+                                              child: Image.memory(
+                                                picture,
+                                                key: Key(picture.toString()),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: (-10 * width) / 428,
+                                              child: Container(
+                                                height: width / 15,
+                                                width: width / 15,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.light
+                                                      ? Colors.grey[300]!
+                                                          .withOpacity(0.7)
+                                                      : Colors.grey[700]!
+                                                          .withOpacity(0.8),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.close_rounded,
+                                                    size: 23,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    duration: Duration(milliseconds: 500),
+                                  ),
+                                );
+                                pictures.removeAt(index);
+                              },
+                              child: Container(
+                                height: width / 15,
+                                width: width / 15,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.grey[300]!.withOpacity(0.7)
+                                      : Colors.grey[700]!.withOpacity(0.8),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close_rounded,
+                                    size: 23,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
               Expanded(
