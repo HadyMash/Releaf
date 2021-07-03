@@ -22,22 +22,22 @@ class DatabaseService {
   // add new entry
   Future addNewJournalEntry(String date, String entryText, int feeling) async {
     try {
-      DateTime currentDate = DateTime.now();
-      DateTime newDateTime = DateTime.parse(date);
-      DateTime hybridDate = DateTime(
-        newDateTime.year,
-        newDateTime.month,
-        newDateTime.day,
-        currentDate.hour,
-        currentDate.minute,
-        currentDate.second,
-        currentDate.millisecond,
-        currentDate.microsecond,
-      );
+      // DateTime currentDate = DateTime.now();
+      // DateTime newDateTime = DateTime.parse(date);
+      // DateTime hybridDate = DateTime(
+      //   newDateTime.year,
+      //   newDateTime.month,
+      //   newDateTime.day,
+      //   currentDate.hour,
+      //   currentDate.minute,
+      //   currentDate.second,
+      //   currentDate.millisecond,
+      //   currentDate.microsecond,
+      // );
       String encryptedText = EncryptService(uid).encrypt(entryText);
 
       await journal.set({
-        hybridDate.toString(): {
+        date: {
           "entryText": encryptedText,
           "feeling": feeling,
         },

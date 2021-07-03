@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -476,21 +475,36 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                         : () async {
                             // TODO disable button until request is complete
                             if (feeling != null) {
-                              if (!pictures.isEmpty) {
+                              if (pictures.isNotEmpty) {
+                                DateTime currentDate = DateTime.now();
+                                DateTime newDateTime =
+                                    DateTime.parse(currentDate.toString());
+                                DateTime hybridDate = DateTime(
+                                  newDateTime.year,
+                                  newDateTime.month,
+                                  newDateTime.day,
+                                  currentDate.hour,
+                                  currentDate.minute,
+                                  currentDate.second,
+                                  currentDate.millisecond,
+                                  currentDate.microsecond,
+                                );
+                                print(hybridDate.toString());
                                 dynamic picturesResult =
                                     await StorageService(_auth.getUser()!.uid)
                                         .uploadPictures(
                                             pictures: pictures,
-                                            entryID: currentDate.toString());
+                                            entryID: hybridDate.toString());
                                 if (picturesResult == null) {
                                   if (widget.date == null) {
                                     dynamic result = await DatabaseService(
                                             uid: _auth.getUser()!.uid)
                                         .addNewJournalEntry(
-                                      currentDate.toString(),
+                                      hybridDate.toString(),
                                       entryText ?? '',
                                       feeling!,
                                     );
+                                    print(hybridDate.toString());
                                     if (result is JournalEntryData) {
                                       AppTheme.homeNavkey.currentState!.pop();
                                     } else {
@@ -503,7 +517,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                             uid: _auth.getUser()!.uid)
                                         .editEntry(
                                       widget.date!,
-                                      currentDate.toString(),
+                                      hybridDate.toString(),
                                       entryText ?? '',
                                       feeling!,
                                     );

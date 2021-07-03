@@ -1,14 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/services/storage.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class JournalEntry extends StatefulWidget {
   final String date;
-  // final List pictures; // TODO add pictures list
+  // final Uint8List picture; // TODO add pictures list
   final String entryText;
   late final int feeling;
 
@@ -27,6 +30,8 @@ class JournalEntry extends StatefulWidget {
 }
 
 class _JournalEntryState extends State<JournalEntry> {
+  final AuthService _auth = AuthService();
+
   late Color _shadowColor;
   double _blurRadius = 20;
   double _spreadRadius = 0;
@@ -117,6 +122,7 @@ class _JournalEntryState extends State<JournalEntry> {
                       ),
                       SizedBox(height: 10),
                       Placeholder(fallbackHeight: 160),
+                      // Image.memory(widget.picture),
                       SizedBox(height: 10),
                       Text(
                         widget.entryText,
