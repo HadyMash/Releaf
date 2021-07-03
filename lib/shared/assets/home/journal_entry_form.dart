@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/services/storage.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
@@ -473,36 +474,65 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                     onPressed: _textFieldFocused
                         ? _unfocusTextField
                         : () async {
+                            // TODO disable button until request is complete
                             if (feeling != null) {
-                              if (widget.date == null) {
-                                // TODO disable button until request is complete
+                              if (!pictures.isEmpty) {
+                                dynamic picturesResult =
+                                    await StorageService(_auth.getUser()!.uid)
+                                        .uploadPictures(
+                                            pictures: pictures,
+                                            entryID: currentDate.toString());
+                                if (picturesResult == null) {
+                                  if (widget.date == null) {
+                                    dynamic result = await DatabaseService(
+                                            uid: _auth.getUser()!.uid)
+                                        .addNewJournalEntry(
+                                      currentDate.toString(),
+                                      entryText ?? '',
+                                      feeling!,
+                                    );
+                                    if (result is JournalEntryData) {
+                                      AppTheme.homeNavkey.currentState!.pop();
+                                    } else {
+                                      // TODO enable button
 
-                                dynamic result = await DatabaseService(
-                                        uid: _auth.getUser()!.uid)
-                                    .addNewJournalEntry(
-                                  currentDate.toString(),
-                                  entryText ?? '',
-                                  feeling!,
-                                );
-                                if (result is JournalEntryData) {
-                                  AppTheme.homeNavkey.currentState!.pop();
+                                      // TODO show error snackbar
+                                    }
+                                  } else {
+                                    dynamic result = await DatabaseService(
+                                            uid: _auth.getUser()!.uid)
+                                        .editEntry(
+                                      widget.date!,
+                                      currentDate.toString(),
+                                      entryText ?? '',
+                                      feeling!,
+                                    );
+                                    if (result == true) {
+                                      AppTheme.homeNavkey.currentState!.pop();
+                                    }
+                                  }
                                 } else {
-                                  // TODO enable button
-
-                                  // TODO show error snackbar
+                                  // TODO show error.
                                 }
                               } else {
-                                dynamic result = await DatabaseService(
-                                        uid: _auth.getUser()!.uid)
-                                    .editEntry(
-                                  widget.date!,
-                                  currentDate.toString(),
-                                  entryText,
-                                  feeling!,
+                                final SnackBar snackBar = SnackBar(
+                                  content: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 5),
+                                        child: Icon(Icons.warning_rounded,
+                                            color: Colors.amber),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                            'Please upload at least 1 picture.'),
+                                      ),
+                                    ],
+                                  ),
                                 );
-                                if (result == true) {
-                                  AppTheme.homeNavkey.currentState!.pop();
-                                }
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
                               }
                             } else {
                               final SnackBar snackBar = SnackBar(
