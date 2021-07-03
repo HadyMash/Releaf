@@ -24,4 +24,8 @@ class EncryptService {
 
     return decrypted;
   }
+
+  // TODO encrypt image
+
+  // TODO decrypt image
 }

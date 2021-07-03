@@ -8,6 +8,7 @@ import 'package:releaf/screens/home/settings.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
+// TODO make icons SVGs and not pictures.
 class ThemedNavigationBar extends StatefulWidget {
   final int pageIndex;
   final bool animateFloatingActionButton;
@@ -38,6 +39,7 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context);
+    final width = MediaQuery.of(context).size.width;
     final glowWidth = MediaQuery.of(context).size.width / 5;
 
     final List pages = [
@@ -120,28 +122,68 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
               items: [
                 // TODO make rive icons.
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.sports_handball_outlined, size: 28),
-                  activeIcon: Icon(Icons.sports_handball, size: 28),
+                  icon: Image.asset(
+                    'assets/images/nav_bar_icons/meditation_unselected.png',
+                    width: (45 * width) / 428,
+                    height: (45 * width) / 428,
+                  ),
+                  activeIcon: Image.asset(
+                    'assets/images/nav_bar_icons/meditation_selected.png',
+                    width: (45 * width) / 428,
+                    height: (45 * width) / 428,
+                  ),
                   label: 'Meditation',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.assignment_turned_in_outlined, size: 28),
-                  activeIcon: Icon(Icons.assignment_turned_in, size: 28),
-                  label: 'Goals',
+                  icon: Image.asset(
+                    'assets/images/nav_bar_icons/tasks_unselected.png',
+                    width: (50 * width) / 428,
+                    height: (50 * width) / 428,
+                  ),
+                  activeIcon: Image.asset(
+                    'assets/images/nav_bar_icons/tasks_selected.png',
+                    width: (50 * width) / 428,
+                    height: (50 * width) / 428,
+                  ),
+                  label: 'Tasks',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard_outlined, size: 28),
-                  activeIcon: Icon(Icons.dashboard_rounded, size: 28),
+                  icon: Image.asset(
+                    'assets/images/nav_bar_icons/dashboard_unselected.png',
+                    width: (40 * width) / 428,
+                    height: (40 * width) / 428,
+                  ),
+                  activeIcon: Image.asset(
+                    'assets/images/nav_bar_icons/dashboard_selected.png',
+                    width: (40 * width) / 428,
+                    height: (40 * width) / 428,
+                  ),
                   label: 'Dashboard',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.book_outlined, size: 28),
-                  activeIcon: Icon(Icons.book_rounded, size: 28),
+                  icon: Image.asset(
+                    'assets/images/nav_bar_icons/journal_unselected.png',
+                    width: (55 * width) / 428,
+                    height: (55 * width) / 428,
+                  ),
+                  activeIcon: Image.asset(
+                    'assets/images/nav_bar_icons/journal_selected.png',
+                    width: (55 * width) / 428,
+                    height: (55 * width) / 428,
+                  ),
                   label: 'Journal',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.settings_outlined, size: 28),
-                  activeIcon: Icon(Icons.settings, size: 28),
+                  icon: Image.asset(
+                    'assets/images/nav_bar_icons/settings_unselected.png',
+                    width: (45 * width) / 428,
+                    height: (45 * width) / 428,
+                  ),
+                  activeIcon: Image.asset(
+                    'assets/images/nav_bar_icons/settings_selected.png',
+                    width: (45 * width) / 428,
+                    height: (45 * width) / 428,
+                  ),
                   label: 'Settings',
                 ),
               ],

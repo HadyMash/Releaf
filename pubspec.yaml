@@ -117,5 +117,6 @@ flutter:
     - assets/images/google_logo.png
     - assets/lottie/
     - assets/lottie/faces/
+    - assets/images/nav_bar_icons/
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
