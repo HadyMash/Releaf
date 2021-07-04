@@ -244,6 +244,38 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
     super.didChangeDependencies();
   }
 
+  List<Widget> _buildPictures() {
+    List<Widget> picWidgets = [];
+    int index = 0;
+    for (var pic in widget.pictures) {
+      picWidgets.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 6,
+                color: Theme.of(context).shadowColor.withOpacity(0.52),
+                offset: Offset(0, 3),
+              )
+            ],
+          ),
+          clipBehavior: Clip.hardEdge,
+          margin: index == 0
+              ? EdgeInsets.only(right: 10)
+              : EdgeInsets.symmetric(horizontal: 10),
+          child: Image.memory(
+            pic,
+            height: 160,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+      index += 1;
+    }
+    return picWidgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -323,7 +355,16 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
               ),
               SizedBox(height: 15),
               // TODO add caresoul of pictures
-              Placeholder(fallbackHeight: 200),
+              // Placeholder(fallbackHeight: 200),
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 40,
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  clipBehavior: Clip.none,
+                  children: _buildPictures(),
+                ),
+              ),
               SizedBox(height: 20),
               Expanded(
                 child: Scrollbar(
