@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:releaf/services/encrypt.dart';
+import 'package:releaf/services/storage.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
 import 'package:releaf/shared/models/todo_data.dart';
 
@@ -20,7 +23,8 @@ class DatabaseService {
   late DocumentReference<Object?> journal;
 
   // add new entry
-  Future addNewJournalEntry(String date, String entryText, int feeling) async {
+  Future addNewJournalEntry(String date, String entryText, int feeling,
+      List<Uint8List> pictures) async {
     try {
       // DateTime currentDate = DateTime.now();
       // DateTime newDateTime = DateTime.parse(date);
@@ -43,7 +47,11 @@ class DatabaseService {
         },
       }, SetOptions(merge: true));
       return JournalEntryData(
-          date: date, entryText: encryptedText, feeling: feeling);
+        date: date,
+        entryText: encryptedText,
+        feeling: feeling,
+        pictures: pictures,
+      );
     } catch (e) {
       print(e.toString());
       return e.toString();
@@ -57,6 +65,7 @@ class DatabaseService {
         {date: FieldValue.delete()},
         SetOptions(merge: true),
       );
+      await StorageService(uid).deletePictures(date);
       return true;
     } catch (e) {
       print(e.toString());
@@ -65,8 +74,8 @@ class DatabaseService {
   }
 
   // edit an entry
-  Future editEntry(
-      String oldDate, String newDate, String? entryText, int feeling) async {
+  Future editEntry(String oldDate, String newDate, String? entryText,
+      int feeling, List<Uint8List> pictures) async {
     try {
       String encryptedText = EncryptService(uid).encrypt(entryText ?? '');
       if (oldDate == newDate) {
@@ -94,7 +103,8 @@ class DatabaseService {
           oldDateTime.microsecond,
         );
 
-        addNewJournalEntry(hybridDate.toString(), encryptedText, feeling);
+        addNewJournalEntry(
+            hybridDate.toString(), encryptedText, feeling, pictures);
       }
       return true;
     } catch (e) {
@@ -109,24 +119,60 @@ class DatabaseService {
 
     EncryptService encryptService = EncryptService(uid);
 
-    await journal.get().then((document) {
+    await journal.get().then((document) async {
       Map data = (document.data() as Map);
-      data.forEach((key, value) {
-        entries.add(JournalEntryData(
-          date: key,
-          entryText: encryptService.decrypt(value['entryText']),
-          feeling: value['feeling'],
-        ));
-      });
-    });
 
+      for (var mapEntry in data.entries) {
+        dynamic pictures = await StorageService(uid).getPictures(mapEntry.key);
+        entries.add(JournalEntryData(
+          date: mapEntry.key,
+          entryText: encryptService.decrypt(mapEntry.value['entryText']),
+          feeling: mapEntry.value['feeling'],
+          pictures: pictures,
+        ));
+      }
+    });
     return entries;
   }
+
+  // TODO review
+  // ? Possible Refactor of getJournalEntries
+  // from https://stackoverflow.com/a/68248269/15782390
+  /*
+  Future<List<JournalEntryData>> getJournalEntries() async {
+  List<JournalEntryData> entries = [];
+  print('getting journal entries');
+
+  EncryptService encryptService = EncryptService(uid);
+
+  final document = await journal.get();
+  Map data = (document.data() as Map);
+  print('about to loop through pictures');
+
+  for (final mapEntry in data.entries) {
+    final key = mapEntry.key;
+    final value = mapEntry.value;
+
+    print('getting picture');
+    dynamic pictures = await StorageService(uid).getPictures(key);
+    print('done getting image');
+    entries.add(JournalEntryData(
+      date: key,
+      entryText: encryptService.decrypt(value['entryText']),
+      feeling: value['feeling'],
+      pictures: pictures,
+    ));
+  }
+  print('returning entries');
+  return entries;
+}
+  */
 
   // ! Dangerous
   Future _deleteAllEntries() async {
     try {
       await journal.delete();
+      // TODO delete all user pictures
     } catch (e) {
       print(e);
       return e;

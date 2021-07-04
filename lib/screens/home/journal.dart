@@ -135,6 +135,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                             date: entries[index].date,
                             entryText: entries[index].entryText,
                             feeling: entries[index].feeling,
+                            pictures: entries[index].pictures,
                           ),
                         ),
                       ),

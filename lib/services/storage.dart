@@ -24,6 +24,9 @@ class StorageService {
     }
   }
 
+  // TODO delete pictures
+  Future deletePictures(String entryID) async {}
+
   // TODO get picture(s)
   Future getPictures(String entryID) async {
     try {
@@ -42,8 +45,8 @@ class StorageService {
           }
           pictures.add(pic);
         }
-        return pictures;
       });
+      return pictures;
     } catch (e) {
       print(e.toString());
       return e;

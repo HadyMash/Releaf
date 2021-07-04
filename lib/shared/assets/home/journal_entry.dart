@@ -11,12 +11,15 @@ import 'package:releaf/shared/const/app_theme.dart';
 
 class JournalEntry extends StatefulWidget {
   final String date;
-  // final Uint8List picture; // TODO add pictures list
   final String entryText;
   late final int feeling;
+  final List<Uint8List> pictures;
 
   JournalEntry(
-      {required this.date, required this.entryText, required feeling}) {
+      {required this.date,
+      required this.entryText,
+      required feeling,
+      required this.pictures}) {
     if (feeling < 1) {
       feeling = 1;
     } else if (feeling > 3) {
@@ -121,8 +124,8 @@ class _JournalEntryState extends State<JournalEntry> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: 10),
-                      Placeholder(fallbackHeight: 160),
-                      // Image.memory(widget.picture),
+                      // Placeholder(fallbackHeight: 160),
+                      Image.memory(widget.pictures[0]), // ! temp
                       SizedBox(height: 10),
                       Text(
                         widget.entryText,
@@ -139,6 +142,7 @@ class _JournalEntryState extends State<JournalEntry> {
                   widget.date,
                   widget.entryText,
                   widget.feeling,
+                  widget.pictures,
                 );
               },
             ),
@@ -153,8 +157,9 @@ class JournalEntryExpanded extends StatefulWidget {
   final String date;
   final String entryText;
   final feeling;
+  final List<Uint8List> pictures;
 
-  JournalEntryExpanded(this.date, this.entryText, this.feeling);
+  JournalEntryExpanded(this.date, this.entryText, this.feeling, this.pictures);
   @override
   _JournalEntryExpandedState createState() => _JournalEntryExpandedState();
 }

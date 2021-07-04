@@ -503,6 +503,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                       hybridDate.toString(),
                                       entryText ?? '',
                                       feeling!,
+                                      pictures,
                                     );
                                     print(hybridDate.toString());
                                     if (result is JournalEntryData) {
@@ -520,6 +521,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                       hybridDate.toString(),
                                       entryText ?? '',
                                       feeling!,
+                                      pictures,
                                     );
                                     if (result == true) {
                                       AppTheme.homeNavkey.currentState!.pop();
