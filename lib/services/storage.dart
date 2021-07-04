@@ -24,7 +24,7 @@ class StorageService {
     }
   }
 
-  // TODO delete pictures
+  // delete pictures
   Future deletePictures(String entryID) async {
     try {
       final ref = storage.ref(uid).child(entryID);
@@ -40,7 +40,7 @@ class StorageService {
     }
   }
 
-  // TODO get picture(s)
+  // get picture(s)
   Future getPictures(String entryID) async {
     try {
       final ref = storage.ref(uid).child(entryID);
