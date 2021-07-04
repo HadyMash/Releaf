@@ -25,7 +25,20 @@ class StorageService {
   }
 
   // TODO delete pictures
-  Future deletePictures(String entryID) async {}
+  Future deletePictures(String entryID) async {
+    try {
+      final ref = storage.ref(uid).child(entryID);
+
+      await ref.listAll().then((result) async {
+        for (var picReference in result.items) {
+          await ref.child(picReference.name).delete();
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
 
   // TODO get picture(s)
   Future getPictures(String entryID) async {
