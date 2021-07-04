@@ -106,6 +106,9 @@ class DatabaseService {
         addNewJournalEntry(
             hybridDate.toString(), encryptedText, feeling, pictures);
       }
+      // StorageService storage = StorageService(uid);
+      // storage.deletePictures(oldDate);
+      // storage.uploadPictures(pictures: pictures, entryID: newDate);
       return true;
     } catch (e) {
       print(e.toString());

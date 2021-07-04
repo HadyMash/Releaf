@@ -408,57 +408,58 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
           ),
         ),
       ),
-      floatingActionButton: Hero(
-        tag: 'floatingActionButton',
-        child: Transform.translate(
-          offset: Offset(0, 0),
-          child: GestureDetector(
-            onTapDown: (_) => fabController.forward(),
-            onTapUp: (_) => fabController.reverse(),
-            onTapCancel: () => fabController.reverse(),
-            child: AnimatedBuilder(
-              animation: fabController,
-              builder: (context, child) {
-                return OpenContainer(
-                  transitionDuration: Duration(milliseconds: 500),
-                  transitionType: ContainerTransitionType.fade,
-                  closedElevation: fabElevationTween.value,
-                  closedShape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(56 / 2),
-                    ),
-                  ),
-                  closedColor: fabColorAnimation.value,
-                  closedBuilder:
-                      (BuildContext context, VoidCallback openContainer) {
-                    return SizedBox(
-                      height: 56,
-                      width: 56,
-                      child: Center(
-                        child: Icon(
-                          Icons.edit_rounded,
-                          color: Theme.of(context)
-                              .floatingActionButtonTheme
-                              .foregroundColor,
-                          size: 32,
-                        ),
-                      ),
-                    );
-                  },
-                  openBuilder: (BuildContext context, VoidCallback _) {
-                    return JournalEntryForm(
-                      date: widget.date,
-                      initialText: widget.entryText,
-                      feeling: widget.feeling,
-                      pictures: widget.pictures,
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-      ),
+      // TODO fix edit functionality and renable.
+      // floatingActionButton: Hero(
+      //   tag: 'floatingActionButton',
+      //   child: Transform.translate(
+      //     offset: Offset(0, 0),
+      //     child: GestureDetector(
+      //       onTapDown: (_) => fabController.forward(),
+      //       onTapUp: (_) => fabController.reverse(),
+      //       onTapCancel: () => fabController.reverse(),
+      //       child: AnimatedBuilder(
+      //         animation: fabController,
+      //         builder: (context, child) {
+      //           return OpenContainer(
+      //             transitionDuration: Duration(milliseconds: 500),
+      //             transitionType: ContainerTransitionType.fade,
+      //             closedElevation: fabElevationTween.value,
+      //             closedShape: const RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.all(
+      //                 Radius.circular(56 / 2),
+      //               ),
+      //             ),
+      //             closedColor: fabColorAnimation.value,
+      //             closedBuilder:
+      //                 (BuildContext context, VoidCallback openContainer) {
+      //               return SizedBox(
+      //                 height: 56,
+      //                 width: 56,
+      //                 child: Center(
+      //                   child: Icon(
+      //                     Icons.edit_rounded,
+      //                     color: Theme.of(context)
+      //                         .floatingActionButtonTheme
+      //                         .foregroundColor,
+      //                     size: 32,
+      //                   ),
+      //                 ),
+      //               );
+      //             },
+      //             openBuilder: (BuildContext context, VoidCallback _) {
+      //               return JournalEntryForm(
+      //                 date: widget.date,
+      //                 initialText: widget.entryText,
+      //                 feeling: widget.feeling,
+      //                 pictures: widget.pictures,
+      //               );
+      //             },
+      //           );
+      //         },
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
