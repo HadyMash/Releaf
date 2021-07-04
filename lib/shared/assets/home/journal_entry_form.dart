@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
@@ -18,7 +19,8 @@ class JournalEntryForm extends StatefulWidget {
   final String? date;
   final String? initialText;
   final int? feeling;
-  JournalEntryForm({this.date, this.initialText, this.feeling});
+  final List<Uint8List>? pictures;
+  JournalEntryForm({this.date, this.initialText, this.feeling, this.pictures});
 
   @override
   _JournalEntryFormState createState() => _JournalEntryFormState();
@@ -49,6 +51,8 @@ class _JournalEntryFormState extends State<JournalEntryForm>
 
   final imagePicker = ImagePicker();
 
+  bool initialised = false;
+
   @override
   void initState() {
     happyController = AnimationController(vsync: this);
@@ -59,8 +63,31 @@ class _JournalEntryFormState extends State<JournalEntryForm>
         widget.date != null ? DateTime.parse(widget.date!) : DateTime.now();
     feeling = widget.feeling;
     entryText = widget.initialText;
+    if (widget.pictures != null) {
+      pictures = widget.pictures!;
+    }
     _controller = TextEditingController(text: widget.initialText);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (initialised == false) {
+      if (widget.pictures != null) {
+        addCompressedPicturesFromExistingEntry();
+        initialised = true;
+      }
+    }
+    super.didChangeDependencies();
+  }
+
+  Future<void> addCompressedPicturesFromExistingEntry() async {
+    for (Uint8List picture in pictures) {
+      compressedPictures.add(
+          await FlutterImageCompress.compressWithList(picture, quality: 50));
+      pictureListKey.currentState
+          ?.insertItem(0, duration: Duration(milliseconds: 800));
+    }
   }
 
   @override
@@ -325,6 +352,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                 clipBehavior: Clip.none,
                 child: AnimatedList(
                   key: pictureListKey,
+                  initialItemCount: compressedPictures.length,
                   scrollDirection: Axis.horizontal,
                   clipBehavior: Clip.none,
                   itemBuilder: (context, index, animation) {

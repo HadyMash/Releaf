@@ -74,6 +74,38 @@ class _JournalEntryState extends State<JournalEntry> {
     });
   }
 
+  List<Widget> _buildPictures() {
+    List<Widget> picWidgets = [];
+    int index = 0;
+    for (var pic in widget.pictures) {
+      picWidgets.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 6,
+                color: Theme.of(context).shadowColor.withOpacity(0.52),
+                offset: Offset(0, 3),
+              )
+            ],
+          ),
+          clipBehavior: Clip.hardEdge,
+          margin: index == 0
+              ? EdgeInsets.only(right: 10)
+              : EdgeInsets.symmetric(horizontal: 10),
+          child: Image.memory(
+            pic,
+            height: 160,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+      index += 1;
+    }
+    return picWidgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Hero(
@@ -125,7 +157,15 @@ class _JournalEntryState extends State<JournalEntry> {
                       ),
                       SizedBox(height: 10),
                       // Placeholder(fallbackHeight: 160),
-                      Image.memory(widget.pictures[0]), // ! temp
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 40 - 50,
+                        height: 160,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          clipBehavior: Clip.none,
+                          children: _buildPictures(),
+                        ),
+                      ),
                       SizedBox(height: 10),
                       Text(
                         widget.entryText,
@@ -369,6 +409,7 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
                       date: widget.date,
                       initialText: widget.entryText,
                       feeling: widget.feeling,
+                      pictures: widget.pictures,
                     );
                   },
                 );
