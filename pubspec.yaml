@@ -117,6 +117,7 @@ flutter:
           weight: 900
   assets:
     - assets/images/google_logo.png
+    - assets/images/
     - assets/lottie/
     - assets/lottie/faces/
     - assets/images/nav_bar_icons/

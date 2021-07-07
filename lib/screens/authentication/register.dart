@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -111,7 +113,15 @@ class _RegisterState extends State<Register>
     return Scaffold(
       body: Stack(
         children: [
-          Placeholder(), // TODO add rive background
+          ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: Image.asset(
+              'assets/images/background_2.jpg',
+              fit: BoxFit.cover,
+              height: double.infinity,
+              width: double.infinity,
+            ),
+          ),
           Center(
             child: Hero(
               tag: "Welcome Screen Center Box",
