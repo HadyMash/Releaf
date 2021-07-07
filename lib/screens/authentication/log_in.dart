@@ -237,7 +237,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     Expanded(
-                      // TODO fix all vertical padding to chang based on height
                       child: Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -406,7 +405,6 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                                       }
                                       _error = null;
                                       if (_auth.getUser()!.emailVerified) {
-                                        // TODO make rive page transition.
                                         AppTheme.mainNavKey.currentState!
                                             .popUntil((route) => route.isFirst);
                                       } else {
@@ -742,8 +740,6 @@ class LogInMock extends StatefulWidget {
 
 class _LogInMockState extends State<LogInMock>
     with SingleTickerProviderStateMixin {
-  // TODO Simplify Login mock code because it won't be used.
-
   Color _getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,

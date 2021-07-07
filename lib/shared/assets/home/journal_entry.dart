@@ -354,8 +354,6 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
                     ),
               ),
               SizedBox(height: 15),
-              // TODO add caresoul of pictures
-              // Placeholder(fallbackHeight: 200),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 40,
                 height: 200,

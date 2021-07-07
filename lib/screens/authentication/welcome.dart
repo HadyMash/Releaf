@@ -26,7 +26,6 @@ class Welcome extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Placeholder(), // TODO add rive background
           ImageFiltered(
             imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
             child: Image.asset(
@@ -84,7 +83,7 @@ class Welcome extends StatelessWidget {
                                           ((926 * 0.01) - (_height * 0.01))),
                               notAllCaps: true,
                               icon: Icon(
-                                Icons.email, // TODO Make Email Icon
+                                Icons.email,
                                 size: 28,
                                 color: Theme.of(context)
                                     .floatingActionButtonTheme

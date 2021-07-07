@@ -20,7 +20,6 @@ class SettingPopup extends StatelessWidget {
                 currentFocus.unfocus();
               }
             },
-            // TODO make custom painter that rotates around the container
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),

@@ -229,7 +229,6 @@ You can write whatever you want here as all the data is encrypted. Only you can 
 
   // Transfer Account to a new email
   Future updateEmail(context, {required String newEmail}) async {
-    // TODO use verifyBeforeUpdateEmail
     try {
       if (_auth.currentUser != null) {
         await _auth.currentUser!.updateEmail(newEmail);
@@ -306,7 +305,6 @@ You can write whatever you want here as all the data is encrypted. Only you can 
     required String oldPassword,
     required String newPassword,
   }) async {
-    // TODO add verification code logic
     try {
       dynamic oldPasswordVerified = await verifyCurrentPassword(oldPassword);
       if (oldPasswordVerified == true) {

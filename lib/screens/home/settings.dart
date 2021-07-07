@@ -224,7 +224,6 @@ class Settings extends StatelessWidget {
                               child: Text('Yes'),
                               onPressed: () {
                                 AppTheme.mainNavKey.currentState!.pop();
-                                // TODO make a widget and add a countdown to button to disable ability to click straight away without reading.
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
@@ -480,7 +479,6 @@ class Info extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // TODO Make text better looking.
           Text('Name: ${_auth.getUser()!.displayName}'),
           SizedBox(height: 10),
           Text('Email: ${_auth.getUser()!.email}'),

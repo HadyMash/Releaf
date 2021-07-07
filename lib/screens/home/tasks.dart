@@ -61,7 +61,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
   int selectedYear = DateTime.now().year;
   int? addedYear;
   double progress = 0;
-  // TODO add animating percentage value like in XD prototype.
   List<Widget?> progressPercentages = [
     Text('0%'),
     Text('10%'),
@@ -585,7 +584,6 @@ class _AddTodoState extends State<AddTodo> {
                         currentFocus.unfocus();
                       }
 
-                      // TODO implement index functionality
                       dynamic result =
                           await DatabaseService(uid: _auth.getUser()!.uid)
                               .addTodo(

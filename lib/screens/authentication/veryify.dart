@@ -22,7 +22,6 @@ class _VerifyState extends State<Verify> {
     await _auth.reloadUser();
     if (_auth.getUser()!.emailVerified) {
       timer.cancel();
-      // TODO add rive page transition.
       AppTheme.mainNavKey.currentState!.popUntil((route) => route.isFirst);
     } else {
       timerCountdown = 30;

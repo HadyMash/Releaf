@@ -120,7 +120,6 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
               enableFeedback: true,
               type: BottomNavigationBarType.fixed,
               items: [
-                // TODO make rive icons.
                 BottomNavigationBarItem(
                   icon: Image.asset(
                     'assets/images/nav_bar_icons/meditation_unselected.png',

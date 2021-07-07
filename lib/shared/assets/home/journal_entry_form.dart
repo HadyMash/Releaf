@@ -177,7 +177,6 @@ class _JournalEntryFormState extends State<JournalEntryForm>
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // TODO fix title centering issue
       appBar: AppBar(
         title: Text(
           'Journal Entry',
@@ -538,8 +537,6 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                       AppTheme.homeNavkey.currentState!.pop();
                                     } else {
                                       // TODO enable button
-
-                                      // TODO show error snackbar
                                     }
                                   } else {
                                     dynamic result = await DatabaseService(
