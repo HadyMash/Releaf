@@ -232,7 +232,7 @@ class Settings extends StatelessWidget {
                                     content: Text(
                                         "This action is PERMANENT. Your account and ALL of it's data will be DELETED. This action CANNOT be undone!"),
                                     actions: [
-                                      // TODO disable button one pressed
+                                      // TODO disable button on pressed
                                       TextButton(
                                         child: Text('Yes'),
                                         onPressed: () async {
