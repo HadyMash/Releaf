@@ -8,7 +8,6 @@ import 'package:releaf/screens/home/settings.dart';
 import 'package:releaf/screens/home/tasks.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
-// TODO make icons SVGs and not pictures.
 class ThemedNavigationBar extends StatefulWidget {
   final int pageIndex;
   final bool animateFloatingActionButton;
@@ -140,7 +139,6 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
                     height: (50 * width) / 428,
                   ),
                   activeIcon: Image.asset(
-                    // TODO update icon to have green colours instead of blue
                     'assets/images/nav_bar_icons/tasks_selected.png',
                     width: (50 * width) / 428,
                     height: (50 * width) / 428,
