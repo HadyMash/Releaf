@@ -18,16 +18,8 @@ class Meditation extends StatelessWidget {
           ),
           SliverToBoxAdapter(child: SizedBox(height: 100)),
           SliverToBoxAdapter(
-            child: Hero(
-              tag: 'pageText',
-              child: Material(
-                color: Colors.white.withOpacity(0),
-                child: Container(
-                  color: Colors.blue,
-                  width: 50,
-                  height: 50,
-                ),
-              ),
+            child: Center(
+              child: Text('Coming Soon'),
             ),
           ),
         ],
