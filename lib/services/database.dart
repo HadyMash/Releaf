@@ -174,8 +174,10 @@ class DatabaseService {
   // ! Dangerous
   Future _deleteAllEntries() async {
     try {
-      await journal.delete();
-      // TODO delete all user pictures
+      List<JournalEntryData> entries = await getJournalEntries();
+      for (var entry in entries) {
+        await deleteEntry(entry.date);
+      }
     } catch (e) {
       print(e);
       return e;
