@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/services/storage.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -31,6 +32,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
   AuthService _auth = AuthService();
   bool _textFieldFocused = false;
   late TextEditingController _controller;
+  FocusNode _focusNode = FocusNode();
 
   final GlobalKey happyKey = GlobalKey();
   final GlobalKey mehKey = GlobalKey();
@@ -214,6 +216,11 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                     ThemedButton(
                       label: 'Add Photos',
                       onPressed: () async {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+
                         showCupertinoModalPopup(
                           context: context,
                           builder: (context) => CupertinoActionSheet(
@@ -399,6 +406,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                   child: TextField(
                     onTap: () => setState(() => _textFieldFocused = true),
                     controller: _controller,
+                    focusNode: _focusNode,
                     onChanged: (val) => entryText = val,
                     style: Theme.of(context)
                         .textTheme
