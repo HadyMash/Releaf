@@ -23,12 +23,15 @@ class Dashboard extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                // TODO add Quote of the day
-                TaskProgress(),
-              ],
+            child: Center(
+              child: Text('Coming Soon!'),
             ),
+            // child: Column(
+            //   children: [
+            //     // // TODO add Quote of the day
+            //     // TaskProgress(),
+            //   ],
+            // ),
           )
         ],
       ),
