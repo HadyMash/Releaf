@@ -41,7 +41,6 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
     yearsFuture = database.getTaskYears();
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
-    super.initState();
     animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
 
     super.initState();
