@@ -35,6 +35,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.0
   flutter_native_image: ^0.0.6
   flutter_slidable: ^0.6.0
+  flutter_svg: ^0.22.0
   google_sign_in: ^5.0.3
   http: ^0.13.3
   image_picker: ^0.8.1
@@ -127,5 +128,6 @@ flutter:
     - assets/lottie/
     - assets/lottie/faces/
     - assets/images/nav_bar_icons/
+    - assets/adobe/illustrator/icons/svg/
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

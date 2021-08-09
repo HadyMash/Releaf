@@ -120,11 +120,21 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
               type: BottomNavigationBarType.fixed,
               items: [
                 BottomNavigationBarItem(
+                  // icon: Image.asset(
+                  //   'assets/images/nav_bar_icons/meditation_unselected.png',
+                  //   width: (45 * width) / 428,
+                  //   height: (45 * width) / 428,
+                  // ),
                   icon: Image.asset(
                     'assets/images/nav_bar_icons/meditation_unselected.png',
                     width: (45 * width) / 428,
                     height: (45 * width) / 428,
                   ),
+                  // activeIcon: Image.asset(
+                  //   'assets/images/nav_bar_icons/meditation_selected.png',
+                  //   width: (45 * width) / 428,
+                  //   height: (45 * width) / 428,
+                  // ),
                   activeIcon: Image.asset(
                     'assets/images/nav_bar_icons/meditation_selected.png',
                     width: (45 * width) / 428,
@@ -133,11 +143,21 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
                   label: 'Meditation',
                 ),
                 BottomNavigationBarItem(
+                  // icon: Image.asset(
+                  //   'assets/images/nav_bar_icons/tasks_unselected.png',
+                  //   width: (50 * width) / 428,
+                  //   height: (50 * width) / 428,
+                  // ),
                   icon: Image.asset(
                     'assets/images/nav_bar_icons/tasks_unselected.png',
                     width: (50 * width) / 428,
                     height: (50 * width) / 428,
                   ),
+                  // activeIcon: Image.asset(
+                  //   'assets/images/nav_bar_icons/tasks_selected.png',
+                  //   width: (50 * width) / 428,
+                  //   height: (50 * width) / 428,
+                  // ),
                   activeIcon: Image.asset(
                     'assets/images/nav_bar_icons/tasks_selected.png',
                     width: (50 * width) / 428,
@@ -146,11 +166,21 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
                   label: 'Tasks',
                 ),
                 BottomNavigationBarItem(
+                  // icon: Image.asset(
+                  //   'assets/images/nav_bar_icons/dashboard_unselected.png',
+                  //   width: (40 * width) / 428,
+                  //   height: (40 * width) / 428,
+                  // ),
                   icon: Image.asset(
                     'assets/images/nav_bar_icons/dashboard_unselected.png',
                     width: (40 * width) / 428,
                     height: (40 * width) / 428,
                   ),
+                  // activeIcon: Image.asset(
+                  //   'assets/images/nav_bar_icons/dashboard_selected.png',
+                  //   width: (40 * width) / 428,
+                  //   height: (40 * width) / 428,
+                  // ),
                   activeIcon: Image.asset(
                     'assets/images/nav_bar_icons/dashboard_selected.png',
                     width: (40 * width) / 428,
@@ -159,11 +189,21 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
                   label: 'Dashboard',
                 ),
                 BottomNavigationBarItem(
+                  // icon: Image.asset(
+                  //   'assets/images/nav_bar_icons/journal_unselected.png',
+                  //   width: (55 * width) / 428,
+                  //   height: (55 * width) / 428,
+                  // ),
                   icon: Image.asset(
                     'assets/images/nav_bar_icons/journal_unselected.png',
                     width: (55 * width) / 428,
                     height: (55 * width) / 428,
                   ),
+                  // activeIcon: Image.asset(
+                  //   'assets/images/nav_bar_icons/journal_selected.png',
+                  //   width: (55 * width) / 428,
+                  //   height: (55 * width) / 428,
+                  // ),
                   activeIcon: Image.asset(
                     'assets/images/nav_bar_icons/journal_selected.png',
                     width: (55 * width) / 428,
@@ -172,11 +212,21 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
                   label: 'Journal',
                 ),
                 BottomNavigationBarItem(
+                  // icon: Image.asset(
+                  //   'assets/images/nav_bar_icons/settings_unselected.png',
+                  //   width: (45 * width) / 428,
+                  //   height: (45 * width) / 428,
+                  // ),
                   icon: Image.asset(
                     'assets/images/nav_bar_icons/settings_unselected.png',
                     width: (45 * width) / 428,
                     height: (45 * width) / 428,
                   ),
+                  // activeIcon: Image.asset(
+                  //   'assets/images/nav_bar_icons/settings_selected.png',
+                  //   width: (45 * width) / 428,
+                  //   height: (45 * width) / 428,
+                  // ),
                   activeIcon: Image.asset(
                     'assets/images/nav_bar_icons/settings_selected.png',
                     width: (45 * width) / 428,
