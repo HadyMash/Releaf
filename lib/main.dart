@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/shared/assets/custom_widget_border.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -45,7 +46,7 @@ void main() async {
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                brightness: Brightness.light,
+                systemOverlayStyle: SystemUiOverlayStyle.light,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
@@ -150,7 +151,7 @@ void main() async {
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                brightness: Brightness.dark,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
@@ -300,7 +301,7 @@ class _ThemedAppState extends State<ThemedApp> {
               shadowColor: Colors.black,
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                brightness: Brightness.light,
+                systemOverlayStyle: SystemUiOverlayStyle.light,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
@@ -376,7 +377,7 @@ class _ThemedAppState extends State<ThemedApp> {
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                brightness: Brightness.dark,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
