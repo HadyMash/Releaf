@@ -74,4 +74,13 @@ class StorageService {
       return e;
     }
   }
+
+  Future deleteAllPictures() async {
+    try {
+      await storage.ref(uid).delete();
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
 }

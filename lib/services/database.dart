@@ -166,19 +166,6 @@ class DatabaseService {
 }
   */
 
-  // ! Dangerous
-  Future _deleteAllEntries() async {
-    try {
-      List<JournalEntryData> entries = await getJournalEntries();
-      for (var entry in entries) {
-        await deleteEntry(entry.date);
-      }
-    } catch (e) {
-      print(e);
-      return e;
-    }
-  }
-
   // * Tasks
   late DocumentReference<Object?> tasks;
 
@@ -310,22 +297,9 @@ class DatabaseService {
   Future deleteUserData() async {
     try {
       // delete journal entries.
-      await _deleteAllEntries();
+      await journal.delete();
 
-      // delete all tasks and task years
-      await _deleteAllTasks();
-    } catch (e) {
-      print(e);
-      return e;
-    }
-  }
-
-  Future _deleteAllTasks() async {
-    try {
-      List<dynamic> years = await getTaskYears();
-      years.forEach((year) async {
-        await deleteTaskYear(year as int);
-      });
+      // delete tasks
       await tasks.delete();
     } catch (e) {
       print(e);

@@ -232,13 +232,27 @@ class Settings extends StatelessWidget {
                                     content: Text(
                                         "This action is PERMANENT. Your account and ALL of it's data will be DELETED. This action CANNOT be undone!"),
                                     actions: [
-                                      // TODO disable button on pressed
                                       TextButton(
                                         child: Text('Yes'),
                                         onPressed: () async {
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            barrierColor:
+                                                Colors.white.withOpacity(0.6),
+                                            builder: (context) {
+                                              return Container(
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                            },
+                                          );
                                           await _auth.deleteUser(context);
                                           AppTheme.mainNavKey.currentState!
-                                              .pop();
+                                              .popUntil(
+                                                  (route) => route.isFirst);
                                         },
                                       ),
                                       TextButton(

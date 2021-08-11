@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/services/encrypt.dart';
+import 'package:releaf/services/storage.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -71,41 +75,62 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       if (user != null) {
-        var firestore = FirebaseFirestore.instance;
-        EncryptService encryptService = EncryptService(_auth.currentUser!.uid);
-        // Make a sample journal entry
-        firestore.collection('journal').doc(user.uid).set({
-          DateTime.now().toString(): {
-            "entryText": encryptService.encrypt(
-                '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
-            
-You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
-          '''),
-            "feeling": 3,
-          },
-        }, SetOptions(merge: true));
-
-        // Make a todo collection
-        var year = DateTime.now().year;
-        firestore.collection('tasks').doc(user.uid).collection(year.toString())
-          ..add({
-            'index': 0,
-            'task': encryptService.encrypt('Download Releaf'),
-            'completed': true,
-          })
-          ..add({
-            'index': 1,
-            'task': encryptService.encrypt('Use Releaf'),
-            'completed': false,
-          });
-        firestore.collection('tasks').doc(user.uid).set({
-          'years': [year],
-        });
+        await _createSampleData(user);
       }
       return user;
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<void> _createSampleData(User user) async {
+    var firestore = FirebaseFirestore.instance;
+    EncryptService encryptService = EncryptService(_auth.currentUser!.uid);
+    // Make a sample journal entry
+    var currentTime = DateTime.now().toString();
+
+    await firestore.collection('journal').doc(user.uid).set({
+      currentTime: {
+        "entryText": encryptService.encrypt(
+            '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
+        
+    You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
+      '''),
+        "feeling": 3,
+      },
+    }, SetOptions(merge: true));
+
+    // upload picture to entry
+    Uint8List icon = (await rootBundle.load('assets/images/app_icon.png'))
+        .buffer
+        .asUint8List();
+    await StorageService(user.uid)
+        .uploadPictures(pictures: [icon], entryID: currentTime);
+
+    // Make a todo collection
+    var year = DateTime.now().year;
+
+    await firestore
+        .collection('tasks')
+        .doc(user.uid)
+        .collection(year.toString())
+        .add({
+      'index': 0,
+      'task': encryptService.encrypt('Download Releaf'),
+      'completed': true,
+    });
+    await firestore
+        .collection('tasks')
+        .doc(user.uid)
+        .collection(year.toString())
+        .add({
+      'index': 1,
+      'task': encryptService.encrypt('Use Releaf'),
+      'completed': false,
+    });
+    await firestore.collection('tasks').doc(user.uid).set({
+      'years': [year],
+    });
   }
 
   // log in with email and password
@@ -138,48 +163,7 @@ You can write whatever you want here as all the data is encrypted. Only you can 
       UserCredential result = await _auth.signInWithCredential(credential);
 
       if (result.user != null) {
-        var firestore = FirebaseFirestore.instance;
-        EncryptService encryptService = EncryptService(_auth.currentUser!.uid);
-
-        // Make a sample journal entry
-        firestore.collection('journal').doc(result.user!.uid).get().then((doc) {
-          if (doc.exists == false) {
-            firestore.collection('journal').doc(result.user!.uid).set({
-              DateTime.now().toString(): {
-                "entryText": encryptService.encrypt(
-                    '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
-            
-You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
-          '''),
-                "feeling": 3,
-              },
-            }, SetOptions(merge: true));
-          }
-        });
-
-        // Make a todo collection
-        firestore.collection('tasks').doc(result.user!.uid).get().then((doc) {
-          if (doc.exists == false) {
-            var year = DateTime.now().year;
-            firestore
-                .collection('tasks')
-                .doc(result.user!.uid)
-                .collection(year.toString())
-                  ..add({
-                    'index': 0,
-                    'task': encryptService.encrypt('Download Releaf'),
-                    'completed': true,
-                  })
-                  ..add({
-                    'index': 1,
-                    'task': encryptService.encrypt('Use Releaf'),
-                    'completed': false,
-                  });
-            firestore.collection('tasks').doc(result.user!.uid).set({
-              'years': [year],
-            });
-          }
-        });
+        _createSampleData(result.user!);
       }
 
       return result.user;
@@ -393,7 +377,9 @@ You can write whatever you want here as all the data is encrypted. Only you can 
   // ! Dangerous
   Future deleteUser(context) async {
     try {
-      await DatabaseService(uid: _auth.currentUser!.uid).deleteUserData();
+      String uid = _auth.currentUser!.uid;
+      await DatabaseService(uid: uid).deleteUserData();
+      await StorageService(uid).deleteAllPictures();
       await _auth.currentUser!.delete();
     } catch (e) {
       print(e);
