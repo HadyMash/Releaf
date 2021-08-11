@@ -127,7 +127,6 @@ flutter:
     - assets/images/
     - assets/lottie/
     - assets/lottie/faces/
-    - assets/images/nav_bar_icons/
     - assets/adobe/illustrator/icons/svg/
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
