@@ -89,47 +89,55 @@ class AuthService {
     // Make a sample journal entry
     var currentTime = DateTime.now().toString();
 
-    await firestore.collection('journal').doc(user.uid).set({
-      currentTime: {
-        "entryText": encryptService.encrypt(
-            '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
+    await firestore.collection('journal').doc(user.uid).get().then((doc) async {
+      if (doc.exists == false) {
+        await firestore.collection('journal').doc(user.uid).set({
+          currentTime: {
+            "entryText": encryptService.encrypt(
+                '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
         
     You can write whatever you want here as all the data is encrypted. Only you can see what you write here and anything else you write on the app.
       '''),
-        "feeling": 3,
-      },
-    }, SetOptions(merge: true));
+            "feeling": 3,
+          },
+        }, SetOptions(merge: true));
 
-    // upload picture to entry
-    Uint8List icon = (await rootBundle.load('assets/images/app_icon.png'))
-        .buffer
-        .asUint8List();
-    await StorageService(user.uid)
-        .uploadPictures(pictures: [icon], entryID: currentTime);
+        // upload picture to entry
+        Uint8List icon = (await rootBundle.load('assets/images/app_icon.png'))
+            .buffer
+            .asUint8List();
+        await StorageService(user.uid)
+            .uploadPictures(pictures: [icon], entryID: currentTime);
+      }
+    });
 
     // Make a todo collection
     var year = DateTime.now().year;
 
-    await firestore
-        .collection('tasks')
-        .doc(user.uid)
-        .collection(year.toString())
-        .add({
-      'index': 0,
-      'task': encryptService.encrypt('Download Releaf'),
-      'completed': true,
-    });
-    await firestore
-        .collection('tasks')
-        .doc(user.uid)
-        .collection(year.toString())
-        .add({
-      'index': 1,
-      'task': encryptService.encrypt('Use Releaf'),
-      'completed': false,
-    });
-    await firestore.collection('tasks').doc(user.uid).set({
-      'years': [year],
+    await firestore.collection('tasks').doc(user.uid).get().then((doc) async {
+      if (doc.exists == false) {
+        await firestore
+            .collection('tasks')
+            .doc(user.uid)
+            .collection(year.toString())
+            .add({
+          'index': 0,
+          'task': encryptService.encrypt('Download Releaf'),
+          'completed': true,
+        });
+        await firestore
+            .collection('tasks')
+            .doc(user.uid)
+            .collection(year.toString())
+            .add({
+          'index': 1,
+          'task': encryptService.encrypt('Use Releaf'),
+          'completed': false,
+        });
+        await firestore.collection('tasks').doc(user.uid).set({
+          'years': [year],
+        });
+      }
     });
   }
 
