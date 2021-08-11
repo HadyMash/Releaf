@@ -136,13 +136,13 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
                     'assets/adobe/illustrator/icons/svg/tasks_unselected.svg',
-                    width: (50 * width) / 428,
-                    height: (50 * width) / 428,
+                    width: (47 * width) / 428,
+                    height: (47 * width) / 428,
                   ),
                   activeIcon: SvgPicture.asset(
                     'assets/adobe/illustrator/icons/svg/tasks_selected.svg',
-                    width: (50 * width) / 428,
-                    height: (50 * width) / 428,
+                    width: (47 * width) / 428,
+                    height: (47 * width) / 428,
                   ),
                   label: 'Tasks',
                 ),
