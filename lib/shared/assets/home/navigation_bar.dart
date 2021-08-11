@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/home/dashboard.dart';
 import 'package:releaf/screens/home/journal.dart';
@@ -120,117 +121,69 @@ class _ThemedNavigationBarState extends State<ThemedNavigationBar> {
               type: BottomNavigationBarType.fixed,
               items: [
                 BottomNavigationBarItem(
-                  // icon: Image.asset(
-                  //   'assets/images/nav_bar_icons/meditation_unselected.png',
-                  //   width: (45 * width) / 428,
-                  //   height: (45 * width) / 428,
-                  // ),
-                  icon: Image.asset(
-                    'assets/images/nav_bar_icons/meditation_unselected.png',
+                  icon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/meditation_unselected.svg',
                     width: (45 * width) / 428,
                     height: (45 * width) / 428,
                   ),
-                  // activeIcon: Image.asset(
-                  //   'assets/images/nav_bar_icons/meditation_selected.png',
-                  //   width: (45 * width) / 428,
-                  //   height: (45 * width) / 428,
-                  // ),
-                  activeIcon: Image.asset(
-                    'assets/images/nav_bar_icons/meditation_selected.png',
+                  activeIcon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/meditation_selected.svg',
                     width: (45 * width) / 428,
                     height: (45 * width) / 428,
                   ),
                   label: 'Meditation',
                 ),
                 BottomNavigationBarItem(
-                  // icon: Image.asset(
-                  //   'assets/images/nav_bar_icons/tasks_unselected.png',
-                  //   width: (50 * width) / 428,
-                  //   height: (50 * width) / 428,
-                  // ),
-                  icon: Image.asset(
-                    'assets/images/nav_bar_icons/tasks_unselected.png',
+                  icon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/tasks_unselected.svg',
                     width: (50 * width) / 428,
                     height: (50 * width) / 428,
                   ),
-                  // activeIcon: Image.asset(
-                  //   'assets/images/nav_bar_icons/tasks_selected.png',
-                  //   width: (50 * width) / 428,
-                  //   height: (50 * width) / 428,
-                  // ),
-                  activeIcon: Image.asset(
-                    'assets/images/nav_bar_icons/tasks_selected.png',
+                  activeIcon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/tasks_selected.svg',
                     width: (50 * width) / 428,
                     height: (50 * width) / 428,
                   ),
                   label: 'Tasks',
                 ),
                 BottomNavigationBarItem(
-                  // icon: Image.asset(
-                  //   'assets/images/nav_bar_icons/dashboard_unselected.png',
-                  //   width: (40 * width) / 428,
-                  //   height: (40 * width) / 428,
-                  // ),
-                  icon: Image.asset(
-                    'assets/images/nav_bar_icons/dashboard_unselected.png',
+                  icon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/dashboard_unselected.svg',
                     width: (40 * width) / 428,
                     height: (40 * width) / 428,
                   ),
-                  // activeIcon: Image.asset(
-                  //   'assets/images/nav_bar_icons/dashboard_selected.png',
-                  //   width: (40 * width) / 428,
-                  //   height: (40 * width) / 428,
-                  // ),
-                  activeIcon: Image.asset(
-                    'assets/images/nav_bar_icons/dashboard_selected.png',
+                  activeIcon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/dashboard_selected.svg',
                     width: (40 * width) / 428,
                     height: (40 * width) / 428,
                   ),
                   label: 'Dashboard',
                 ),
                 BottomNavigationBarItem(
-                  // icon: Image.asset(
-                  //   'assets/images/nav_bar_icons/journal_unselected.png',
-                  //   width: (55 * width) / 428,
-                  //   height: (55 * width) / 428,
-                  // ),
-                  icon: Image.asset(
-                    'assets/images/nav_bar_icons/journal_unselected.png',
-                    width: (55 * width) / 428,
-                    height: (55 * width) / 428,
+                  icon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/journal_unselected.svg',
+                    width: (45 * width) / 428,
+                    height: (45 * width) / 428,
                   ),
-                  // activeIcon: Image.asset(
-                  //   'assets/images/nav_bar_icons/journal_selected.png',
-                  //   width: (55 * width) / 428,
-                  //   height: (55 * width) / 428,
-                  // ),
-                  activeIcon: Image.asset(
-                    'assets/images/nav_bar_icons/journal_selected.png',
-                    width: (55 * width) / 428,
-                    height: (55 * width) / 428,
+                  activeIcon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/journal_selected.svg',
+                    width: (45 * width) / 428,
+                    height: (45 * width) / 428,
                   ),
                   label: 'Journal',
                 ),
                 BottomNavigationBarItem(
-                  // icon: Image.asset(
-                  //   'assets/images/nav_bar_icons/settings_unselected.png',
-                  //   width: (45 * width) / 428,
-                  //   height: (45 * width) / 428,
-                  // ),
-                  icon: Image.asset(
-                    'assets/images/nav_bar_icons/settings_unselected.png',
+                  icon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/settings_unselected.svg',
                     width: (45 * width) / 428,
                     height: (45 * width) / 428,
+                    semanticsLabel: 'Settings',
                   ),
-                  // activeIcon: Image.asset(
-                  //   'assets/images/nav_bar_icons/settings_selected.png',
-                  //   width: (45 * width) / 428,
-                  //   height: (45 * width) / 428,
-                  // ),
-                  activeIcon: Image.asset(
-                    'assets/images/nav_bar_icons/settings_selected.png',
+                  activeIcon: SvgPicture.asset(
+                    'assets/adobe/illustrator/icons/svg/settings_selected.svg',
                     width: (45 * width) / 428,
                     height: (45 * width) / 428,
+                    semanticsLabel: 'Settings',
                   ),
                   label: 'Settings',
                 ),
