@@ -23,8 +23,7 @@ class DatabaseService {
   late DocumentReference<Object?> journal;
 
   // add new entry
-  Future addNewJournalEntry(String date, String entryText, int feeling,
-      List<Uint8List> pictures) async {
+  Future addNewJournalEntry(String date, String entryText, int feeling) async {
     try {
       // DateTime currentDate = DateTime.now();
       // DateTime newDateTime = DateTime.parse(date);
@@ -50,7 +49,6 @@ class DatabaseService {
         date: date,
         entryText: encryptedText,
         feeling: feeling,
-        pictures: pictures,
       );
     } catch (e) {
       print(e.toString());
@@ -103,8 +101,7 @@ class DatabaseService {
           oldDateTime.microsecond,
         );
 
-        addNewJournalEntry(
-            hybridDate.toString(), encryptedText, feeling, pictures);
+        addNewJournalEntry(hybridDate.toString(), encryptedText, feeling);
       }
       // StorageService storage = StorageService(uid);
       // storage.deletePictures(oldDate);
@@ -126,12 +123,10 @@ class DatabaseService {
       Map data = (document.data() as Map);
 
       for (var mapEntry in data.entries) {
-        dynamic pictures = await StorageService(uid).getPictures(mapEntry.key);
         entries.add(JournalEntryData(
           date: mapEntry.key,
           entryText: encryptService.decrypt(mapEntry.value['entryText']),
           feeling: mapEntry.value['feeling'],
-          pictures: pictures,
         ));
       }
     });

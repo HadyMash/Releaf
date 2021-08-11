@@ -1,25 +1,19 @@
 import 'dart:typed_data';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/services/storage.dart';
-import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 
 class JournalEntry extends StatefulWidget {
   final String date;
   final String entryText;
   late final int feeling;
-  final List<Uint8List> pictures;
 
   JournalEntry(
-      {required this.date,
-      required this.entryText,
-      required feeling,
-      required this.pictures}) {
+      {required this.date, required this.entryText, required feeling}) {
     if (feeling < 1) {
       feeling = 1;
     } else if (feeling > 3) {
@@ -33,8 +27,6 @@ class JournalEntry extends StatefulWidget {
 }
 
 class _JournalEntryState extends State<JournalEntry> {
-  final AuthService _auth = AuthService();
-
   late Color _shadowColor;
   double _blurRadius = 20;
   double _spreadRadius = 0;
@@ -46,6 +38,15 @@ class _JournalEntryState extends State<JournalEntry> {
   late Color _color;
   late double _blur;
   late double _spread;
+
+  late Future picturesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    picturesFuture =
+        StorageService(AuthService().getUser()!.uid).getPictures(widget.date);
+  }
 
   @override
   void didChangeDependencies() {
@@ -74,10 +75,10 @@ class _JournalEntryState extends State<JournalEntry> {
     });
   }
 
-  List<Widget> _buildPictures() {
+  List<Widget> _buildPictures(List<Uint8List> pictures) {
     List<Widget> picWidgets = [];
     int index = 0;
-    for (var pic in widget.pictures) {
+    for (var pic in pictures) {
       picWidgets.add(
         Container(
           decoration: BoxDecoration(
@@ -143,37 +144,46 @@ class _JournalEntryState extends State<JournalEntry> {
               closedBuilder: (context, _) {
                 return Padding(
                   padding: EdgeInsets.fromLTRB(20, 15, 20, 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      // * Heading
-                      Text(
-                        _formatedDate(widget.date),
-                        style: Theme.of(context).textTheme.subtitle2,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 10),
-                      // Placeholder(fallbackHeight: 160),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 40 - 50,
-                        height: 160,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          clipBehavior: Clip.none,
-                          children: _buildPictures(),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        widget.entryText,
-                        style: Theme.of(context).textTheme.bodyText2,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                  child: FutureBuilder(
+                    future: picturesFuture,
+                    builder: (context, future) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          // * Heading
+                          Text(
+                            _formatedDate(widget.date),
+                            style: Theme.of(context).textTheme.subtitle2,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 10),
+                          (future.connectionState == ConnectionState.waiting)
+                              ? Center(child: CircularProgressIndicator())
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width -
+                                      40 -
+                                      50,
+                                  height: 160,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    clipBehavior: Clip.none,
+                                    children: _buildPictures(
+                                        (future.data as List<Uint8List>)),
+                                  ),
+                                ),
+                          SizedBox(height: 10),
+                          Text(
+                            widget.entryText,
+                            style: Theme.of(context).textTheme.bodyText2,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 );
               },
@@ -182,7 +192,7 @@ class _JournalEntryState extends State<JournalEntry> {
                   widget.date,
                   widget.entryText,
                   widget.feeling,
-                  widget.pictures,
+                  picturesFuture,
                 );
               },
             ),
@@ -196,10 +206,11 @@ class _JournalEntryState extends State<JournalEntry> {
 class JournalEntryExpanded extends StatefulWidget {
   final String date;
   final String entryText;
-  final feeling;
-  final List<Uint8List> pictures;
+  final int feeling;
+  final Future picturesFuture;
 
-  JournalEntryExpanded(this.date, this.entryText, this.feeling, this.pictures);
+  JournalEntryExpanded(
+      this.date, this.entryText, this.feeling, this.picturesFuture);
   @override
   _JournalEntryExpandedState createState() => _JournalEntryExpandedState();
 }
@@ -244,10 +255,10 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
     super.didChangeDependencies();
   }
 
-  List<Widget> _buildPictures() {
+  List<Widget> _buildPictures(List<Uint8List> pictures) {
     List<Widget> picWidgets = [];
     int index = 0;
-    for (var pic in widget.pictures) {
+    for (var pic in pictures) {
       picWidgets.add(
         Container(
           decoration: BoxDecoration(
@@ -354,14 +365,27 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
                     ),
               ),
               SizedBox(height: 15),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 40,
-                height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  clipBehavior: Clip.none,
-                  children: _buildPictures(),
-                ),
+              FutureBuilder(
+                future: widget.picturesFuture,
+                builder: (context, future) {
+                  if (future.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (future.connectionState == ConnectionState.done ||
+                      future.connectionState == ConnectionState.active) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width - 40,
+                      height: 200,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        clipBehavior: Clip.none,
+                        children:
+                            _buildPictures(future.data as List<Uint8List>),
+                      ),
+                    );
+                  } else {
+                    return ErrorWidget('An Error has Occured');
+                  }
+                },
               ),
               SizedBox(height: 20),
               Expanded(

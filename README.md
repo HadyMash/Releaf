@@ -21,7 +21,6 @@ For obvious reasons, this page will not be implemented. There are plenty of medi
 # Known Bugs/Issues
 * You need to close the Tasks page and open it again after deleteing a year.
 * If you every get a red screen just go to another page and back to the same page, if you do not see the navigation bar then you will need to restart the app.
-* Journal is really slow to load.
 * Pictures take a long time to load when adding then in the journal entry form initially.
 
 # Help/Support

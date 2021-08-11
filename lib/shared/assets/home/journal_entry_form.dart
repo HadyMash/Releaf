@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
-import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/services/storage.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
@@ -538,7 +536,6 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                       hybridDate.toString(),
                                       entryText ?? '',
                                       feeling!,
-                                      pictures,
                                     );
                                     print(hybridDate.toString());
                                     if (result is JournalEntryData) {
