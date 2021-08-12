@@ -297,9 +297,28 @@ class DatabaseService {
   Future deleteUserData() async {
     try {
       // delete journal entries.
+      // TODO update with new subcollection approach once implemeneted.
+      print('deleting journal entries');
       await journal.delete();
 
       // delete tasks
+      print('deleting tasks');
+      await tasks.get().then((doc) async {
+        var data = doc.data() as Map;
+        List years = data['years'];
+        print('deleting each task collections\' documents');
+        for (int year in years) {
+          await tasks
+              .collection(year.toString())
+              .get()
+              .then((querySnapshot) async {
+            for (var element in querySnapshot.docs) {
+              await element.reference.delete();
+            }
+          });
+        }
+      });
+      print('deleting tasks doc');
       await tasks.delete();
     } catch (e) {
       print(e);

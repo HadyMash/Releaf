@@ -249,10 +249,38 @@ class Settings extends StatelessWidget {
                                               );
                                             },
                                           );
-                                          await _auth.deleteUser(context);
-                                          AppTheme.mainNavKey.currentState!
-                                              .popUntil(
-                                                  (route) => route.isFirst);
+                                          dynamic result =
+                                              await _auth.deleteUser(context);
+                                          if (result == null) {
+                                            AppTheme.mainNavKey.currentState!
+                                                .popUntil(
+                                                    (route) => route.isFirst);
+                                          } else {
+                                            final snackBar = SnackBar(
+                                              content: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5),
+                                                    child: Icon(
+                                                        Icons.error_rounded,
+                                                        color: Colors.red[700]),
+                                                  ),
+                                                  Expanded(
+                                                      child: Text(
+                                                          _auth.getError(result
+                                                              .toString()))),
+                                                ],
+                                              ),
+                                            );
+
+                                            print('popping route');
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
                                         },
                                       ),
                                       TextButton(

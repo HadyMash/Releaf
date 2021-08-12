@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/services/storage.dart';
+import 'package:releaf/shared/models/journal_entry_data.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -386,9 +386,25 @@ class AuthService {
   Future deleteUser(context) async {
     try {
       String uid = _auth.currentUser!.uid;
-      await DatabaseService(uid: uid).deleteUserData();
-      await StorageService(uid).deleteAllPictures();
-      await _auth.currentUser!.delete();
+      print('getting entires before deletiong for cloud storage deletion');
+      List<JournalEntryData> entries =
+          await DatabaseService(uid: uid).getJournalEntries();
+
+      print('deleting firestore data');
+      dynamic databaseResult = await DatabaseService(uid: uid).deleteUserData();
+      if (databaseResult == null) {
+        print('deleting cloud storage data');
+        dynamic storageResult =
+            await StorageService(uid).deleteAllPictures(entries);
+        if (storageResult == null) {
+          print('deleting user');
+          await _auth.currentUser!.delete();
+        } else {
+          return storageResult;
+        }
+      } else {
+        return databaseResult;
+      }
     } catch (e) {
       print(e);
       final snackBar = SnackBar(

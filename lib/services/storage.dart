@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:releaf/services/encrypt.dart';
+import 'package:releaf/shared/models/journal_entry_data.dart';
 
 class StorageService {
   final String uid;
@@ -75,9 +76,11 @@ class StorageService {
     }
   }
 
-  Future deleteAllPictures() async {
+  Future deleteAllPictures(List<JournalEntryData> entries) async {
     try {
-      await storage.ref(uid).delete();
+      for (var entry in entries) {
+        deletePictures(entry.date);
+      }
     } catch (e) {
       print(e);
       return e.toString();
