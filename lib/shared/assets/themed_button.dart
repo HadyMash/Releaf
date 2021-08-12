@@ -27,6 +27,7 @@ class ThemedButton extends StatefulWidget {
   final bool? tapDownFeedback;
   final bool? tapFeedback;
   final BoxBorder? border;
+  final String? semanticsLabel;
 
   // * Constructors
   final bool iconButton;
@@ -51,6 +52,7 @@ class ThemedButton extends StatefulWidget {
     this.border,
     this.tapDownFeedback,
     this.tapFeedback,
+    this.semanticsLabel,
   })  : icon = Container(height: 0, width: 0),
         iconButton = false,
         gap = 0.0;
@@ -78,6 +80,7 @@ class ThemedButton extends StatefulWidget {
     this.border,
     this.tapDownFeedback,
     this.tapFeedback,
+    this.semanticsLabel,
   }) : iconButton = true;
 
   @override
@@ -124,60 +127,63 @@ class _ThemedButtonState extends State<ThemedButton> {
   @override
   Widget build(BuildContext context) {
     final _theme = Provider.of<AppTheme>(context);
-    return GestureDetector(
-      onTap: () {
-        widget.onPressed!();
-        if (widget.tapFeedback == true && _theme.haptics == true) {
-          HapticFeedback.mediumImpact();
-        }
-      },
-      onTapDown: (details) => setState(() {
-        _animateDown();
-        SystemSound.play(SystemSoundType.click);
-        if (widget.tapFeedback == true && _theme.haptics == true) {
-          HapticFeedback.lightImpact();
-        }
-      }),
-      onTapUp: (details) => setState(() => _animateUp()),
-      onTapCancel: () => setState(() => _animateUp()),
-      // * AnimatedContainer
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 133),
-        margin: widget.margin,
-        padding: widget.padding ??
-            EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal: 13.0,
-            ),
-        decoration: BoxDecoration(
-          color: _color,
-          borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
-          border: widget.border,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: _shadowBlurRadius,
-              spreadRadius: _shadowSpreadRadius,
-              color: _shadowColor,
-              offset: _shadowOffset,
-            )
-          ],
-        ),
-        // Text
-        // * Text
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            widget.icon,
-            SizedBox(width: (widget.iconButton) ? (widget.gap ?? 8.0) : 0.0),
-            Text(
-              (widget.notAllCaps ?? false)
-                  ? widget.label
-                  : widget.label.toUpperCase(),
-              style: widget.style ?? Theme.of(context).textTheme.button,
-            ),
-          ],
+    return Semantics(
+      label: widget.semanticsLabel,
+      child: GestureDetector(
+        onTap: () {
+          widget.onPressed!();
+          if (widget.tapFeedback == true && _theme.haptics == true) {
+            HapticFeedback.mediumImpact();
+          }
+        },
+        onTapDown: (details) => setState(() {
+          _animateDown();
+          SystemSound.play(SystemSoundType.click);
+          if (widget.tapFeedback == true && _theme.haptics == true) {
+            HapticFeedback.lightImpact();
+          }
+        }),
+        onTapUp: (details) => setState(() => _animateUp()),
+        onTapCancel: () => setState(() => _animateUp()),
+        // * AnimatedContainer
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 133),
+          margin: widget.margin,
+          padding: widget.padding ??
+              EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 13.0,
+              ),
+          decoration: BoxDecoration(
+            color: _color,
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
+            border: widget.border,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: _shadowBlurRadius,
+                spreadRadius: _shadowSpreadRadius,
+                color: _shadowColor,
+                offset: _shadowOffset,
+              )
+            ],
+          ),
+          // Text
+          // * Text
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              widget.icon,
+              SizedBox(width: (widget.iconButton) ? (widget.gap ?? 8.0) : 0.0),
+              Text(
+                (widget.notAllCaps ?? false)
+                    ? widget.label
+                    : widget.label.toUpperCase(),
+                style: widget.style ?? Theme.of(context).textTheme.button,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -198,6 +198,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                   CupertinoIcons.add,
                                   size: 32,
                                   color: Theme.of(context).iconTheme.color,
+                                  semanticLabel: 'Add New Year',
                                 ),
                                 onPressed: () {
                                   List yearList = [];
@@ -266,6 +267,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                                   Icons.delete_rounded,
                                   size: 32,
                                   color: Theme.of(context).iconTheme.color,
+                                  semanticLabel: 'Delete',
                                 ),
                                 onPressed: () {
                                   showDialog(
@@ -459,6 +461,7 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
                         .floatingActionButtonTheme
                         .foregroundColor,
                     size: 40,
+                    semanticLabel: 'Add New Yearly Goal',
                   ),
                 ),
                 onPressed: () => AppTheme.mainNavKey.currentState!.push(

@@ -130,6 +130,7 @@ class Settings extends StatelessWidget {
                       enabledIcon:
                           Center(child: Icon(Icons.check_rounded, size: 24)),
                       tapFeedback: true,
+                      semanticsLabel: 'Haptics Toggle',
                     ),
                   ),
                   Setting.clickable(
