@@ -147,6 +147,11 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
+
+      if (user != null) {
+        await _createSampleData(user);
+      }
+
       return user;
     } catch (e) {
       return e.toString();
@@ -171,7 +176,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithCredential(credential);
 
       if (result.user != null) {
-        _createSampleData(result.user!);
+        await _createSampleData(result.user!);
       }
 
       return result.user;
