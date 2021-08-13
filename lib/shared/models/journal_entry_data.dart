@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 class JournalEntryData {
   final String date;
   final String entryText;

@@ -13,17 +13,17 @@ class DatabaseService {
     firestore = FirebaseFirestore.instance;
 
     // * Journal
-    journal = firestore.doc('journal/$uid');
+    journal = firestore.collection('journal/$uid/entries');
 
     // * Tasks
     tasks = firestore.doc('tasks/$uid');
   }
 
   // * Journal
-  late DocumentReference<Object?> journal;
+  late CollectionReference<Object?> journal;
 
   // add new entry
-  Future addNewJournalEntry(String date, String entryText, int feeling) async {
+  Future addJournalEntry(String date, String entryText, int feeling) async {
     try {
       // DateTime currentDate = DateTime.now();
       // DateTime newDateTime = DateTime.parse(date);
@@ -39,12 +39,11 @@ class DatabaseService {
       // );
       String encryptedText = EncryptService(uid).encrypt(entryText);
 
-      await journal.set({
-        date: {
-          "entryText": encryptedText,
-          "feeling": feeling,
-        },
-      }, SetOptions(merge: true));
+      await journal.doc(date).set({
+        "entryText": encryptedText,
+        "feeling": feeling,
+      });
+
       return JournalEntryData(
         date: date,
         entryText: encryptedText,
@@ -59,10 +58,8 @@ class DatabaseService {
   // delete entry
   Future deleteEntry(String date) async {
     try {
-      await journal.set(
-        {date: FieldValue.delete()},
-        SetOptions(merge: true),
-      );
+      await journal.doc(date).delete();
+
       await StorageService(uid).deletePictures(date);
       return true;
     } catch (e) {
@@ -71,100 +68,88 @@ class DatabaseService {
     }
   }
 
-  // edit an entry
-  Future editEntry(String oldDate, String newDate, String? entryText,
-      int feeling, List<Uint8List> pictures) async {
-    try {
-      String encryptedText = EncryptService(uid).encrypt(entryText ?? '');
-      if (oldDate == newDate) {
-        await journal.set(
-          {
-            "$oldDate": {
-              "entryText": encryptedText,
-              "feeling": feeling,
-            },
-          },
-          SetOptions(merge: true),
-        );
-      } else {
-        deleteEntry(oldDate);
-        DateTime oldDateTime = DateTime.parse(oldDate);
-        DateTime newDateTime = DateTime.parse(newDate);
-        DateTime hybridDate = DateTime(
-          newDateTime.year,
-          newDateTime.month,
-          newDateTime.day,
-          oldDateTime.hour,
-          oldDateTime.minute,
-          oldDateTime.second,
-          oldDateTime.millisecond,
-          oldDateTime.microsecond,
-        );
+  // // edit an entry
+  // Future editEntry(String oldDate, String newDate, String? entryText,
+  //     int feeling, List<Uint8List> pictures) async {
+  //   try {
+  //     String encryptedText = EncryptService(uid).encrypt(entryText ?? '');
+  //     if (oldDate == newDate) {
+  //       await journal.set(
+  //         {
+  //           "$oldDate": {
+  //             "entryText": encryptedText,
+  //             "feeling": feeling,
+  //           },
+  //         },
+  //         SetOptions(merge: true),
+  //       );
+  //     } else {
+  //       deleteEntry(oldDate);
+  //       DateTime oldDateTime = DateTime.parse(oldDate);
+  //       DateTime newDateTime = DateTime.parse(newDate);
+  //       DateTime hybridDate = DateTime(
+  //         newDateTime.year,
+  //         newDateTime.month,
+  //         newDateTime.day,
+  //         oldDateTime.hour,
+  //         oldDateTime.minute,
+  //         oldDateTime.second,
+  //         oldDateTime.millisecond,
+  //         oldDateTime.microsecond,
+  //       );
 
-        addNewJournalEntry(hybridDate.toString(), encryptedText, feeling);
-      }
-      // StorageService storage = StorageService(uid);
-      // storage.deletePictures(oldDate);
-      // storage.uploadPictures(pictures: pictures, entryID: newDate);
-      return true;
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+  //       addNewJournalEntry(hybridDate.toString(), encryptedText, feeling);
+  //     }
+  //     // StorageService storage = StorageService(uid);
+  //     // storage.deletePictures(oldDate);
+  //     // storage.uploadPictures(pictures: pictures, entryID: newDate);
+  //     return true;
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   // get entries
-  Future<List<JournalEntryData>> getJournalEntries() async {
+  Future<List<JournalEntryData>> getJournalEntries(
+      {int? limit, List? startAfterValues}) async {
     List<JournalEntryData> entries = [];
     print('getting journal entries');
 
     EncryptService encryptService = EncryptService(uid);
 
-    await journal.get().then((document) async {
-      Map data = (document.data() as Map);
-
-      for (var mapEntry in data.entries) {
-        entries.add(JournalEntryData(
-          date: mapEntry.key,
-          entryText: encryptService.decrypt(mapEntry.value['entryText']),
-          feeling: mapEntry.value['feeling'],
-        ));
+    void _returnDataAsEntries(QuerySnapshot<Object?> snapshot) {
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map;
+        entries.add(
+          JournalEntryData(
+            date: doc.id,
+            entryText: encryptService.decrypt(data['entryText']),
+            feeling: data['feeling'],
+          ),
+        );
       }
-    });
+    }
+
+    if (limit != null && startAfterValues != null) {
+      await journal
+          .limit(limit)
+          .startAfter(startAfterValues)
+          .get()
+          .then((snapshot) async {
+        _returnDataAsEntries(snapshot);
+      });
+    } else if (limit != null && startAfterValues == null) {
+      await journal.limit(limit).get().then((snapshot) async {
+        _returnDataAsEntries(snapshot);
+      });
+    } else {
+      await journal.get().then((snapshot) {
+        _returnDataAsEntries(snapshot);
+      });
+    }
+
     return entries;
   }
-
-  // TODO review
-  // ? Possible Refactor of getJournalEntries
-  // from https://stackoverflow.com/a/68248269/15782390
-  /*
-  Future<List<JournalEntryData>> getJournalEntries() async {
-  List<JournalEntryData> entries = [];
-  print('getting journal entries');
-
-  EncryptService encryptService = EncryptService(uid);
-
-  final document = await journal.get();
-  Map data = (document.data() as Map);
-  print('about to loop through pictures');
-
-  for (final mapEntry in data.entries) {
-    final key = mapEntry.key;
-    final value = mapEntry.value;
-
-    print('getting picture');
-    dynamic pictures = await StorageService(uid).getPictures(key);
-    print('done getting image');
-    entries.add(JournalEntryData(
-      date: key,
-      entryText: encryptService.decrypt(value['entryText']),
-      feeling: value['feeling'],
-      pictures: pictures,
-    ));
-  }
-  print('returning entries');
-  return entries;
-}
-  */
 
   // * Tasks
   late DocumentReference<Object?> tasks;
@@ -297,9 +282,14 @@ class DatabaseService {
   Future deleteUserData() async {
     try {
       // delete journal entries.
-      // TODO update with new subcollection approach once implemeneted.
       print('deleting journal entries');
-      await journal.delete();
+      await journal.get().then((snapshot) async {
+        for (var doc in snapshot.docs) {
+          await doc.reference.delete();
+        }
+      });
+
+      await firestore.collection('journal').doc(uid).delete();
 
       // delete tasks
       print('deleting tasks');

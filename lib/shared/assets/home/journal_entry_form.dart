@@ -532,7 +532,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                   if (widget.date == null) {
                                     dynamic result = await DatabaseService(
                                             uid: _auth.getUser()!.uid)
-                                        .addNewJournalEntry(
+                                        .addJournalEntry(
                                       hybridDate.toString(),
                                       entryText ?? '',
                                       feeling!,
@@ -544,18 +544,18 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                       // TODO enable button
                                     }
                                   } else {
-                                    dynamic result = await DatabaseService(
-                                            uid: _auth.getUser()!.uid)
-                                        .editEntry(
-                                      widget.date!,
-                                      hybridDate.toString(),
-                                      entryText ?? '',
-                                      feeling!,
-                                      pictures,
-                                    );
-                                    if (result == true) {
-                                      AppTheme.homeNavkey.currentState!.pop();
-                                    }
+                                    // dynamic result = await DatabaseService(
+                                    //         uid: _auth.getUser()!.uid)
+                                    //     .editEntry(
+                                    //   widget.date!,
+                                    //   hybridDate.toString(),
+                                    //   entryText ?? '',
+                                    //   feeling!,
+                                    //   pictures,
+                                    // );
+                                    // if (result == true) {
+                                    //   AppTheme.homeNavkey.currentState!.pop();
+                                    // }
                                   }
                                 } else {
                                   // TODO show error.
