@@ -89,8 +89,13 @@ class AuthService {
     // Make a sample journal entry
     var currentTime = DateTime.now().toString();
 
-    await firestore.collection('journal').doc(user.uid).get().then((doc) async {
-      if (doc.exists == false) {
+    await firestore
+        .collection('journal')
+        .doc(user.uid)
+        .collection('entries')
+        .get()
+        .then((snapshot) async {
+      if (snapshot.docs.isEmpty) {
         await firestore
             .collection('journal')
             .doc(user.uid)
