@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
@@ -18,6 +20,7 @@ class Journal extends StatefulWidget {
 
 class _JournalState extends State<Journal> with TickerProviderStateMixin {
   final AuthService _auth = new AuthService();
+  late final DatabaseService _database;
   late Future<List<JournalEntryData>> journalEntriesFuture;
   late final AnimationController controller;
   late final CurvedAnimation animation;
@@ -27,13 +30,39 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
   late final Animation<double> fabElevationTween;
 
   final GlobalKey lottieKey = GlobalKey();
+  final GlobalKey<NestedScrollViewState> nestedScrollViewKey = GlobalKey();
 
-  bool initialised = false;
+  ScrollController get innerController {
+    return nestedScrollViewKey.currentState!.innerController;
+  }
+
+  List<JournalEntryData> entries = [];
+  int docLimit = 5;
+
+  bool _initialised = false;
+  bool _keyInitialised = false;
+  bool _isFetchingDocs = false;
+  bool _hasNext = true;
+
+  void _setFetching() => _isFetchingDocs = true;
+  void _setNotFetching() => _isFetchingDocs = false;
+  int _sortEntries(JournalEntryData firstEntry, JournalEntryData secondEntry) {
+    DateTime firstDate = DateTime.parse(firstEntry.date);
+    DateTime secondDate = DateTime.parse(secondEntry.date);
+    return secondDate.compareTo(firstDate);
+  }
 
   @override
   void initState() {
-    journalEntriesFuture =
-        DatabaseService(uid: _auth.getUser()!.uid).getJournalEntries();
+    super.initState();
+
+    _database = DatabaseService(uid: _auth.getUser()!.uid);
+
+    journalEntriesFuture = _database.getJournalEntries(
+      limit: docLimit,
+      setFetching: _setFetching,
+      setNotFetching: _setNotFetching,
+    );
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
     animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
@@ -47,8 +76,6 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
 
     fabElevationTween = Tween<double>(begin: 6, end: 10)
         .animate(CurvedAnimation(parent: fabController, curve: Curves.linear));
-
-    super.initState();
   }
 
   @override
@@ -60,13 +87,13 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
 
   @override
   void didChangeDependencies() {
-    if (initialised == false) {
+    if (_initialised == false) {
       fabColorAnimation = ColorTween(
               begin: Theme.of(context).primaryColor,
               end: Theme.of(context).colorScheme.secondary)
           .animate(
               CurvedAnimation(curve: Curves.linear, parent: fabController));
-      initialised = true;
+      _initialised = true;
     }
     super.didChangeDependencies();
   }
@@ -79,20 +106,47 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
       builder: (context, future) {
         if (future.connectionState == ConnectionState.done ||
             future.connectionState == ConnectionState.active) {
-          List<JournalEntryData> entries = future.data!;
-          entries.sort((firstEntry, secondEntry) {
-            DateTime firstDate = DateTime.parse(firstEntry.date);
-            DateTime secondDate = DateTime.parse(secondEntry.date);
-            return secondDate.compareTo(firstDate);
-          });
+          entries = future.data ?? [];
+          // TODO remove sorting if data is already sorted from firebase
+          entries.sort(_sortEntries);
+
+          if (!_keyInitialised) {
+            _keyInitialised = true;
+            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+              innerController.addListener(() async {
+                if (innerController.offset >=
+                    innerController.position.maxScrollExtent) {
+                  if (_hasNext == true) {
+                    if (!_isFetchingDocs) {
+                      var newEntries = await _database.getJournalEntries(
+                        limit: docLimit,
+                        lastDocDate: entries[entries.length - 1].date,
+                        setFetching: _setFetching,
+                        setNotFetching: _setNotFetching,
+                      );
+
+                      if (newEntries.length < docLimit) {
+                        _hasNext = false;
+                      }
+                      setState(() => entries.addAll(newEntries));
+                    }
+                  }
+                }
+              });
+            });
+          }
 
           return Scaffold(
             extendBody: entries.isEmpty ? false : true,
             body: NestedScrollView(
+              key: nestedScrollViewKey,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
                   SliverToBoxAdapter(child: SizedBox(height: 20)),
                   SliverAppBar(
+                    floating: false,
+                    pinned: false,
+                    snap: false,
                     title: Text(
                       'Journal',
                       style: Theme.of(context).textTheme.headline3,
@@ -119,8 +173,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                       onRefresh: () {
                         setState(() {});
                         return journalEntriesFuture =
-                            DatabaseService(uid: _auth.getUser()!.uid)
-                                .getJournalEntries();
+                            _database.getJournalEntries();
                       },
                     )
                   : RefreshIndicator(
@@ -141,8 +194,7 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                       onRefresh: () {
                         setState(() {});
                         return journalEntriesFuture =
-                            DatabaseService(uid: _auth.getUser()!.uid)
-                                .getJournalEntries();
+                            _database.getJournalEntries();
                       },
                     ),
             ),
