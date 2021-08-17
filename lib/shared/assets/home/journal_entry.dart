@@ -13,7 +13,8 @@ class JournalEntry extends StatefulWidget {
   late final int feeling;
 
   JournalEntry(
-      {required this.date, required this.entryText, required feeling}) {
+      {required this.date, required this.entryText, required feeling, Key? key})
+      : super(key: key) {
     if (feeling < 1) {
       feeling = 1;
     } else if (feeling > 3) {
@@ -26,7 +27,8 @@ class JournalEntry extends StatefulWidget {
   _JournalEntryState createState() => _JournalEntryState();
 }
 
-class _JournalEntryState extends State<JournalEntry> {
+class _JournalEntryState extends State<JournalEntry>
+    with AutomaticKeepAliveClientMixin {
   late Color _shadowColor;
   double _blurRadius = 20;
   double _spreadRadius = 0;
@@ -40,6 +42,9 @@ class _JournalEntryState extends State<JournalEntry> {
   late double _spread;
 
   late Future picturesFuture;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
