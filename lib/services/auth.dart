@@ -102,6 +102,7 @@ class AuthService {
             .collection('entries')
             .doc(currentTime)
             .set({
+          "date": currentTime,
           "entryText": encryptService.encrypt(
               '''Hello! Welcome to Releaf. This is your personal space to reflect and talk about how you are feeling. Remember, it's ok, even normal, to feel down. We aren't computers and our emotions fluctuate. What's important is that we make the best of the times when we are happy. And remember to always ask for help when you need to.
         

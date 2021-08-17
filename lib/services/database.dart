@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/services/storage.dart';
@@ -40,6 +38,7 @@ class DatabaseService {
       String encryptedText = EncryptService(uid).encrypt(entryText);
 
       await journal.doc(date).set({
+        "date": date,
         "entryText": encryptedText,
         "feeling": feeling,
       });
@@ -111,9 +110,16 @@ class DatabaseService {
 
   // get entries
   Future<List<JournalEntryData>> getJournalEntries(
-      {int? limit, List? startAfterValues}) async {
+      {int? limit,
+      String? lastDocDate,
+      void Function()? setFetching,
+      void Function()? setNotFetching}) async {
     List<JournalEntryData> entries = [];
     print('getting journal entries');
+
+    if (setFetching != null) {
+      setFetching();
+    }
 
     EncryptService encryptService = EncryptService(uid);
 
@@ -122,7 +128,7 @@ class DatabaseService {
         var data = doc.data() as Map;
         entries.add(
           JournalEntryData(
-            date: doc.id,
+            date: doc['date'],
             entryText: encryptService.decrypt(data['entryText']),
             feeling: data['feeling'],
           ),
@@ -130,22 +136,34 @@ class DatabaseService {
       }
     }
 
-    if (limit != null && startAfterValues != null) {
+    if (limit != null && lastDocDate != null) {
       await journal
+          .orderBy("date", descending: true)
+          .startAfterDocument(await journal.doc(lastDocDate).get())
           .limit(limit)
-          .startAfter(startAfterValues)
           .get()
           .then((snapshot) async {
         _returnDataAsEntries(snapshot);
       });
-    } else if (limit != null && startAfterValues == null) {
-      await journal.limit(limit).get().then((snapshot) async {
+    } else if (limit != null && lastDocDate == null) {
+      await journal
+          .orderBy("date", descending: true)
+          .limit(limit)
+          .get()
+          .then((snapshot) async {
         _returnDataAsEntries(snapshot);
       });
     } else {
-      await journal.get().then((snapshot) {
+      await journal
+          .orderBy("date", descending: true)
+          .get()
+          .then((snapshot) async {
         _returnDataAsEntries(snapshot);
       });
+    }
+
+    if (setNotFetching != null) {
+      setNotFetching();
     }
 
     return entries;
