@@ -187,18 +187,18 @@ class _JournalSummaryState extends State<JournalSummary> {
                                     ),
                                     SizedBox(width: 8),
                                     Text(
-                                      entryFuture.data == null
-                                          ? 'Journal'
-                                          : _formatedDate(entries[0].date),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2!
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                    ),
+                                        entryFuture.data == null
+                                            ? 'Journal'
+                                            : _formatedDate(entries[0].date),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2!
+                                        //           .copyWith(
+                                        //               color: Theme.of(context)
+                                        //                   .primaryColor),
+                                        ),
                                     Spacer(),
                                     (entryFuture.data == null)
                                         ? Container()

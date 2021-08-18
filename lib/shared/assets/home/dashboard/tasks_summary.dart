@@ -180,14 +180,11 @@ class _TasksSummaryState extends State<TasksSummary> {
                             height: 35,
                           ),
                           SizedBox(width: 8),
-                          Text(
-                            'Yearly Goals',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2!
-                                .copyWith(
-                                    color: Theme.of(context).primaryColor),
-                          ),
+                          Text('Yearly Goals',
+                              style: Theme.of(context).textTheme.subtitle2!
+                              // .copyWith(
+                              //     color: Theme.of(context).primaryColor),
+                              ),
                           Spacer(),
                           Text(
                             ((snapshot.data ?? []) as List).isEmpty
