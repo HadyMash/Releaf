@@ -402,156 +402,294 @@ class _JournalSummaryState extends State<JournalSummary> {
             });
           }
 
-          return GestureDetector(
-            onTap: () => AppTheme.homeNavkey.currentState!.pushReplacement(
-              PageRouteBuilder(
-                transitionDuration: Duration(milliseconds: 320),
-                pageBuilder: (BuildContext context, Animation<double> animation,
-                    Animation<double> secondaryAnimation) {
-                  return Tasks(false);
-                },
-                transitionsBuilder: (BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                    Widget child) {
-                  return Align(
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    ),
-                  );
-                },
-              ),
-            ),
-            onTapDown: (_) => _animateDown(),
-            onTapUp: (_) => _animateUp(),
-            onTapCancel: () => _animateUp(),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: _shadowColor,
-                    blurRadius: _blurRadius,
-                  ),
-                ],
-              ),
-              child: OpenContainer(
-                closedShape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-                closedElevation: 0,
-                closedColor: Theme.of(context).backgroundColor,
-                openColor: Theme.of(context).scaffoldBackgroundColor,
-                closedBuilder: (context, _) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/adobe/illustrator/icons/svg/journal_selected.svg',
-                              width: 35,
-                              height: 35,
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              entryFuture.data == null
-                                  ? 'Journal'
-                                  : _formatedDate(entries[0].date),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2!
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColor),
-                            ),
-                            Spacer(),
-                            (entryFuture.data == null)
-                                ? Container()
-                                : Lottie.asset(
-                                    'assets/lottie/faces/${(entries[0].feeling == 1 ? 'sad' : (entries[0].feeling == 2 ? 'meh' : 'happy'))}.json',
-                                    key: lottieKey,
-                                    repeat: false,
-                                    width: 50,
-                                    height: 50,
-                                  ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        FutureBuilder(
-                          key: UniqueKey(),
-                          future: picturesFuture,
-                          initialData: [],
-                          builder: (context, picFuture) {
-                            return (picFuture.connectionState ==
-                                        ConnectionState.waiting ||
-                                    picturesFuture == null)
-                                ? Center(child: CircularProgressIndicator())
-                                : SizedBox(
-                                    width: MediaQuery.of(context).size.width -
-                                        40 -
-                                        50,
-                                    height: 160,
-                                    child: ListView(
-                                      scrollDirection: Axis.horizontal,
-                                      clipBehavior: Clip.none,
-                                      children: _buildPictures(
-                                          (picFuture.data as List<Uint8List>)),
-                                    ),
-                                  );
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        (entryFuture.data == null)
-                            ? Container()
-                            : Text(
-                                entries[0].entryText,
-                                style: Theme.of(context).textTheme.bodyText2,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                      ],
-                    ),
-                  );
-                },
-                openBuilder: (context, _) {
-                  return (entryFuture.data != null)
-                      ? JournalEntryExpanded(
-                          entries[0].date,
-                          entries[0].entryText,
-                          entries[0].feeling,
-                          picturesFuture)
-                      : Scaffold(
-                          appBar: AppBar(
-                            automaticallyImplyLeading: false,
-                            leading: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios_new_rounded,
-                                color: Theme.of(context).iconTheme.color,
-                                size: Theme.of(context).iconTheme.size,
-                              ),
-                              onPressed: () =>
-                                  AppTheme.homeNavkey.currentState!.pop(),
-                            ),
+          if (entryFuture.connectionState == ConnectionState.done) {
+            return FutureBuilder(
+              future: picturesFuture,
+              initialData: [],
+              builder: (context, picFuture) {
+                return GestureDetector(
+                  onTap: () =>
+                      AppTheme.homeNavkey.currentState!.pushReplacement(
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 320),
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return Tasks(false);
+                      },
+                      transitionsBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child) {
+                        return Align(
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: child,
                           ),
                         );
-                },
+                      },
+                    ),
+                  ),
+                  onTapDown: (_) => _animateDown(),
+                  onTapUp: (_) => _animateUp(),
+                  onTapCancel: () => _animateUp(),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 25),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _shadowColor,
+                          blurRadius: _blurRadius,
+                        ),
+                      ],
+                    ),
+                    child: OpenContainer(
+                      closedShape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      closedElevation: 0,
+                      closedColor: Theme.of(context).backgroundColor,
+                      openColor: Theme.of(context).scaffoldBackgroundColor,
+                      closedBuilder: (context, _) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/adobe/illustrator/icons/svg/journal_selected.svg',
+                                    width: 35,
+                                    height: 35,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    entryFuture.data == null
+                                        ? 'Journal'
+                                        : _formatedDate(entries[0].date),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2!
+                                        .copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                  ),
+                                  Spacer(),
+                                  (entryFuture.data == null)
+                                      ? Container()
+                                      : Lottie.asset(
+                                          'assets/lottie/faces/${(entries[0].feeling == 1 ? 'sad' : (entries[0].feeling == 2 ? 'meh' : 'happy'))}.json',
+                                          key: lottieKey,
+                                          repeat: false,
+                                          width: 50,
+                                          height: 50,
+                                        ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              (picFuture.connectionState ==
+                                      ConnectionState.done)
+                                  ? SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          40 -
+                                          50,
+                                      height: 160,
+                                      child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        clipBehavior: Clip.none,
+                                        children: _buildPictures((picFuture.data
+                                            as List<Uint8List>)),
+                                      ),
+                                    )
+                                  : Center(child: CircularProgressIndicator()),
+                              SizedBox(height: 10),
+                              (entryFuture.data == null)
+                                  ? Container()
+                                  : Text(
+                                      entries[0].entryText,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                            ],
+                          ),
+                        );
+                      },
+                      openBuilder: (context, _) {
+                        return (entryFuture.data != null)
+                            ? JournalEntryExpanded(
+                                entries[0].date,
+                                entries[0].entryText,
+                                entries[0].feeling,
+                                picturesFuture)
+                            : Scaffold(
+                                appBar: AppBar(
+                                  automaticallyImplyLeading: false,
+                                  leading: IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: Theme.of(context).iconTheme.color,
+                                      size: Theme.of(context).iconTheme.size,
+                                    ),
+                                    onPressed: () =>
+                                        AppTheme.homeNavkey.currentState!.pop(),
+                                  ),
+                                ),
+                              );
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+          } else {
+            return GestureDetector(
+              onTap: () => AppTheme.homeNavkey.currentState!.pushReplacement(
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 320),
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation) {
+                    return Tasks(false);
+                  },
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    return Align(
+                      child: FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-          );
+              onTapDown: (_) => _animateDown(),
+              onTapUp: (_) => _animateUp(),
+              onTapCancel: () => _animateUp(),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _shadowColor,
+                      blurRadius: _blurRadius,
+                    ),
+                  ],
+                ),
+                child: OpenContainer(
+                  closedShape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  closedElevation: 0,
+                  closedColor: Theme.of(context).backgroundColor,
+                  openColor: Theme.of(context).scaffoldBackgroundColor,
+                  closedBuilder: (context, _) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/adobe/illustrator/icons/svg/journal_selected.svg',
+                                width: 35,
+                                height: 35,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                entryFuture.data == null
+                                    ? 'Journal'
+                                    : _formatedDate(entries[0].date),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2!
+                                    .copyWith(
+                                        color: Theme.of(context).primaryColor),
+                              ),
+                              Spacer(),
+                              (entryFuture.data == null)
+                                  ? Container()
+                                  : Lottie.asset(
+                                      'assets/lottie/faces/${(entries[0].feeling == 1 ? 'sad' : (entries[0].feeling == 2 ? 'meh' : 'happy'))}.json',
+                                      key: lottieKey,
+                                      repeat: false,
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Center(child: CircularProgressIndicator()),
+                          SizedBox(height: 10),
+                          (entryFuture.data == null)
+                              ? Container()
+                              : Text(
+                                  entries[0].entryText,
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                        ],
+                      ),
+                    );
+                  },
+                  openBuilder: (context, _) {
+                    return (entryFuture.data != null)
+                        ? JournalEntryExpanded(
+                            entries[0].date,
+                            entries[0].entryText,
+                            entries[0].feeling,
+                            picturesFuture)
+                        : Scaffold(
+                            appBar: AppBar(
+                              automaticallyImplyLeading: false,
+                              leading: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  color: Theme.of(context).iconTheme.color,
+                                  size: Theme.of(context).iconTheme.size,
+                                ),
+                                onPressed: () =>
+                                    AppTheme.homeNavkey.currentState!.pop(),
+                              ),
+                            ),
+                          );
+                  },
+                ),
+              ),
+            );
+          }
         },
       ),
     );
