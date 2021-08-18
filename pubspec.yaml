@@ -21,8 +21,6 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   animations: ^2.0.0
   cloud_firestore: ^2.4.0
   cupertino_icons: ^1.0.3
@@ -31,6 +29,8 @@ dependencies:
   firebase_auth: ^3.0.1
   firebase_core: ^1.4.0
   firebase_storage: ^10.0.1
+  flutter:
+    sdk: flutter
   flutter_image_compress: ^1.0.0
   flutter_launcher_icons: ^0.9.0
   flutter_native_image: ^0.0.6
