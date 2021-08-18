@@ -215,9 +215,11 @@ class JournalEntryExpanded extends StatefulWidget {
   final String entryText;
   final int feeling;
   final Future? picturesFuture;
+  final bool? rootNavigator;
 
   JournalEntryExpanded(
-      this.date, this.entryText, this.feeling, this.picturesFuture);
+      this.date, this.entryText, this.feeling, this.picturesFuture,
+      {this.rootNavigator});
   @override
   _JournalEntryExpandedState createState() => _JournalEntryExpandedState();
 }
@@ -343,13 +345,14 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
           ),
         ],
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Theme.of(context).iconTheme.color,
-            size: Theme.of(context).iconTheme.size,
-          ),
-          onPressed: () => AppTheme.homeNavkey.currentState!.pop(),
-        ),
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Theme.of(context).iconTheme.color,
+              size: Theme.of(context).iconTheme.size,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
       ),
       body: Center(
         child: Padding(
