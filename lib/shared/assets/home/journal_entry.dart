@@ -114,6 +114,8 @@ class _JournalEntryState extends State<JournalEntry>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Hero(
       tag: widget.date,
       child: Material(
@@ -161,7 +163,7 @@ class _JournalEntryState extends State<JournalEntry>
                           Text(
                             _formatedDate(widget.date),
                             style: Theme.of(context).textTheme.subtitle2,
-                            maxLines: 3,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: 10),
@@ -212,7 +214,7 @@ class JournalEntryExpanded extends StatefulWidget {
   final String date;
   final String entryText;
   final int feeling;
-  final Future picturesFuture;
+  final Future? picturesFuture;
 
   JournalEntryExpanded(
       this.date, this.entryText, this.feeling, this.picturesFuture);
