@@ -21,8 +21,6 @@ class _TasksSummaryState extends State<TasksSummary> {
   final FixedExtentScrollController yearPickerScrollController =
       FixedExtentScrollController(initialItem: DateTime.now().year - 2000);
 
-  final GlobalKey lottieKey = GlobalKey(debugLabel: 'lottieKey');
-
   late Color _shadowColor;
   double _blurRadius = 15;
 
@@ -174,17 +172,40 @@ class _TasksSummaryState extends State<TasksSummary> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            'assets/adobe/illustrator/icons/svg/tasks_selected.svg',
-                            width: 35,
-                            height: 35,
+                          Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .shadowColor
+                                      .withOpacity(0.13),
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/adobe/illustrator/icons/svg/tasks_selected.svg',
+                              width: 35,
+                              height: 35,
+                            ),
                           ),
                           SizedBox(width: 8),
-                          Text('Yearly Goals',
-                              style: Theme.of(context).textTheme.subtitle2!
-                              // .copyWith(
-                              //     color: Theme.of(context).primaryColor),
-                              ),
+                          Text(
+                            'Yearly Goals',
+                            style:
+                                Theme.of(context).textTheme.subtitle2!.copyWith(
+                              shadows: [
+                                Shadow(
+                                  color: Theme.of(context)
+                                      .shadowColor
+                                      .withOpacity(0.13),
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                          ),
                           Spacer(),
                           Text(
                             ((snapshot.data ?? []) as List).isEmpty

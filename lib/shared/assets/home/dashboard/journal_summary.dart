@@ -180,34 +180,69 @@ class _JournalSummaryState extends State<JournalSummary> {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SvgPicture.asset(
-                                      'assets/adobe/illustrator/icons/svg/journal_selected.svg',
-                                      width: 35,
-                                      height: 35,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Theme.of(context)
+                                                .shadowColor
+                                                .withOpacity(0.25),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: SvgPicture.asset(
+                                        'assets/adobe/illustrator/icons/svg/journal_selected.svg',
+                                        width: 35,
+                                        height: 35,
+                                      ),
                                     ),
                                     SizedBox(width: 8),
                                     Text(
-                                        entryFuture.data == null
-                                            ? 'Journal'
-                                            : _formatedDate(entries[0].date),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2!
-                                        //           .copyWith(
-                                        //               color: Theme.of(context)
-                                        //                   .primaryColor),
-                                        ),
+                                      entryFuture.data == null
+                                          ? 'Journal'
+                                          : _formatedDate(entries[0].date),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(
+                                        shadows: [
+                                          Shadow(
+                                            color: Theme.of(context)
+                                                .shadowColor
+                                                .withOpacity(0.13),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     Spacer(),
                                     (entryFuture.data == null)
                                         ? Container()
-                                        : Lottie.asset(
-                                            'assets/lottie/faces/${(entries[0].feeling == 1 ? 'sad' : (entries[0].feeling == 2 ? 'meh' : 'happy'))}.json',
-                                            key: lottieKey,
-                                            repeat: false,
-                                            width: 50,
-                                            height: 50,
+                                        : Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Theme.of(context)
+                                                      .shadowColor
+                                                      .withOpacity(0.13),
+                                                  blurRadius: 6,
+                                                  offset: Offset(0, 3),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Lottie.asset(
+                                              'assets/lottie/faces/${(entries[0].feeling == 1 ? 'sad' : (entries[0].feeling == 2 ? 'meh' : 'happy'))}.json',
+                                              key: lottieKey,
+                                              repeat: false,
+                                              width: 50,
+                                              height: 50,
+                                            ),
                                           ),
                                   ],
                                 ),
@@ -327,7 +362,7 @@ class _JournalSummaryState extends State<JournalSummary> {
                     openColor: Theme.of(context).scaffoldBackgroundColor,
                     closedBuilder: (context, _) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -335,10 +370,23 @@ class _JournalSummaryState extends State<JournalSummary> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SvgPicture.asset(
-                                  'assets/adobe/illustrator/icons/svg/journal_selected.svg',
-                                  width: 35,
-                                  height: 35,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context)
+                                            .shadowColor
+                                            .withOpacity(0.13),
+                                        blurRadius: 6,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: SvgPicture.asset(
+                                    'assets/adobe/illustrator/icons/svg/journal_unselected.svg',
+                                    width: 35,
+                                    height: 35,
+                                  ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
