@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
+import 'package:releaf/shared/assets/home/blurred_appbar.dart';
 import 'package:releaf/shared/assets/home/journal_entry.dart';
 import 'package:releaf/shared/assets/home/journal_entry_form.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
@@ -30,17 +31,14 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
   late final Animation<double> fabElevationTween;
 
   final GlobalKey lottieKey = GlobalKey();
-  final GlobalKey<NestedScrollViewState> nestedScrollViewKey = GlobalKey();
 
-  ScrollController get innerController {
-    return nestedScrollViewKey.currentState!.innerController;
-  }
+  final ScrollController scrollController =
+      ScrollController(keepScrollOffset: true);
 
   List<JournalEntryData> entries = [];
   int docLimit = 5;
 
   bool _initialised = false;
-  bool _keyInitialised = false;
   bool _isFetchingDocs = false;
   bool _hasNext = true;
 
@@ -55,6 +53,27 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    scrollController.addListener(() async {
+      if (scrollController.offset >=
+          scrollController.position.maxScrollExtent) {
+        if (_hasNext == true) {
+          if (!_isFetchingDocs) {
+            var newEntries = await _database.getJournalEntries(
+              limit: docLimit,
+              lastDocDate: entries[entries.length - 1].date,
+              setFetching: _setFetching,
+              setNotFetching: _setNotFetching,
+            );
+
+            if (newEntries.length < docLimit) {
+              _hasNext = false;
+            }
+            setState(() => entries.addAll(newEntries));
+          }
+        }
+      }
+    });
 
     _database = DatabaseService(uid: _auth.getUser()!.uid);
 
@@ -110,94 +129,54 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
           // TODO remove sorting if data is already sorted from firebase
           entries.sort(_sortEntries);
 
-          if (!_keyInitialised) {
-            _keyInitialised = true;
-            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-              innerController.addListener(() async {
-                if (innerController.offset >=
-                    innerController.position.maxScrollExtent) {
-                  if (_hasNext == true) {
-                    if (!_isFetchingDocs) {
-                      var newEntries = await _database.getJournalEntries(
-                        limit: docLimit,
-                        lastDocDate: entries[entries.length - 1].date,
-                        setFetching: _setFetching,
-                        setNotFetching: _setNotFetching,
-                      );
-
-                      if (newEntries.length < docLimit) {
-                        _hasNext = false;
-                      }
-                      setState(() => entries.addAll(newEntries));
-                    }
-                  }
-                }
-              });
-            });
-          }
-
           return Scaffold(
+            extendBodyBehindAppBar: true,
             extendBody: entries.isEmpty ? false : true,
-            body: NestedScrollView(
-              key: nestedScrollViewKey,
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  SliverAppBar(
-                    floating: false,
-                    pinned: false,
-                    snap: false,
-                    title: Text(
-                      'Journal',
-                      style: Theme.of(context).textTheme.headline3,
+            appBar: BlurredAppBar(title: 'Journal'),
+            body: entries.isEmpty
+                ? RefreshIndicator(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        clipBehavior: Clip.none,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Lottie.asset(
+                            'assets/lottie/empty_list.json',
+                            key: lottieKey,
+                            frameRate: FrameRate.max,
+                          ),
+                        ),
+                      ),
                     ),
-                    automaticallyImplyLeading: false,
+                    onRefresh: () {
+                      setState(() {});
+                      return journalEntriesFuture =
+                          _database.getJournalEntries();
+                    },
+                  )
+                : RefreshIndicator(
+                    child: Scrollbar(
+                      controller: scrollController,
+                      child: ListView.builder(
+                        controller: scrollController,
+                        padding: EdgeInsets.only(
+                            top: BlurredAppBar(title: '').height +
+                                MediaQuery.of(context).padding.top,
+                            bottom: 75 + MediaQuery.of(context).padding.bottom),
+                        itemCount: entries.length,
+                        itemBuilder: (context, index) => JournalEntry(
+                          date: entries[index].date,
+                          entryText: entries[index].entryText,
+                          feeling: entries[index].feeling,
+                        ),
+                      ),
+                    ),
+                    onRefresh: () {
+                      setState(() {});
+                      return journalEntriesFuture =
+                          _database.getJournalEntries();
+                    },
                   ),
-                ];
-              },
-              body: entries.isEmpty
-                  ? RefreshIndicator(
-                      child: Center(
-                        child: SingleChildScrollView(
-                          clipBehavior: Clip.none,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: Lottie.asset(
-                              'assets/lottie/empty_list.json',
-                              key: lottieKey,
-                              frameRate: FrameRate.max,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onRefresh: () {
-                        setState(() {});
-                        return journalEntriesFuture =
-                            _database.getJournalEntries();
-                      },
-                    )
-                  : RefreshIndicator(
-                      child: Scrollbar(
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(
-                              top: 10,
-                              bottom:
-                                  75 + MediaQuery.of(context).padding.bottom),
-                          itemCount: entries.length,
-                          itemBuilder: (context, index) => JournalEntry(
-                            date: entries[index].date,
-                            entryText: entries[index].entryText,
-                            feeling: entries[index].feeling,
-                          ),
-                        ),
-                      ),
-                      onRefresh: () {
-                        setState(() {});
-                        return journalEntriesFuture =
-                            _database.getJournalEntries();
-                      },
-                    ),
-            ),
             floatingActionButton: Hero(
               tag: 'floatingActionButton',
               child: GestureDetector(

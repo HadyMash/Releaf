@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/shared/assets/custom_widget_border.dart';
+import 'package:releaf/shared/assets/home/blurred_appbar.dart';
 import 'package:releaf/shared/assets/home/navigation_bar.dart';
 import 'package:releaf/shared/assets/home/setting_popup.dart';
 import 'package:releaf/shared/assets/home/todo.dart';
@@ -147,178 +148,330 @@ class _TasksState extends State<Tasks> with SingleTickerProviderStateMixin {
             }
 
             return Scaffold(
+              extendBodyBehindAppBar: true,
               extendBody:
                   ((snapshot.data ?? []) as List).isEmpty ? false : true,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              appBar: BlurredAppBar(
+                title: 'Tasks',
+                actions: [
+                  Row(
+                    children: [
+                      future.connectionState == ConnectionState.done
+                          ? (DropdownButton<int>(
+                              underline: Container(),
+                              value: selectedYear,
+                              items: (years ?? [])
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      child: Text(
+                                        e.toString(),
+                                        style: TextStyle(
+                                          fontSize: 20 -
+                                              ((926 * 0.01) - (height * 0.01)),
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .color,
+                                        ),
+                                      ),
+                                      value: e as int,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (year) {
+                                yearChangedManually = true;
+                                setState(() => selectedYear = year!);
+                              },
+                            ))
+                          : Container(),
+                      IconButton(
+                        icon: Icon(
+                          CupertinoIcons.add,
+                          size: 32,
+                          color: Theme.of(context).iconTheme.color,
+                          semanticLabel: 'Add New Year',
+                        ),
+                        onPressed: () {
+                          List yearList = [];
+                          for (int i = 0; i < 51; i++) {
+                            yearList.add(2000 + i);
+                          }
+                          showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            context: context,
+                            builder: (context) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: CupertinoPicker(
+                                      scrollController:
+                                          yearPickerScrollController,
+                                      itemExtent: 40,
+                                      onSelectedItemChanged: (year) {
+                                        addedYear = year;
+                                      },
+                                      children: yearList
+                                          .map((e) => Center(
+                                              child: Text(e.toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1)))
+                                          .toList(),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: ThemedButton(
+                                      label: 'Add Year',
+                                      notAllCaps: true,
+                                      onPressed: () async {
+                                        await database.addTaskYear((addedYear ??
+                                                (DateTime.now().year - 2000)) +
+                                            2000);
+                                        yearsFuture = database.getTaskYears();
+                                        setState(
+                                            () => selectedYear = addedYear!);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_rounded,
+                          size: 32,
+                          color: Theme.of(context).iconTheme.color,
+                          semanticLabel: 'Delete',
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => AlertDialog(
+                              title: Text('Confirm Delete'),
+                              content: Text(
+                                  'Are you sure you want to delete your $selectedYear goals?'),
+                              actions: [
+                                TextButton(
+                                  child: Text('No'),
+                                  onPressed: () {
+                                    AppTheme.mainNavKey.currentState!.pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Yes'),
+                                  onPressed: () async {
+                                    List years = await database.getTaskYears();
+                                    if (years.length > 1) {
+                                      await database
+                                          .deleteTaskYear(selectedYear);
+                                    } else {
+                                      await database
+                                          .deleteTaskYear(selectedYear);
+                                      await database
+                                          .addTaskYear(DateTime.now().year);
+                                      yearsFuture = database.getTaskYears();
+                                    }
+                                    setState(() {});
+                                    AppTheme.mainNavKey.currentState!.pop();
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                ],
+              ),
               body: NestedScrollView(
                   physics: NeverScrollableScrollPhysics(),
                   headerSliverBuilder: (context, _) {
                     return <Widget>[
-                      SliverToBoxAdapter(child: SizedBox(height: 20)),
-                      SliverAppBar(
-                        title: Text(
-                          'Tasks',
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                        automaticallyImplyLeading: false,
-                        actions: [
-                          Row(
-                            children: [
-                              future.connectionState == ConnectionState.done
-                                  ? (DropdownButton<int>(
-                                      underline: Container(),
-                                      value: selectedYear,
-                                      items: (years ?? [])
-                                          .map(
-                                            (e) => DropdownMenuItem(
-                                              child: Text(
-                                                e.toString(),
-                                                style: TextStyle(
-                                                  fontSize: 20 -
-                                                      ((926 * 0.01) -
-                                                          (height * 0.01)),
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .color,
-                                                ),
-                                              ),
-                                              value: e as int,
-                                            ),
-                                          )
-                                          .toList(),
-                                      onChanged: (year) {
-                                        yearChangedManually = true;
-                                        setState(() => selectedYear = year!);
-                                      },
-                                    ))
-                                  : Container(),
-                              IconButton(
-                                icon: Icon(
-                                  CupertinoIcons.add,
-                                  size: 32,
-                                  color: Theme.of(context).iconTheme.color,
-                                  semanticLabel: 'Add New Year',
-                                ),
-                                onPressed: () {
-                                  List yearList = [];
-                                  for (int i = 0; i < 51; i++) {
-                                    yearList.add(2000 + i);
-                                  }
-                                  showModalBottomSheet(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                      ),
-                                    ),
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            flex: 5,
-                                            child: CupertinoPicker(
-                                              scrollController:
-                                                  yearPickerScrollController,
-                                              itemExtent: 40,
-                                              onSelectedItemChanged: (year) {
-                                                addedYear = year;
-                                              },
-                                              children: yearList
-                                                  .map((e) => Center(
-                                                      child: Text(e.toString(),
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyText1)))
-                                                  .toList(),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            flex: 1,
-                                            child: ThemedButton(
-                                              label: 'Add Year',
-                                              notAllCaps: true,
-                                              onPressed: () async {
-                                                await database.addTaskYear(
-                                                    (addedYear ??
-                                                            (DateTime.now()
-                                                                    .year -
-                                                                2000)) +
-                                                        2000);
-                                                yearsFuture =
-                                                    database.getTaskYears();
-                                                setState(() =>
-                                                    selectedYear = addedYear!);
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.delete_rounded,
-                                  size: 32,
-                                  color: Theme.of(context).iconTheme.color,
-                                  semanticLabel: 'Delete',
-                                ),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (_) => AlertDialog(
-                                      title: Text('Confirm Delete'),
-                                      content: Text(
-                                          'Are you sure you want to delete your $selectedYear goals?'),
-                                      actions: [
-                                        TextButton(
-                                          child: Text('No'),
-                                          onPressed: () {
-                                            AppTheme.mainNavKey.currentState!
-                                                .pop();
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: Text('Yes'),
-                                          onPressed: () async {
-                                            List years =
-                                                await database.getTaskYears();
-                                            if (years.length > 1) {
-                                              await database
-                                                  .deleteTaskYear(selectedYear);
-                                            } else {
-                                              await database
-                                                  .deleteTaskYear(selectedYear);
-                                              await database.addTaskYear(
-                                                  DateTime.now().year);
-                                              yearsFuture =
-                                                  database.getTaskYears();
-                                            }
-                                            setState(() {});
-                                            AppTheme.mainNavKey.currentState!
-                                                .pop();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(width: 10),
-                            ],
-                          ),
-                        ],
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                            height: MediaQuery.of(context).padding.top),
                       ),
+                      // SliverAppBar(
+                      //   title: Text(
+                      //     'Tasks',
+                      //     style: Theme.of(context).textTheme.headline3,
+                      //   ),
+                      //   automaticallyImplyLeading: false,
+                      //   actions: [
+                      //     Row(
+                      //       children: [
+                      //         future.connectionState == ConnectionState.done
+                      //             ? (DropdownButton<int>(
+                      //                 underline: Container(),
+                      //                 value: selectedYear,
+                      //                 items: (years ?? [])
+                      //                     .map(
+                      //                       (e) => DropdownMenuItem(
+                      //                         child: Text(
+                      //                           e.toString(),
+                      //                           style: TextStyle(
+                      //                             fontSize: 20 -
+                      //                                 ((926 * 0.01) -
+                      //                                     (height * 0.01)),
+                      //                             color: Theme.of(context)
+                      //                                 .textTheme
+                      //                                 .bodyText1!
+                      //                                 .color,
+                      //                           ),
+                      //                         ),
+                      //                         value: e as int,
+                      //                       ),
+                      //                     )
+                      //                     .toList(),
+                      //                 onChanged: (year) {
+                      //                   yearChangedManually = true;
+                      //                   setState(() => selectedYear = year!);
+                      //                 },
+                      //               ))
+                      //             : Container(),
+                      //         IconButton(
+                      //           icon: Icon(
+                      //             CupertinoIcons.add,
+                      //             size: 32,
+                      //             color: Theme.of(context).iconTheme.color,
+                      //             semanticLabel: 'Add New Year',
+                      //           ),
+                      //           onPressed: () {
+                      //             List yearList = [];
+                      //             for (int i = 0; i < 51; i++) {
+                      //               yearList.add(2000 + i);
+                      //             }
+                      //             showModalBottomSheet(
+                      //               shape: RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.only(
+                      //                   topLeft: Radius.circular(20),
+                      //                   topRight: Radius.circular(20),
+                      //                 ),
+                      //               ),
+                      //               context: context,
+                      //               builder: (context) {
+                      //                 return Column(
+                      //                   mainAxisSize: MainAxisSize.max,
+                      //                   children: [
+                      //                     Expanded(
+                      //                       flex: 5,
+                      //                       child: CupertinoPicker(
+                      //                         scrollController:
+                      //                             yearPickerScrollController,
+                      //                         itemExtent: 40,
+                      //                         onSelectedItemChanged: (year) {
+                      //                           addedYear = year;
+                      //                         },
+                      //                         children: yearList
+                      //                             .map((e) => Center(
+                      //                                 child: Text(e.toString(),
+                      //                                     style:
+                      //                                         Theme.of(context)
+                      //                                             .textTheme
+                      //                                             .bodyText1)))
+                      //                             .toList(),
+                      //                       ),
+                      //                     ),
+                      //                     Flexible(
+                      //                       flex: 1,
+                      //                       child: ThemedButton(
+                      //                         label: 'Add Year',
+                      //                         notAllCaps: true,
+                      //                         onPressed: () async {
+                      //                           await database.addTaskYear(
+                      //                               (addedYear ??
+                      //                                       (DateTime.now()
+                      //                                               .year -
+                      //                                           2000)) +
+                      //                                   2000);
+                      //                           yearsFuture =
+                      //                               database.getTaskYears();
+                      //                           setState(() =>
+                      //                               selectedYear = addedYear!);
+                      //                           Navigator.of(context).pop();
+                      //                         },
+                      //                       ),
+                      //                     )
+                      //                   ],
+                      //                 );
+                      //               },
+                      //             );
+                      //           },
+                      //         ),
+                      //         IconButton(
+                      //           icon: Icon(
+                      //             Icons.delete_rounded,
+                      //             size: 32,
+                      //             color: Theme.of(context).iconTheme.color,
+                      //             semanticLabel: 'Delete',
+                      //           ),
+                      //           onPressed: () {
+                      //             showDialog(
+                      //               context: context,
+                      //               barrierDismissible: false,
+                      //               builder: (_) => AlertDialog(
+                      //                 title: Text('Confirm Delete'),
+                      //                 content: Text(
+                      //                     'Are you sure you want to delete your $selectedYear goals?'),
+                      //                 actions: [
+                      //                   TextButton(
+                      //                     child: Text('No'),
+                      //                     onPressed: () {
+                      //                       AppTheme.mainNavKey.currentState!
+                      //                           .pop();
+                      //                     },
+                      //                   ),
+                      //                   TextButton(
+                      //                     child: Text('Yes'),
+                      //                     onPressed: () async {
+                      //                       List years =
+                      //                           await database.getTaskYears();
+                      //                       if (years.length > 1) {
+                      //                         await database
+                      //                             .deleteTaskYear(selectedYear);
+                      //                       } else {
+                      //                         await database
+                      //                             .deleteTaskYear(selectedYear);
+                      //                         await database.addTaskYear(
+                      //                             DateTime.now().year);
+                      //                         yearsFuture =
+                      //                             database.getTaskYears();
+                      //                       }
+                      //                       setState(() {});
+                      //                       AppTheme.mainNavKey.currentState!
+                      //                           .pop();
+                      //                     },
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             );
+                      //           },
+                      //         ),
+                      //         SizedBox(width: 10),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                       SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          padding:
+                              EdgeInsets.only(left: 25, right: 25, top: 10),
                           child: Stack(
                             children: [
                               Container(
