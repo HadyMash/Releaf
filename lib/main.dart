@@ -46,7 +46,7 @@ void main() async {
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                systemOverlayStyle: SystemUiOverlayStyle.light,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
@@ -151,7 +151,7 @@ void main() async {
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
+                systemOverlayStyle: SystemUiOverlayStyle.light,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
@@ -301,7 +301,7 @@ class _ThemedAppState extends State<ThemedApp> {
               shadowColor: Colors.black,
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                systemOverlayStyle: SystemUiOverlayStyle.light,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
@@ -377,7 +377,7 @@ class _ThemedAppState extends State<ThemedApp> {
               errorColor: Colors.red[300],
               disabledColor: Colors.grey,
               appBarTheme: AppBarTheme(
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
+                systemOverlayStyle: SystemUiOverlayStyle.light,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: false,
