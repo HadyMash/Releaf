@@ -126,8 +126,6 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
         if (future.connectionState == ConnectionState.done ||
             future.connectionState == ConnectionState.active) {
           entries = future.data ?? [];
-          // TODO remove sorting if data is already sorted from firebase
-          entries.sort(_sortEntries);
 
           return Scaffold(
             extendBodyBehindAppBar: true,
