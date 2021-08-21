@@ -197,9 +197,29 @@ class Day extends StatefulWidget {
   _DayState createState() => _DayState();
 }
 
-class _DayState extends State<Day> {
+class _DayState extends State<Day> with SingleTickerProviderStateMixin {
   late final double size;
   bool _initialised = false;
+
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.active == true || widget.number == DateTime.now().day) {
+      controller = AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 300));
+    } else {
+      controller = AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 0));
+    }
+
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+
+    controller.forward();
+  }
 
   @override
   void didChangeDependencies() {
@@ -220,45 +240,50 @@ class _DayState extends State<Day> {
                 .bodyText1!
                 .copyWith(color: Colors.white)
             : Theme.of(context).textTheme.bodyText1!);
-    return Stack(
-      children: [
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              color: widget.number == DateTime.now().day
-                  ? Theme.of(context).errorColor
-                  : (widget.active ? Theme.of(context).primaryColor : null),
-              boxShadow: widget.number == DateTime.now().day
-                  ? [
-                      BoxShadow(
-                        color: Theme.of(context).shadowColor.withOpacity(0.4),
-                        offset: Offset(0, 3),
-                        blurRadius: 5,
-                        spreadRadius: 0,
-                      )
-                    ]
-                  : (widget.active
-                      ? [
-                          BoxShadow(
-                            color:
-                                Theme.of(context).shadowColor.withOpacity(0.4),
-                            offset: Offset(0, 3),
-                            blurRadius: 5,
-                            spreadRadius: 0,
-                          )
-                        ]
-                      : [])),
-        ),
-        // TODO add text to sized box
-        SizedBox(
-          height: size,
-          width: size,
-          child:
-              Center(child: Text(widget.number.toString(), style: textStyle)),
-        ),
-      ],
+
+    return ScaleTransition(
+      scale: animation,
+      child: Stack(
+        children: [
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: widget.number == DateTime.now().day
+                    ? Theme.of(context).errorColor
+                    : (widget.active ? Theme.of(context).primaryColor : null),
+                boxShadow: widget.number == DateTime.now().day
+                    ? [
+                        BoxShadow(
+                          color: Theme.of(context).shadowColor.withOpacity(0.4),
+                          offset: Offset(0, 3),
+                          blurRadius: 5,
+                          spreadRadius: 0,
+                        )
+                      ]
+                    : (widget.active
+                        ? [
+                            BoxShadow(
+                              color: Theme.of(context)
+                                  .shadowColor
+                                  .withOpacity(0.4),
+                              offset: Offset(0, 3),
+                              blurRadius: 5,
+                              spreadRadius: 0,
+                            )
+                          ]
+                        : [])),
+          ),
+          // TODO add text to sized box
+          SizedBox(
+            height: size,
+            width: size,
+            child:
+                Center(child: Text(widget.number.toString(), style: textStyle)),
+          ),
+        ],
+      ),
     );
   }
 }
