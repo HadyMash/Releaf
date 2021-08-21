@@ -219,7 +219,7 @@ class _DayState extends State<Day> with SingleTickerProviderStateMixin {
 
     if (widget.active == true || widget.number == DateTime.now().day) {
       controller = AnimationController(
-          vsync: this, duration: const Duration(milliseconds: 2300));
+          vsync: this, duration: const Duration(milliseconds: 1500));
     } else {
       controller = AnimationController(
           vsync: this, duration: const Duration(milliseconds: 0));
