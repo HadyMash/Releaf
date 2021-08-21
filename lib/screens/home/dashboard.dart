@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:releaf/screens/home/hidden_fab.dart';
+import 'package:releaf/shared/assets/home/dashboard/calendar.dart';
 import 'package:releaf/shared/assets/home/dashboard/journal_summary.dart';
 import 'package:releaf/shared/assets/home/dashboard/qod.dart';
 import 'package:releaf/shared/assets/home/dashboard/tasks_summary.dart';
@@ -23,6 +24,7 @@ class Dashboard extends StatelessWidget {
             child: Column(
               children: [
                 QuoteOfTheDay(),
+                Calendar(),
                 TasksSummary(),
                 JournalSummary(),
               ],
