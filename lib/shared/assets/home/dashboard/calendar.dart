@@ -48,6 +48,10 @@ class _CalendarState extends State<Calendar> {
       6: 6,
       7: 0,
     };
+    List<int> days = [...activeDays];
+    if (days.isNotEmpty) {
+      days.removeAt(0);
+    }
 
     List<List<Widget>> listOfDays = [];
     int numOfRows = 0;
@@ -73,7 +77,7 @@ class _CalendarState extends State<Calendar> {
       // Add a day to the newest row
       listOfDays[numOfRows - 1].add(Day(
         number: i,
-        active: activeDays.contains(i) && i <= dateTime.day,
+        active: days.contains(i) && i <= dateTime.day,
       ));
     }
 
@@ -102,8 +106,6 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<AppTheme>(context);
-
-    print('active days: ${theme.activeDays}');
 
     return Container(
       width: double.infinity,
