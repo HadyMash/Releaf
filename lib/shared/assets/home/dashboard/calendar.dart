@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quiver/time.dart' as quiverTime;
+import 'package:releaf/shared/const/app_theme.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -30,7 +32,7 @@ class _CalendarState extends State<Calendar> {
   List<String> days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   /// Returns a `List` of `Row`s which contain the days of the current month.
-  List<Widget> layOutMonthDays() {
+  List<Widget> layOutMonthDays(List<int> activeDays) {
     final DateTime dateTime = DateTime.now();
     final int daysInMonth =
         quiverTime.daysInMonth(dateTime.year, dateTime.month);
@@ -71,7 +73,7 @@ class _CalendarState extends State<Calendar> {
       // Add a day to the newest row
       listOfDays[numOfRows - 1].add(Day(
         number: i,
-        active: false,
+        active: activeDays.contains(i) && i <= dateTime.day,
       ));
     }
 
@@ -99,6 +101,10 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<AppTheme>(context);
+
+    print('active days: ${theme.activeDays}');
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
@@ -180,7 +186,8 @@ class _CalendarState extends State<Calendar> {
           ),
           SizedBox(height: 5),
           // * Day Numbers
-          ...layOutMonthDays()
+          // ...layOutMonthDays(theme.activeDays)
+          ...layOutMonthDays(theme.activeDays)
         ],
       ),
     );
