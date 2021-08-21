@@ -22,16 +22,16 @@ class BlurredAppBar extends StatelessWidget implements PreferredSizeWidget {
     List<Widget> widgets = [];
     double length = height + mediaQuery.padding.top;
 
-    for (int i = 1; i <= (length / 2); i++) {
+    for (int i = 1; i <= (length / 3); i++) {
       widgets.add(
         ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(
-              sigmaX: max(((length / 2) - i.toDouble()) / 2, 0),
-              sigmaY: min(5, max(((length / 2) - i.toDouble()) / 2, 0)),
+              sigmaX: max(((length / 3) - i.toDouble()) / 3, 0),
+              sigmaY: min(5, max(((length / 3) - i.toDouble()) / 3, 0)),
             ),
             child: SizedBox(
-              height: 2,
+              height: 3,
               width: mediaQuery.size.width,
             ),
           ),
