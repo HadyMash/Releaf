@@ -284,7 +284,6 @@ class _DayState extends State<Day> with SingleTickerProviderStateMixin {
                           ]
                         : [])),
           ),
-          // TODO add text to sized box
           SizedBox(
             height: size,
             width: size,
