@@ -44,11 +44,6 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
 
   void _setFetching() => _isFetchingDocs = true;
   void _setNotFetching() => _isFetchingDocs = false;
-  int _sortEntries(JournalEntryData firstEntry, JournalEntryData secondEntry) {
-    DateTime firstDate = DateTime.parse(firstEntry.date);
-    DateTime secondDate = DateTime.parse(secondEntry.date);
-    return secondDate.compareTo(firstDate);
-  }
 
   @override
   void initState() {

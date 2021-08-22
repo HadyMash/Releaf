@@ -115,7 +115,7 @@ class _ThemedButtonState extends State<ThemedButton> {
     _shadowOffset = widget.shadowOffset ?? Offset(0, 0);
   }
 
-  //toggle button enabled/disabled
+  // TODO toggle button enabled/disabled
   void _toggleDisable() {}
 
   @override
@@ -261,7 +261,7 @@ class _ThemedFlattButtonState extends State<ThemedFlatButton> {
     _color = widget.color ?? Theme.of(context).primaryColor;
   }
 
-  //toggle button enabled/disabled
+  // TODO toggle button enabled/disabled
   void _toggleDisable() {}
 
   @override

@@ -364,7 +364,7 @@ class AuthService {
   Future changeUsername({required String newName, required context}) async {
     try {
       if (_auth.currentUser != null) {
-        await _auth.currentUser!.updateProfile(displayName: newName);
+        await _auth.currentUser!.updateDisplayName(newName);
         final snackBar = SnackBar(
           content: Row(
             children: [

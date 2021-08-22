@@ -5,7 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
 import 'package:releaf/services/storage.dart';
-import 'package:releaf/shared/const/app_theme.dart';
 
 class JournalEntry extends StatefulWidget {
   final String date;

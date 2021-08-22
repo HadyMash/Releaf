@@ -1,9 +1,6 @@
-import 'dart:ffi';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
 
 class StorageService {
@@ -18,7 +15,7 @@ class StorageService {
       {required List<Uint8List> pictures, required String entryID}) async {
     try {
       // TODO encrypt pictures
-      EncryptService encryptService = EncryptService(uid);
+      // EncryptService encryptService = EncryptService(uid);
       final ref = storage.ref('$uid/$entryID');
       for (Uint8List picture in pictures) {
         // Uint8List encryptedPicture = encryptService.encryptImage(picture);
@@ -49,7 +46,7 @@ class StorageService {
   // get picture(s)
   Future getPictures(String entryID) async {
     try {
-      EncryptService encryptService = EncryptService(uid);
+      // EncryptService encryptService = EncryptService(uid);
       final ref = storage.ref(uid).child(entryID);
       List<Uint8List> pictures = [];
 
