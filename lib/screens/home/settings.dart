@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/change_email.dart';
 import 'package:releaf/screens/authentication/change_password.dart';
@@ -11,6 +12,7 @@ import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/const/custom_popup_route.dart';
+import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 
 class Settings extends StatelessWidget {
   @override
@@ -337,10 +339,8 @@ class Settings extends StatelessWidget {
                       color: Theme.of(context).iconTheme.color,
                       size: 40,
                     ),
-                    onPressed: () => showAboutDialog(
-                      context: context,
-                      applicationName: 'Releaf',
-                      applicationVersion: '0.1 Alpha',
+                    onPressed: () => AppTheme.mainNavKey.currentState!.push(
+                      CustomPopupRoute(builder: (context) => ContactUs()),
                     ),
                   ),
                 ],
@@ -525,6 +525,78 @@ class Info extends StatelessWidget {
           Text('Name: ${_auth.getUser()!.displayName}'),
           SizedBox(height: 10),
           Text('Email: ${_auth.getUser()!.email}'),
+        ],
+      ),
+    );
+  }
+}
+
+class ContactUs extends StatelessWidget {
+  const ContactUs({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingPopup(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ThemedButton.icon(
+            icon: Icon(
+              Icons.email_rounded,
+              size: 28,
+              color:
+                  Theme.of(context).floatingActionButtonTheme.foregroundColor,
+            ),
+            label: 'chads.development@gmail.com',
+            style: Theme.of(context).textTheme.button!.copyWith(fontSize: 14),
+            notAllCaps: true,
+            onPressed: () async {
+              final url = 'mailto:chads.development@gmail.com';
+              if (await urlLauncher.canLaunch(url)) {
+                urlLauncher.launch(url);
+              }
+            },
+            tapDownFeedback: true,
+          ),
+          SizedBox(height: 20),
+          ThemedButton.icon(
+            icon: FaIcon(
+              FontAwesomeIcons.twitter,
+              size: 28,
+              color:
+                  Theme.of(context).floatingActionButtonTheme.foregroundColor,
+            ),
+            label: '@CHADS_Dev',
+            style: Theme.of(context).textTheme.button!.copyWith(fontSize: 14),
+            notAllCaps: true,
+            onPressed: () async {
+              final url = 'https://twitter.com/CHADS_Dev';
+              if (await urlLauncher.canLaunch(url)) {
+                urlLauncher.launch(url, forceSafariVC: false);
+              }
+            },
+            tapDownFeedback: true,
+          ),
+          SizedBox(height: 20),
+          ThemedButton.icon(
+            icon: FaIcon(
+              FontAwesomeIcons.twitter,
+              size: 28,
+              color:
+                  Theme.of(context).floatingActionButtonTheme.foregroundColor,
+            ),
+            label: 'Tweet',
+            style: Theme.of(context).textTheme.button!.copyWith(fontSize: 14),
+            notAllCaps: true,
+            onPressed: () async {
+              final url = 'https://twitter.com/intent/tweet?text=@CHADS_Dev';
+              if (await urlLauncher.canLaunch(url)) {
+                urlLauncher.launch(url, forceSafariVC: false);
+              }
+            },
+            tapDownFeedback: true,
+          ),
         ],
       ),
     );
