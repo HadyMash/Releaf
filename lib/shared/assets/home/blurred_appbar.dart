@@ -63,8 +63,8 @@ class BlurredAppBar extends StatelessWidget implements PreferredSizeWidget {
               end: Alignment.bottomCenter,
               stops: [0.5, 1],
               colors: [
-                Colors.white.withOpacity(0.6),
-                Colors.white.withOpacity(0),
+                Theme.of(context).backgroundColor.withOpacity(0.7),
+                Theme.of(context).backgroundColor.withOpacity(0),
               ],
             ),
           ),
