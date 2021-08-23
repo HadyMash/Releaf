@@ -8,6 +8,7 @@ class AppTheme with ChangeNotifier {
   ThemeData dark;
   ThemeMode themeMode = ThemeMode.system;
   late bool haptics;
+  late bool blurredAppBar;
   List<int> activeDays = [];
   double bottomNavigationBarBorderRadius = 25;
 
@@ -64,6 +65,12 @@ class AppTheme with ChangeNotifier {
     await preferences.setBool('haptics', haptics);
   }
 
+  Future setBlurredAppBar(bool useBlurredAppBar) async {
+    this.blurredAppBar = useBlurredAppBar;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setBool('blurredAppBar', useBlurredAppBar);
+  }
+
   Future updateActiveDays() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     DateTime dt = DateTime.now();
@@ -104,9 +111,13 @@ class AppTheme with ChangeNotifier {
 
   Future getSavedData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+
     await updateActiveDays();
+
     String theme = preferences.getString('theme') ?? 'system';
     bool hapticsPreference = preferences.getBool('haptics') ?? true;
+    bool blurredAppBarPreference = preferences.getBool('blurredAppBar') ?? true;
+
     switch (theme) {
       case 'system':
         {
@@ -130,5 +141,6 @@ class AppTheme with ChangeNotifier {
         break;
     }
     haptics = hapticsPreference;
+    blurredAppBar = blurredAppBarPreference;
   }
 }

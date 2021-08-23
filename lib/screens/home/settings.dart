@@ -135,6 +135,29 @@ class Settings extends StatelessWidget {
                       semanticsLabel: 'Haptics Toggle',
                     ),
                   ),
+                  Setting(
+                    label: 'App Bar Blur',
+                    preference: Row(
+                      children: [
+                        Tooltip(
+                          message: 'Turn off if Tasks and Journal are laggy.',
+                          child: Icon(Icons.info_outline_rounded),
+                          showDuration: const Duration(seconds: 2),
+                        ),
+                        SizedBox(width: 10),
+                        ThemedToggle(
+                          onChanged: (state) => _theme.setBlurredAppBar(state),
+                          defaultState: _theme.blurredAppBar,
+                          icon: Center(
+                              child: Icon(Icons.clear_rounded, size: 24)),
+                          enabledIcon: Center(
+                              child: Icon(Icons.check_rounded, size: 24)),
+                          tapFeedback: true,
+                          semanticsLabel: 'App Bar Blur Toggle',
+                        ),
+                      ],
+                    ),
+                  ),
                   Setting.clickable(
                     label: 'Info',
                     preference: Icon(

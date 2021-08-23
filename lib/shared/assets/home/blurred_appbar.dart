@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:releaf/shared/const/app_theme.dart';
 
 class BlurredAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -44,29 +46,42 @@ class BlurredAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppTheme theme = Provider.of<AppTheme>(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
     return Stack(
       children: [
         // BackdropFilters
-        SizedBox(
-          height: height + mediaQuery.padding.top,
-          child: Column(
-            children: _makeBlurGradient(height, mediaQuery),
-          ),
-        ),
+        theme.blurredAppBar
+            ? SizedBox(
+                height: height + mediaQuery.padding.top,
+                child: Column(
+                  children: _makeBlurGradient(height, mediaQuery),
+                ),
+              )
+            : Container(),
         // Fade effect.
         Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.5, 1],
-              colors: [
-                Theme.of(context).backgroundColor.withOpacity(0.7),
-                Theme.of(context).backgroundColor.withOpacity(0),
-              ],
-            ),
+            gradient: theme.blurredAppBar
+                ? LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.5, 1],
+                    colors: [
+                      Theme.of(context).backgroundColor.withOpacity(0.7),
+                      Theme.of(context).backgroundColor.withOpacity(0),
+                    ],
+                  )
+                : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.65, 1],
+                    colors: [
+                      Theme.of(context).backgroundColor.withOpacity(1),
+                      Theme.of(context).backgroundColor.withOpacity(0),
+                    ],
+                  ),
           ),
         ),
 
