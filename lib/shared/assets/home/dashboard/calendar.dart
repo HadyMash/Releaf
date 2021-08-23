@@ -67,6 +67,14 @@ class _CalendarState extends State<Calendar> {
       listOfDays[0].add(space);
     }
 
+    // total duration (in milliseconds) between the first animation starting and the last.
+    final double activeAnimatonDuration = 1000;
+    // delay multiple
+    final double delayMultiple = activeAnimatonDuration / days.length;
+    // number of active days done so far
+    int activeDaysBuilt = 0;
+
+    // Add the day numbers
     for (int i = 1; i <= daysInMonth; i++) {
       // Check and create a new row if the current row has the max number of days (7)
       if (listOfDays[numOfRows - 1].length == 7) {
@@ -74,10 +82,19 @@ class _CalendarState extends State<Calendar> {
         numOfRows += 1;
       }
 
+      bool active =
+          (days.contains(i) || i == DateTime.now().day) && i <= dateTime.day;
+      if (active) {
+        activeDaysBuilt += 1;
+      }
+
       // Add a day to the newest row
       listOfDays[numOfRows - 1].add(Day(
         number: i,
-        active: days.contains(i) && i <= dateTime.day,
+        active: active,
+        delay: active
+            ? Duration(milliseconds: (activeDaysBuilt * delayMultiple).round())
+            : null,
       ));
     }
 
@@ -189,7 +206,7 @@ class _CalendarState extends State<Calendar> {
           SizedBox(height: 5),
           // * Day Numbers
           // ...layOutMonthDays(theme.activeDays)
-          ...layOutMonthDays(theme.activeDays)
+          ...layOutMonthDays([4, 7, 8, 14, 17, 16, 18, 20, 21, 22])
         ],
       ),
     );
@@ -199,7 +216,8 @@ class _CalendarState extends State<Calendar> {
 class Day extends StatefulWidget {
   final int number;
   final bool active;
-  const Day({required this.number, required this.active, Key? key})
+  final Duration? delay;
+  const Day({required this.number, required this.active, this.delay, Key? key})
       : super(key: key);
 
   @override
@@ -217,7 +235,10 @@ class _DayState extends State<Day> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    if (widget.active == true || widget.number == DateTime.now().day) {
+    bool widgetIsActive =
+        widget.active == true || widget.number == DateTime.now().day;
+
+    if (widgetIsActive) {
       controller = AnimationController(
           vsync: this, duration: const Duration(milliseconds: 1500));
     } else {
@@ -227,7 +248,13 @@ class _DayState extends State<Day> with SingleTickerProviderStateMixin {
 
     animation = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
 
-    controller.forward();
+    if (widgetIsActive) {
+      Future.delayed(widget.delay ?? const Duration(milliseconds: 0)).then((_) {
+        controller.forward();
+      });
+    } else {
+      controller.forward();
+    }
   }
 
   @override
