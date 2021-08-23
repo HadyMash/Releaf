@@ -113,6 +113,25 @@ class Settings extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Setting.clickable(
+                    label: 'Info',
+                    preference: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                      size: 40,
+                    ),
+                    onPressed: () => AppTheme.mainNavKey.currentState!.push(
+                      CustomPopupRoute(builder: (context) => Info()),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 15, right: 30, left: 30),
+                      child: Text('App',
+                          style: Theme.of(context).textTheme.headline4),
+                    ),
+                  ),
                   Setting(
                     label: 'Theme',
                     preference: DropdownButton<ThemeMode>(
@@ -156,17 +175,6 @@ class Settings extends StatelessWidget {
                           semanticsLabel: 'App Bar Blur Toggle',
                         ),
                       ],
-                    ),
-                  ),
-                  Setting.clickable(
-                    label: 'Info',
-                    preference: Icon(
-                      Icons.keyboard_arrow_right_rounded,
-                      color: Theme.of(context).iconTheme.color,
-                      size: 40,
-                    ),
-                    onPressed: () => AppTheme.mainNavKey.currentState!.push(
-                      CustomPopupRoute(builder: (context) => Info()),
                     ),
                   ),
                 ],
