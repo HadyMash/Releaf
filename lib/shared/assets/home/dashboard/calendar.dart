@@ -70,7 +70,8 @@ class _CalendarState extends State<Calendar> {
     // total duration (in milliseconds) between the first animation starting and the last.
     final double activeAnimatonDuration = 1000;
     // delay multiple
-    final double delayMultiple = activeAnimatonDuration / days.length;
+    final double delayMultiple =
+        days.isNotEmpty ? activeAnimatonDuration / days.length : 0;
     // number of active days done so far
     int activeDaysBuilt = 0;
 
