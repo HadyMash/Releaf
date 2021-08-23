@@ -205,8 +205,7 @@ class _CalendarState extends State<Calendar> {
           ),
           SizedBox(height: 5),
           // * Day Numbers
-          // ...layOutMonthDays(theme.activeDays)
-          ...layOutMonthDays([4, 7, 8, 14, 17, 16, 18, 20, 21, 22])
+          ...layOutMonthDays(theme.activeDays)
         ],
       ),
     );
