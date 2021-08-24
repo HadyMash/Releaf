@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/log_in.dart';
 import 'package:releaf/services/auth.dart';
@@ -60,12 +61,9 @@ class Welcome extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 35),
-                      Container(
-                        color: Colors.lightGreen,
-                        child: Text(
-                          '[Releaf Logo]',
-                          style: TextStyle(fontSize: 40),
-                        ),
+                      SvgPicture.asset(
+                        'assets/releafLogo.svg',
+                        height: (70 / 428) * _width,
                       ),
                       // SizedBox(height: 50),
                       Expanded(

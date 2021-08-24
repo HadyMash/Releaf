@@ -406,10 +406,7 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                     controller: _controller,
                     focusNode: _focusNode,
                     onChanged: (val) => entryText = val,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(overflow: TextOverflow.fade),
+                    style: Theme.of(context).textTheme.bodyText1!,
                     textAlignVertical: TextAlignVertical.top,
                     expands: true,
                     decoration: InputDecoration(

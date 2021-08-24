@@ -126,6 +126,7 @@ flutter:
           style: italic
           weight: 900
   assets:
+    - assets/releafLogo.svg
     - assets/images/google_logo.png
     - assets/images/
     - assets/lottie/
