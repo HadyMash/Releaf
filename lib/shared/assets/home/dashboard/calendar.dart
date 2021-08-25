@@ -267,6 +267,12 @@ class _DayState extends State<Day> with SingleTickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     TextStyle textStyle = widget.number == DateTime.now().day
         ? Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)
