@@ -157,12 +157,37 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
                                 MediaQuery.of(context).padding.top,
                             bottom: 75 + MediaQuery.of(context).padding.bottom),
                         itemCount: entries.length,
-                        itemBuilder: (context, index) => JournalEntry(
-                          date: entries[index].date,
-                          entryText: entries[index].entryText,
-                          feeling: entries[index].feeling,
-                          pictures: entries[index].pictures,
-                        ),
+                        itemBuilder: (context, index) {
+                          if (index == entries.length - 1) {
+                            return Column(
+                              children: [
+                                JournalEntry(
+                                  date: entries[index].date,
+                                  entryText: entries[index].entryText,
+                                  feeling: entries[index].feeling,
+                                  pictures: entries[index].pictures,
+                                ),
+                                Offstage(
+                                  offstage: !_hasNext,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: 30),
+                                      Center(
+                                          child: CircularProgressIndicator()),
+                                      SizedBox(height: 10),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                          return JournalEntry(
+                            date: entries[index].date,
+                            entryText: entries[index].entryText,
+                            feeling: entries[index].feeling,
+                            pictures: entries[index].pictures,
+                          );
+                        },
                       ),
                     ),
                     onRefresh: () {
