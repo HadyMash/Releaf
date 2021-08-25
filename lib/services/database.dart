@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:releaf/services/encrypt.dart';
 import 'package:releaf/services/storage.dart';
@@ -21,7 +23,8 @@ class DatabaseService {
   late CollectionReference<Object?> journal;
 
   // add new entry
-  Future addJournalEntry(String date, String entryText, int feeling) async {
+  Future addJournalEntry(String date, String entryText, int feeling,
+      List<Uint8List> pictures) async {
     try {
       // DateTime currentDate = DateTime.now();
       // DateTime newDateTime = DateTime.parse(date);
@@ -43,10 +46,14 @@ class DatabaseService {
         "feeling": feeling,
       });
 
+      await StorageService(uid)
+          .uploadPictures(pictures: pictures, entryID: date);
+
       return JournalEntryData(
         date: date,
         entryText: encryptedText,
         feeling: feeling,
+        pictures: pictures,
       );
     } catch (e) {
       print(e.toString());
@@ -109,12 +116,78 @@ class DatabaseService {
   // }
 
   // get entries
-  Future<List<JournalEntryData>> getJournalEntries(
-      {int? limit,
-      String? lastDocDate,
-      void Function()? setFetching,
-      void Function()? setNotFetching}) async {
+  Future<List<JournalEntryData>> getJournalEntries({
+    int? limit,
+    String? lastDocDate,
+    void Function()? setFetching,
+    void Function()? setNotFetching,
+  }) async {
     List<JournalEntryData> entries = [];
+    print('getting journal entries');
+
+    if (setFetching != null) {
+      setFetching();
+    }
+
+    EncryptService encryptService = EncryptService(uid);
+
+    Future<void> _returnDataAsEntries(QuerySnapshot<Object?> snapshot) async {
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map;
+        List<Uint8List> pictures =
+            await StorageService(uid).getPictures(doc['date']);
+        entries.add(
+          JournalEntryData(
+            date: doc['date'],
+            entryText: encryptService.decrypt(data['entryText']),
+            feeling: data['feeling'],
+            pictures: pictures,
+          ),
+        );
+      }
+    }
+
+    if (limit != null && lastDocDate != null) {
+      await journal
+          .orderBy("date", descending: true)
+          .startAfterDocument(await journal.doc(lastDocDate).get())
+          .limit(limit)
+          .get()
+          .then((snapshot) async {
+        await _returnDataAsEntries(snapshot);
+      });
+    } else if (limit != null && lastDocDate == null) {
+      await journal
+          .orderBy("date", descending: true)
+          .limit(limit)
+          .get()
+          .then((snapshot) async {
+        await _returnDataAsEntries(snapshot);
+      });
+    } else {
+      await journal
+          .orderBy("date", descending: true)
+          .get()
+          .then((snapshot) async {
+        await _returnDataAsEntries(snapshot);
+      });
+    }
+
+    if (setNotFetching != null) {
+      setNotFetching();
+    }
+
+    return entries;
+  }
+
+  // Get journal entries without pictures (for dashboard widget)
+  Future<List<JournalEntryDataNoPictures>> getJournalEntriesWithNoPictures({
+    int? limit,
+    String? lastDocDate,
+    void Function()? setFetching,
+    void Function()? setNotFetching,
+  }) async {
+    List<JournalEntryDataNoPictures> entries = [];
     print('getting journal entries');
 
     if (setFetching != null) {
@@ -127,7 +200,7 @@ class DatabaseService {
       for (var doc in snapshot.docs) {
         var data = doc.data() as Map;
         entries.add(
-          JournalEntryData(
+          JournalEntryDataNoPictures(
             date: doc['date'],
             entryText: encryptService.decrypt(data['entryText']),
             feeling: data['feeling'],

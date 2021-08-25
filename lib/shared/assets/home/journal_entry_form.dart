@@ -520,42 +520,35 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                   currentDate.microsecond,
                                 );
                                 print(hybridDate.toString());
-                                dynamic picturesResult =
-                                    await StorageService(_auth.getUser()!.uid)
-                                        .uploadPictures(
-                                            pictures: pictures,
-                                            entryID: hybridDate.toString());
-                                if (picturesResult == null) {
-                                  if (widget.date == null) {
-                                    dynamic result = await DatabaseService(
-                                            uid: _auth.getUser()!.uid)
-                                        .addJournalEntry(
-                                      hybridDate.toString(),
-                                      entryText ?? '',
-                                      feeling!,
-                                    );
-                                    print(hybridDate.toString());
-                                    if (result is JournalEntryData) {
-                                      AppTheme.homeNavkey.currentState!.pop();
-                                    } else {
-                                      // TODO enable button
-                                    }
+
+                                if (widget.date == null) {
+                                  dynamic result = await DatabaseService(
+                                          uid: _auth.getUser()!.uid)
+                                      .addJournalEntry(
+                                    hybridDate.toString(),
+                                    entryText ?? '',
+                                    feeling!,
+                                    pictures,
+                                  );
+                                  print(hybridDate.toString());
+                                  if (result is JournalEntryData) {
+                                    AppTheme.homeNavkey.currentState!.pop();
                                   } else {
-                                    // dynamic result = await DatabaseService(
-                                    //         uid: _auth.getUser()!.uid)
-                                    //     .editEntry(
-                                    //   widget.date!,
-                                    //   hybridDate.toString(),
-                                    //   entryText ?? '',
-                                    //   feeling!,
-                                    //   pictures,
-                                    // );
-                                    // if (result == true) {
-                                    //   AppTheme.homeNavkey.currentState!.pop();
-                                    // }
+                                    // TODO enable button
                                   }
                                 } else {
-                                  // TODO show error.
+                                  // dynamic result = await DatabaseService(
+                                  //         uid: _auth.getUser()!.uid)
+                                  //     .editEntry(
+                                  //   widget.date!,
+                                  //   hybridDate.toString(),
+                                  //   entryText ?? '',
+                                  //   feeling!,
+                                  //   pictures,
+                                  // );
+                                  // if (result == true) {
+                                  //   AppTheme.homeNavkey.currentState!.pop();
+                                  // }
                                 }
                               } else {
                                 final SnackBar snackBar = SnackBar(

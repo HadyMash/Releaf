@@ -23,7 +23,7 @@ class JournalSummary extends StatefulWidget {
 class _JournalSummaryState extends State<JournalSummary> {
   final GlobalKey lottieKey = GlobalKey(debugLabel: 'Lottie Key');
 
-  late Future<List<JournalEntryData>> journalFuture;
+  late Future<List<JournalEntryDataNoPictures>> journalFuture;
   Future? picturesFuture;
 
   late Color _shadowColor;
@@ -51,14 +51,14 @@ class _JournalSummaryState extends State<JournalSummary> {
   void initState() {
     super.initState();
     journalFuture = DatabaseService(uid: AuthService().getUser()!.uid)
-        .getJournalEntries(limit: 10);
+        .getJournalEntriesWithNoPictures(limit: 10);
 
     journalFuture.then((entries) {
       if (entries.isNotEmpty) {
         setState(() => _heroTag = entries[0].date);
 
-        entries
-            .sort((JournalEntryData firstEntry, JournalEntryData secondEntry) {
+        entries.sort((JournalEntryDataNoPictures firstEntry,
+            JournalEntryDataNoPictures secondEntry) {
           DateTime firstDate = DateTime.parse(firstEntry.date);
           DateTime secondDate = DateTime.parse(secondEntry.date);
 
@@ -89,14 +89,14 @@ class _JournalSummaryState extends State<JournalSummary> {
         child: FutureBuilder(
           future: journalFuture,
           builder: (context, entryFuture) {
-            List<JournalEntryData> entries =
-                (entryFuture.data as List<JournalEntryData>?) ?? [];
+            List<JournalEntryDataNoPictures> entries =
+                (entryFuture.data as List<JournalEntryDataNoPictures>?) ?? [];
 
             // Sort entries based on [feeling] and [date]. This makes the first
             // entry in the list (after sorting) the most recent and happiest entry.
             if (entries.isNotEmpty) {
-              entries.sort(
-                  (JournalEntryData firstEntry, JournalEntryData secondEntry) {
+              entries.sort((JournalEntryDataNoPictures firstEntry,
+                  JournalEntryDataNoPictures secondEntry) {
                 DateTime firstDate = DateTime.parse(firstEntry.date);
                 DateTime secondDate = DateTime.parse(secondEntry.date);
 
@@ -281,7 +281,7 @@ class _JournalSummaryState extends State<JournalSummary> {
                         },
                         openBuilder: (context, _) {
                           return (entryFuture.data != null)
-                              ? JournalEntryExpanded(
+                              ? JournalEntryExpandedNoPictures(
                                   entries[0].date,
                                   entries[0].entryText,
                                   entries[0].feeling,
@@ -432,7 +432,7 @@ class _JournalSummaryState extends State<JournalSummary> {
                     },
                     openBuilder: (context, _) {
                       return (entryFuture.data != null)
-                          ? JournalEntryExpanded(
+                          ? JournalEntryExpandedNoPictures(
                               entries[0].date,
                               entries[0].entryText,
                               entries[0].feeling,

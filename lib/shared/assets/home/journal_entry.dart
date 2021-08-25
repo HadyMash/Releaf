@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
-import 'package:releaf/services/storage.dart';
 
 class JournalEntry extends StatefulWidget {
   final String date;
   final String entryText;
   late final int feeling;
+  final List<Uint8List> pictures;
 
   JournalEntry(
-      {required this.date, required this.entryText, required feeling, Key? key})
+      {required this.date,
+      required this.entryText,
+      required feeling,
+      required this.pictures,
+      Key? key})
       : super(key: key) {
     if (feeling < 1) {
       feeling = 1;
@@ -26,8 +30,7 @@ class JournalEntry extends StatefulWidget {
   _JournalEntryState createState() => _JournalEntryState();
 }
 
-class _JournalEntryState extends State<JournalEntry>
-    with AutomaticKeepAliveClientMixin {
+class _JournalEntryState extends State<JournalEntry> {
   late Color _shadowColor;
   double _blurRadius = 20;
   double _spreadRadius = 0;
@@ -39,18 +42,6 @@ class _JournalEntryState extends State<JournalEntry>
   late Color _color;
   late double _blur;
   late double _spread;
-
-  late Future picturesFuture;
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-    picturesFuture =
-        StorageService(AuthService().getUser()!.uid).getPictures(widget.date);
-  }
 
   @override
   void didChangeDependencies() {
@@ -113,8 +104,6 @@ class _JournalEntryState extends State<JournalEntry>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     return Hero(
       tag: widget.date,
       child: Material(
@@ -150,46 +139,38 @@ class _JournalEntryState extends State<JournalEntry>
               closedBuilder: (context, _) {
                 return Padding(
                   padding: EdgeInsets.fromLTRB(20, 15, 20, 18),
-                  child: FutureBuilder(
-                    future: picturesFuture,
-                    builder: (context, future) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          // * Heading
-                          Text(
-                            _formatedDate(widget.date),
-                            style: Theme.of(context).textTheme.subtitle2,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // * Heading
+                      Text(
+                        _formatedDate(widget.date),
+                        style: Theme.of(context).textTheme.subtitle2,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 40 - 50,
+                        height: 160,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          clipBehavior: Clip.none,
+                          children: _buildPictures(
+                            (widget.pictures),
                           ),
-                          SizedBox(height: 10),
-                          (future.connectionState == ConnectionState.waiting)
-                              ? Center(child: CircularProgressIndicator())
-                              : SizedBox(
-                                  width: MediaQuery.of(context).size.width -
-                                      40 -
-                                      50,
-                                  height: 160,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    clipBehavior: Clip.none,
-                                    children: _buildPictures(
-                                        (future.data as List<Uint8List>)),
-                                  ),
-                                ),
-                          SizedBox(height: 10),
-                          Text(
-                            widget.entryText,
-                            style: Theme.of(context).textTheme.bodyText2,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      );
-                    },
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        widget.entryText,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 );
               },
@@ -198,7 +179,7 @@ class _JournalEntryState extends State<JournalEntry>
                   widget.date,
                   widget.entryText,
                   widget.feeling,
-                  picturesFuture,
+                  widget.pictures,
                 );
               },
             ),
@@ -213,17 +194,311 @@ class JournalEntryExpanded extends StatefulWidget {
   final String date;
   final String entryText;
   final int feeling;
-  final Future? picturesFuture;
+  final List<Uint8List> pictures;
   final bool? rootNavigator;
 
-  JournalEntryExpanded(
-      this.date, this.entryText, this.feeling, this.picturesFuture,
+  JournalEntryExpanded(this.date, this.entryText, this.feeling, this.pictures,
       {this.rootNavigator});
   @override
   _JournalEntryExpandedState createState() => _JournalEntryExpandedState();
 }
 
 class _JournalEntryExpandedState extends State<JournalEntryExpanded>
+    with SingleTickerProviderStateMixin {
+  final AuthService _auth = AuthService();
+  final GlobalKey lottieKey = GlobalKey();
+
+  late final AnimationController fabController;
+  late final Animation fabColorAnimation;
+  late final Animation<double> fabElevationTween;
+
+  bool initialised = false;
+
+  void initState() {
+    fabController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+
+    fabElevationTween = Tween<double>(begin: 6, end: 10)
+        .animate(CurvedAnimation(parent: fabController, curve: Curves.linear));
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    fabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (initialised == false) {
+      fabColorAnimation = ColorTween(
+              begin: Theme.of(context).primaryColor,
+              end: Theme.of(context).colorScheme.secondary)
+          .animate(
+              CurvedAnimation(curve: Curves.linear, parent: fabController));
+      initialised = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  List<Widget> _buildPictures(List<Uint8List> pictures) {
+    List<Widget> picWidgets = [];
+    int index = 0;
+    for (var pic in pictures) {
+      picWidgets.add(
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 6,
+                color: Theme.of(context).shadowColor.withOpacity(0.52),
+                offset: Offset(0, 3),
+              )
+            ],
+          ),
+          clipBehavior: Clip.hardEdge,
+          margin: index == 0
+              ? EdgeInsets.only(right: 10)
+              : EdgeInsets.symmetric(horizontal: 10),
+          child: Image.memory(
+            pic,
+            height: 160,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+      index += 1;
+    }
+    return picWidgets;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Journal",
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        automaticallyImplyLeading: false,
+        leadingWidth: 35,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 22),
+            child: IconButton(
+              onPressed: () async {
+                dynamic result =
+                    await DatabaseService(uid: _auth.getUser()!.uid)
+                        .deleteEntry(widget.date);
+                if (result == true) {
+                  Navigator.of(context).pop();
+                } else {
+                  print(result.toString());
+                  final snackBar = SnackBar(
+                    content: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child:
+                              Icon(Icons.error_rounded, color: Colors.red[700]),
+                        ),
+                        Expanded(child: Text(result.toString())),
+                      ],
+                    ),
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
+              icon: Icon(
+                Icons.delete_rounded,
+                size: 32,
+                color: Theme.of(context).iconTheme.color,
+              ),
+            ),
+          ),
+        ],
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Theme.of(context).iconTheme.color,
+              size: Theme.of(context).iconTheme.size,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            right: 20,
+            left: 20,
+            top: 15,
+            bottom: MediaQuery.of(context).padding.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _formatedDate(widget.date),
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      fontSize:
+                          Theme.of(context).textTheme.subtitle2!.fontSize! + 6,
+                    ),
+              ),
+              SizedBox(height: 15),
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 40,
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  clipBehavior: Clip.none,
+                  children: _buildPictures(widget.pictures),
+                ),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        widget.entryText,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 25),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 15),
+                  Text(
+                    'Feeling:',
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        fontSize:
+                            Theme.of(context).textTheme.subtitle2!.fontSize! +
+                                6),
+                  ),
+                  SizedBox(width: 10),
+                  Lottie.asset(
+                    'assets/lottie/faces/${(widget.feeling == 1 ? 'sad' : (widget.feeling == 2 ? 'meh' : 'happy'))}.json',
+                    key: lottieKey,
+                    repeat: false,
+                    width: width / 7,
+                    height: width / 7,
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+            ],
+          ),
+        ),
+      ),
+      // TODO fix edit functionality and renable.
+      // floatingActionButton: Hero(
+      //   tag: 'floatingActionButton',
+      //   child: Transform.translate(
+      //     offset: Offset(0, 0),
+      //     child: GestureDetector(
+      //       onTapDown: (_) => fabController.forward(),
+      //       onTapUp: (_) => fabController.reverse(),
+      //       onTapCancel: () => fabController.reverse(),
+      //       child: AnimatedBuilder(
+      //         animation: fabController,
+      //         builder: (context, child) {
+      //           return OpenContainer(
+      //             transitionDuration: Duration(milliseconds: 500),
+      //             transitionType: ContainerTransitionType.fade,
+      //             closedElevation: fabElevationTween.value,
+      //             closedShape: const RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.all(
+      //                 Radius.circular(56 / 2),
+      //               ),
+      //             ),
+      //             closedColor: fabColorAnimation.value,
+      //             closedBuilder:
+      //                 (BuildContext context, VoidCallback openContainer) {
+      //               return SizedBox(
+      //                 height: 56,
+      //                 width: 56,
+      //                 child: Center(
+      //                   child: Icon(
+      //                     Icons.edit_rounded,
+      //                     color: Theme.of(context)
+      //                         .floatingActionButtonTheme
+      //                         .foregroundColor,
+      //                     size: 32,
+      //                   ),
+      //                 ),
+      //               );
+      //             },
+      //             openBuilder: (BuildContext context, VoidCallback _) {
+      //               return JournalEntryForm(
+      //                 date: widget.date,
+      //                 initialText: widget.entryText,
+      //                 feeling: widget.feeling,
+      //                 pictures: widget.pictures,
+      //               );
+      //             },
+      //           );
+      //         },
+      //       ),
+      //     ),
+      //   ),
+      // ),
+    );
+  }
+}
+
+String _formatedDate(String date) {
+  DateTime dateTime = DateTime.parse(date);
+  Map<int, String> _monthNumToName = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+  };
+
+  return '${_monthNumToName[dateTime.month]} ${dateTime.day}, ${dateTime.year}';
+}
+
+class JournalEntryExpandedNoPictures extends StatefulWidget {
+  final String date;
+  final String entryText;
+  final int feeling;
+  final Future? picturesFuture;
+  final bool? rootNavigator;
+
+  JournalEntryExpandedNoPictures(
+      this.date, this.entryText, this.feeling, this.picturesFuture,
+      {this.rootNavigator});
+  @override
+  _JournalEntryExpandedNoPicturesState createState() =>
+      _JournalEntryExpandedNoPicturesState();
+}
+
+class _JournalEntryExpandedNoPicturesState
+    extends State<JournalEntryExpandedNoPictures>
     with SingleTickerProviderStateMixin {
   final AuthService _auth = AuthService();
   final GlobalKey lottieKey = GlobalKey();
@@ -493,24 +768,4 @@ class _JournalEntryExpandedState extends State<JournalEntryExpanded>
       // ),
     );
   }
-}
-
-String _formatedDate(String date) {
-  DateTime dateTime = DateTime.parse(date);
-  Map<int, String> _monthNumToName = {
-    1: 'Jan',
-    2: 'Feb',
-    3: 'Mar',
-    4: 'Apr',
-    5: 'May',
-    6: 'Jun',
-    7: 'Jul',
-    8: 'Aug',
-    9: 'Sep',
-    10: 'Oct',
-    11: 'Nov',
-    12: 'Dec',
-  };
-
-  return '${_monthNumToName[dateTime.month]} ${dateTime.day}, ${dateTime.year}';
 }
