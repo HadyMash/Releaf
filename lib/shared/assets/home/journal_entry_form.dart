@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/services/database.dart';
-import 'package:releaf/services/storage.dart';
 import 'package:releaf/shared/assets/themed_button.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:releaf/shared/models/journal_entry_data.dart';
@@ -232,13 +231,22 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                       .getImage(source: ImageSource.camera);
 
                                   if (image != null) {
-                                    final imageBytes =
-                                        await image.readAsBytes();
-                                    pictures.insert(0, imageBytes);
-
                                     ImageProperties properties =
                                         await FlutterNativeImage
                                             .getImageProperties(image.path);
+
+                                    File slightlyCompressedFile =
+                                        await FlutterNativeImage.compressImage(
+                                      image.path,
+                                      quality: 75,
+                                      percentage: 75,
+                                    );
+
+                                    Uint8List slightlyCompressedImage =
+                                        await slightlyCompressedFile
+                                            .readAsBytes();
+
+                                    pictures.insert(0, slightlyCompressedImage);
 
                                     File compressedFile =
                                         await FlutterNativeImage.compressImage(
@@ -273,13 +281,24 @@ class _JournalEntryFormState extends State<JournalEntryForm>
                                   if (images != null) {
                                     images.forEach(
                                       (image) async {
-                                        final imageBytes =
-                                            await image.readAsBytes();
-                                        pictures.insert(0, imageBytes);
-
                                         ImageProperties properties =
                                             await FlutterNativeImage
                                                 .getImageProperties(image.path);
+
+                                        File slightlyCompressedFile =
+                                            await FlutterNativeImage
+                                                .compressImage(
+                                          image.path,
+                                          quality: 75,
+                                          percentage: 75,
+                                        );
+
+                                        Uint8List slightlyCompressedImage =
+                                            await slightlyCompressedFile
+                                                .readAsBytes();
+
+                                        pictures.insert(
+                                            0, slightlyCompressedImage);
 
                                         File compressedFile =
                                             await FlutterNativeImage
