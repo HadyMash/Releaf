@@ -52,7 +52,7 @@ class AppTheme with ChangeNotifier {
         break;
       default:
         {
-          await preferences.setString('theme', 'system');
+          await preferences.setString('theme', 'light');
         }
         break;
     }
