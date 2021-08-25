@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/services/auth.dart';
 import 'package:releaf/shared/assets/custom_widget_border.dart';
@@ -250,10 +251,9 @@ class _RegisterState extends State<Register>
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
-                        child: Text(
-                          '[Releaf Logo]',
-                          style: TextStyle(
-                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
+                        child: SvgPicture.asset(
+                          'assets/releafLogo.svg',
+                          height: (70 / 428) * _width,
                         ),
                       ),
                     ),

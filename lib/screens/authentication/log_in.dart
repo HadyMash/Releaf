@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:releaf/screens/authentication/veryify.dart';
 import 'package:releaf/services/auth.dart';
@@ -229,10 +230,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
-                        child: Text(
-                          '[Releaf Logo]',
-                          style: TextStyle(
-                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
+                        child: SvgPicture.asset(
+                          'assets/releafLogo.svg',
+                          height: (70 / 428) * _width,
                         ),
                       ),
                     ),
@@ -607,10 +607,9 @@ class _ResetPasswordState extends State<ResetPassword>
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
-                        child: Text(
-                          '[Releaf Logo]',
-                          style: TextStyle(
-                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
+                        child: SvgPicture.asset(
+                          'assets/releafLogo.svg',
+                          height: (70 / 428) * _width,
                         ),
                       ),
                     ),
@@ -904,10 +903,9 @@ class _LogInMockState extends State<LogInMock>
                       color: Colors.white.withOpacity(0),
                       child: Container(
                         color: Colors.lightGreen,
-                        child: Text(
-                          '[Releaf Logo]',
-                          style: TextStyle(
-                              fontSize: 40 - ((926 * 0.01) - (_height * 0.01))),
+                        child: SvgPicture.asset(
+                          'assets/releafLogo.svg',
+                          height: (70 / 428) * _width,
                         ),
                       ),
                     ),
