@@ -360,7 +360,7 @@ class Settings extends StatelessWidget {
                     onPressed: () => showAboutDialog(
                       context: context,
                       applicationName: 'Releaf',
-                      applicationVersion: '0.1 Alpha',
+                      applicationVersion: '1.0',
                     ),
                   ),
                   Setting.clickable(
