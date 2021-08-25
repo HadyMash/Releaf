@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:releaf/shared/assets/custom_widget_border.dart';
+import 'package:releaf/shared/assets/home/dashboard/qod.dart';
 import 'package:releaf/shared/const/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +22,8 @@ void main() async {
           initialData: null,
           value: AuthService().user,
         ),
+        FutureProvider<QODData?>(
+            create: (contet) => getQOD(), initialData: null),
         ChangeNotifierProvider(
           create: (_) => AppTheme(
             // * Light Theme
@@ -440,4 +445,19 @@ class _ThemedAppState extends State<ThemedApp> {
       },
     );
   }
+}
+
+Future<QODData?> getQOD() async {
+  print('getting quote');
+  var response =
+      await http.get(Uri.parse('https://quotes.rest/qod?language=en'));
+
+  Map data = jsonDecode(response.body);
+
+  var qod = QODData(
+    quote: data['contents']['quotes'][0]['quote'],
+    author: data['contents']['quotes'][0]['author'],
+  );
+
+  return qod;
 }
