@@ -77,6 +77,11 @@ class _JournalState extends State<Journal> with TickerProviderStateMixin {
       setFetching: _setFetching,
       setNotFetching: _setNotFetching,
     );
+    journalEntriesFuture.whenComplete(() {
+      if (entries.length < 5) {
+        _hasNext = false;
+      }
+    });
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 320));
     animation = CurvedAnimation(curve: Curves.easeInOut, parent: controller);
