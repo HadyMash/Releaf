@@ -247,15 +247,9 @@ class _RegisterState extends State<Register>
                         height: _showingErrors
                             ? (13 / 926) * _height
                             : (30 / 926) * _height),
-                    Material(
-                      color: Colors.white.withOpacity(0),
-                      child: Container(
-                        color: Colors.lightGreen,
-                        child: SvgPicture.asset(
-                          'assets/releafLogo.svg',
-                          height: (70 / 428) * _width,
-                        ),
-                      ),
+                    SvgPicture.asset(
+                      'assets/releafLogo.svg',
+                      height: (70 / 428) * _width,
                     ),
                     Expanded(
                       child: Padding(

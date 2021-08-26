@@ -226,15 +226,9 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: (40 / 926) * _height),
-                    Material(
-                      color: Colors.white.withOpacity(0),
-                      child: Container(
-                        color: Colors.lightGreen,
-                        child: SvgPicture.asset(
-                          'assets/releafLogo.svg',
-                          height: (70 / 428) * _width,
-                        ),
-                      ),
+                    SvgPicture.asset(
+                      'assets/releafLogo.svg',
+                      height: (70 / 428) * _width,
                     ),
                     Expanded(
                       child: Padding(
@@ -603,15 +597,9 @@ class _ResetPasswordState extends State<ResetPassword>
                       ),
                     ),
                     SizedBox(height: (40 / 926) * _height),
-                    Material(
-                      color: Colors.white.withOpacity(0),
-                      child: Container(
-                        color: Colors.lightGreen,
-                        child: SvgPicture.asset(
-                          'assets/releafLogo.svg',
-                          height: (70 / 428) * _width,
-                        ),
-                      ),
+                    SvgPicture.asset(
+                      'assets/releafLogo.svg',
+                      height: (70 / 428) * _width,
                     ),
                     Expanded(
                       child: Padding(
@@ -899,15 +887,9 @@ class _LogInMockState extends State<LogInMock>
                       ),
                     ),
                     SizedBox(height: (40 / 926) * _height),
-                    Material(
-                      color: Colors.white.withOpacity(0),
-                      child: Container(
-                        color: Colors.lightGreen,
-                        child: SvgPicture.asset(
-                          'assets/releafLogo.svg',
-                          height: (70 / 428) * _width,
-                        ),
-                      ),
+                    SvgPicture.asset(
+                      'assets/releafLogo.svg',
+                      height: (70 / 428) * _width,
                     ),
                     Expanded(
                       child: Padding(
