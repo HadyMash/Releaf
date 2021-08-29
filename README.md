@@ -1,4 +1,5 @@
-# Releaf
+<!-- # Releaf -->
+![Logo](assets/images/Logo.png "Title")
 An app made for the mental health of students, by students.
 
 ---
