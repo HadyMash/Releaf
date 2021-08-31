@@ -35,6 +35,8 @@ class _VerifyState extends State<Verify> {
 
   @override
   void initState() {
+    super.initState();
+
     timer = Timer.periodic(Duration(seconds: 30), (timer) {
       countdownUpdate.cancel();
       checkVerified();
@@ -44,7 +46,8 @@ class _VerifyState extends State<Verify> {
         setState(() => timerCountdown--);
       }
     });
-    super.initState();
+
+    AuthService().sendVerificationEmail(context);
   }
 
   @override
