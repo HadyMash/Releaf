@@ -258,6 +258,7 @@ class _ThemedAppState extends State<ThemedApp> {
       future: theme.getSavedData(),
       builder: (context, snapshot) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           builder: (context, child) {
             final theme = Provider.of<AppTheme>(context);
             final height = MediaQuery.of(context).size.height;
