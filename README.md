@@ -9,6 +9,24 @@ This is an app made to help students reflect on their lives and feel accomplishe
 That's why we want you to remember the happy moments but also remember that it's ok to sometimes feel a little down, it's normal. You also don't get time do things you want so we helped you make a few yearly goals to work on to help you focus and achieve a few tasks you wanted to get done by this year.
 
 This is an app made for an IB CAS Project, it will not be maintained in the future. There are a lot of inefficiencies that we couldn't get to due to time contrainsts and the fact that this app won't be maintained.
+
+<details>
+<Summary>App Preview</summary>
+
+![Welcome](assets/md-images/welcome.jpeg "Welcome")
+
+![Dashboard-1](assets/md-images/dashboard-1.jpeg "Dashboard 1")
+
+![Dashboard-2](assets/md-images/dashboard-2.jpeg "Dashboard 2")
+
+![Journal](assets/md-images/journal-1.jpeg "Journal")
+
+![Tasks](assets/md-images/tasks.jpeg "Tasks")
+
+![Settings](assets/md-images/settings-1.jpeg "Settings")
+
+</details>
+
 # Features
 ## Journal
 The Journal is a place for you to reflect on certain occasions or points in time. You could be on a trip you want to remember or just feel really happy and want to remember that moment, it's up to you! You upload a picture(s) and write some text and select how you're feeling and boom. You upload and it will be uploaded to the cloud. Please be aware that the text is encrypted but images are not.
