@@ -8,7 +8,7 @@ This is an app made to help students reflect on their lives and feel accomplishe
 
 That's why we want you to remember the happy moments but also remember that it's ok to sometimes feel a little down, it's normal. You also don't get time do things you want so we helped you make a few yearly goals to work on to help you focus and achieve a few tasks you wanted to get done by this year.
 
-This is an app made for an IB CAS Project, it will not be maintained in the future. There are a lot of inefficiencies that we couldn't get to due to time contrainsts and the fact that this app won't be maintained.
+\* ***This is an app made for an IB CAS Project, it will not be maintained in the future. There are a lot of inefficiencies that we couldn't get to due to time contrainsts and the fact that this app won't be maintained.***
 
 <details>
 <Summary>App Preview</summary>
